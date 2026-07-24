@@ -1,0 +1,31 @@
+Package: lolkills
+Title: Modelo Probabilistico Pos-Draft De Kills Em League of Legends
+Version: 0.1.0
+Authors@R: person("Samuel", role = c("aut", "cre"), email = "samuel@example.invalid")
+Author: Samuel [aut, cre]
+Maintainer: Samuel <samuel@example.invalid>
+Description: Pipeline local e reproduzivel para modelar a distribuicao do
+    total de kills de mapas profissionais de League of Legends usando dados
+    fornecidos localmente do Oracle's Elixir.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+Depends:
+    R (>= 4.5.0)
+Imports:
+    DBI,
+    data.table,
+    digest,
+    duckdb,
+    jsonlite,
+    MASS,
+    yaml
+Suggests:
+    pkgload,
+    plumber,
+    roxygen2,
+    rprojroot,
+    targets,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Config/roxygen2/version: 8.0.0

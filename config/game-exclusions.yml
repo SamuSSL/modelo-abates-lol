@@ -1,0 +1,8 @@
+exclusions:
+  - gameid: "ESPORTSTMNT01_3408461"
+    reason_code: "aborted_or_incomplete_capture"
+    rationale: "O registro local contém 201 segundos e placar 0-0, mas o mapa 2 oficial concluído teve 40:43 e placar 27-12. O mapa oficial concluído não está presente no CSV local."
+    evidence:
+      - "local_oracles_elixir_2023"
+      - "https://gol.gg/game/stats/52586/page-game/"
+    reviewed_at: "2026-07-23"

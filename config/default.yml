@@ -1,0 +1,29 @@
+project:
+  name: lolkills
+  seed: 20260723
+  timezone: UTC
+
+paths:
+  raw_oracles_elixir: data/raw/oracles_elixir
+  raw_manifest: data/raw/manifest.yml
+  interim: data/interim
+  processed: data/processed
+  artifacts: artifacts
+  models: models
+  reports: reports
+  logs: logs
+
+data:
+  expected_seasons:
+    - 2022
+    - 2023
+    - 2024
+    - 2025
+    - 2026
+  expected_rows_per_game: 12
+
+inference:
+  interval_level: 0.90
+  timeout_seconds: 30
+  allowed_line_fraction: 0.5
+

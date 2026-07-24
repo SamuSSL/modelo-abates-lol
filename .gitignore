@@ -1,0 +1,34 @@
+# R
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+*.Rcheck/
+*.tar.gz
+renv/library/
+renv/staging/
+
+# Pipeline and reports
+_targets/
+reports/*.html
+reports/*.pdf
+
+# Local data and immutable artifacts
+data/raw/
+data/interim/
+data/processed/
+artifacts/
+models/
+*.duckdb
+*.duckdb.wal
+
+# Local runtime state
+logs/
+tmp/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.streamlit/secrets.toml
+.local/

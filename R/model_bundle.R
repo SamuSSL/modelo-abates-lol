@@ -1,0 +1,149 @@
+#' Build current champion sample coverage
+#'
+#' @param player_metrics Historical player-map metrics.
+#' @param snapshot_cutoff Timestamp after the latest allowed result.
+#' @param half_life_days Exponential-decay half-life.
+#' @return One row per champion with raw and effective picks.
+#' @export
+build_champion_sample_snapshot <- function(
+  player_metrics,
+  snapshot_cutoff,
+  half_life_days = 60
+) {
+  cutoff <- as.POSIXct(snapshot_cutoff, tz = "UTC")
+  rows <- player_metrics[
+    player_metrics$competition_role %in% c("target", "auxiliary") &
+      !is.na(player_metrics$champion) &
+      nzchar(as.character(player_metrics$champion)) &
+      player_metrics$game_datetime < cutoff,
+    ,
+    drop = FALSE
+  ]
+  age_days <- as.numeric(difftime(
+    cutoff,
+    rows$game_datetime,
+    units = "days"
+  ))
+  rows$.weight <- 0.5^(age_days / half_life_days)
+  groups <- split(rows, rows$champion)
+  result <- do.call(rbind, lapply(groups, function(group) {
+    data.frame(
+      champion = as.character(group$champion[[1L]]),
+      raw_champion_games = nrow(group),
+      effective_champion_games = sum(group$.weight),
+      stringsAsFactors = FALSE
+    )
+  }))
+  rownames(result) <- NULL
+  result
+}
+
+#' Build a portable public-inference bundle
+#'
+#' @param fit Fitted count regression.
+#' @param team_snapshot Current team histories.
+#' @param player_snapshot Current player histories.
+#' @param taxonomy Static champion taxonomy.
+#' @param champion_samples Current champion sample coverage.
+#' @param metadata Model metadata.
+#' @param sample_limits Operational sample limits.
+#' @return Nested list serializable to JSON.
+#' @export
+build_portable_model_bundle <- function(
+  fit,
+  team_snapshot,
+  player_snapshot,
+  taxonomy,
+  champion_samples,
+  metadata,
+  sample_limits
+) {
+  team_rows <- lapply(seq_len(nrow(team_snapshot)), function(index) {
+    row <- team_snapshot[index, , drop = FALSE]
+    list(
+      key = .rolling_team_key(row$team_id, row$team_name),
+      team_id = if (is.na(row$team_id)) NULL else row$team_id,
+      team_name = as.character(row$team_name),
+      league_canonical = as.character(row$league_canonical),
+      effective_team_games = as.numeric(
+        row$effective_combined_kills_per_minute_games
+      ),
+      hist_pace = as.numeric(
+        row$hist_combined_kills_per_minute
+      )
+    )
+  })
+  player_rows <- lapply(seq_len(nrow(player_snapshot)), function(index) {
+    row <- player_snapshot[index, , drop = FALSE]
+    list(
+      key = .rolling_player_key(
+        row$player_id,
+        row$player_name,
+        row$position
+      ),
+      player_id = if (is.na(row$player_id)) NULL else row$player_id,
+      player_name = as.character(row$player_name),
+      position = as.character(row$position),
+      team_id = if ("team_id" %in% names(row) &&
+          !is.na(row$team_id)) row$team_id else NULL,
+      team_name = if ("team_name" %in% names(row)) {
+        as.character(row$team_name)
+      } else {
+        NULL
+      },
+      effective_player_games = as.numeric(
+        row$effective_conflict_involvement_per_minute_games
+      ),
+      hist_conflict_involvement_per_minute = as.numeric(
+        row$hist_conflict_involvement_per_minute
+      ),
+      hist_deaths_per_minute = as.numeric(
+        row$hist_deaths_per_minute
+      )
+    )
+  })
+  taxonomy_rows <- lapply(seq_len(nrow(taxonomy)), function(index) {
+    row <- taxonomy[index, , drop = FALSE]
+    as.list(row[setdiff(names(row), "champion")])
+  })
+  names(taxonomy_rows) <- taxonomy$champion
+  champion_sample_values <- as.list(
+    as.numeric(champion_samples$effective_champion_games)
+  )
+  names(champion_sample_values) <- champion_samples$champion
+  list(
+    metadata = metadata,
+    model = list(
+      distribution = fit$distribution,
+      theta = as.numeric(fit$theta),
+      league_levels = as.character(fit$league_levels),
+      feature_names = as.character(fit$feature_names),
+      coefficients = as.list(stats::coef(fit$model)),
+      scaling = fit$scaling
+    ),
+    teams = team_rows,
+    players = player_rows,
+    taxonomy = taxonomy_rows,
+    champion_samples = champion_sample_values,
+    sample_limits = sample_limits
+  )
+}
+
+#' Write a portable public-inference bundle
+#'
+#' @param bundle Bundle from `build_portable_model_bundle()`.
+#' @param path Output JSON path.
+#' @return Normalized output path.
+#' @export
+write_portable_model_bundle <- function(bundle, path) {
+  dir.create(dirname(path), recursive = TRUE, showWarnings = FALSE)
+  jsonlite::write_json(
+    bundle,
+    path,
+    auto_unbox = TRUE,
+    pretty = TRUE,
+    digits = NA,
+    null = "null"
+  )
+  normalizePath(path, winslash = "/", mustWork = TRUE)
+}

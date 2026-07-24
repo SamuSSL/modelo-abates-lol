@@ -1,0 +1,34 @@
+version: 1
+
+target_leagues:
+  - LCK
+  - LPL
+  - LEC
+  - CBLOL
+  - LCS
+  - LFL
+  - LES
+
+canonical_mapping:
+  LCK: LCK
+  LPL: LPL
+  LEC: LEC
+  CBLOL: CBLOL
+  LCS: LCS
+  LFL: LFL
+  LVP SL: LES
+  LES: LES
+  LTA N: LCS
+  LTA S: CBLOL
+
+auxiliary_competitions:
+  - LTA
+  - MSI
+  - WLDs
+  - FST
+  - EWC
+  - IC
+  - DCup
+  - KeSPA
+  - KeSPA Cup
+

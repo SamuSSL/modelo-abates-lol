@@ -1,0 +1,11 @@
+selected_candidate_id: nb_pace_draft
+fallback_candidate_id: nb_pace
+
+sample_limits:
+  team_effective_games: 1
+  player_effective_games: 1
+  champion_effective_games: 1
+
+selected_at: "2026-07-24"
+development_status: frozen
+holdout_status: authorized_to_open
