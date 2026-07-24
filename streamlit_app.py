@@ -288,7 +288,7 @@ if submitted:
     if result["status"] == "blocked":
         st.error(result["reason"])
     else:
-        st.success("Previsão calculada e salva.")
+        st.success("Previsão calculada.")
         metric_columns = st.columns(4)
         metric_columns[0].metric("Média", f"{result['mean']:.1f}")
         metric_columns[1].metric("Mediana", result["median"])
@@ -325,6 +325,13 @@ if submitted:
                 hide_index=True,
                 use_container_width=True,
             )
+    if database_url:
+        st.info("Evento salvo no histórico permanente.")
+    else:
+        st.warning(
+            "Evento registrado em armazenamento temporário. "
+            "Ele pode ser apagado quando o aplicativo reiniciar."
+        )
     st.caption(
         f"Evento {event_id}. Modelo {result['model_version']}. "
         f"Dados até {result['data_cutoff']}."
