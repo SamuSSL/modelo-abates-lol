@@ -66,10 +66,9 @@ def save_prediction(
 
         with psycopg.connect(database_url) as connection:
             with connection.cursor() as cursor:
-                cursor.execute(SCHEMA)
                 cursor.execute(
                     """
-                    INSERT INTO prediction_events VALUES (
+                    INSERT INTO lol_kills.prediction_events VALUES (
                         %s, %s, %s, %s, %s, %s, %s,
                         %s, %s, %s, %s, %s, %s, %s
                     )

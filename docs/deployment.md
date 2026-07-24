@@ -28,6 +28,14 @@ url = "postgresql://user:password@host:5432/database?sslmode=require"
 O segredo deve ser inserido no painel do Streamlit Community Cloud.
 Nunca deve entrar no Git.
 
+Na V1 pública, o PostgreSQL é fornecido pelo Supabase. O aplicativo usa
+o Transaction Pooler na porta 6543 e um papel próprio chamado
+`lol_kills_writer`. Esse papel possui apenas `SELECT` e `INSERT` na
+tabela `lol_kills.prediction_events`; não possui `UPDATE` nem `DELETE`.
+O schema, a tabela, as políticas RLS e os grants reproduzíveis estão em
+`sql/001_supabase_prediction_events.sql`. A senha do papel não pertence
+à migração e existe somente nos Secrets do Streamlit.
+
 ## Publicação
 
 1. Criar repositório GitHub e enviar somente arquivos permitidos.
