@@ -9,6 +9,9 @@ O treinamento e a avaliação são feitos em R. A interface pública usa
 Streamlit e executa um bundle congelado com paridade numérica testada.
 Dados brutos do Oracle's Elixir não fazem parte do repositório.
 
+V1 pública:
+https://modelo-abates-lol-sry25k3zh76r7ffs2qo8m3.streamlit.app/
+
 ## Aplicação local
 
 ```powershell

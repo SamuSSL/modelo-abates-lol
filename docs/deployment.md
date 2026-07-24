@@ -37,6 +37,15 @@ Nunca deve entrar no Git.
 4. Publicar.
 5. Validar um caso `ok`, um caso `blocked`, persistência e acesso móvel.
 
+## Estado da V1
+
+Aplicação publicada em:
+https://modelo-abates-lol-sry25k3zh76r7ffs2qo8m3.streamlit.app/
+
+O caso `ok` foi validado no ambiente público. Enquanto o segredo
+PostgreSQL não for configurado, a aplicação usa SQLite temporário. Esse
+arquivo pode desaparecer quando o Streamlit reiniciar o processo.
+
 Referências oficiais:
 
 - https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy
