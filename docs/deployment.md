@@ -28,7 +28,8 @@ url = "postgresql://user:password@host:5432/database?sslmode=require"
 O segredo deve ser inserido no painel do Streamlit Community Cloud.
 Nunca deve entrar no Git.
 
-Na V1 pública, o PostgreSQL é fornecido pelo Supabase. O aplicativo usa
+Na V1 pública, o PostgreSQL é fornecido pelo projeto Supabase exclusivo
+`modelo-abates-lol`. Ele não compartilha banco com outros projetos. O aplicativo usa
 o Transaction Pooler na porta 6543 e um papel próprio chamado
 `lol_kills_writer`. Esse papel possui apenas `SELECT` e `INSERT` na
 tabela `lol_kills.prediction_events`; não possui `UPDATE` nem `DELETE`.
