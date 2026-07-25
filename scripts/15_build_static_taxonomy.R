@@ -17,7 +17,20 @@ payload <- jsonlite::fromJSON(source_url, simplifyDataFrame = FALSE)
 champions <- payload$data
 rows <- lapply(champions, function(champion) {
   tags <- as.character(unlist(champion$tags))
-  data.frame(
+  detail_url <- paste0(
+    "https://ddragon.leagueoflegends.com/cdn/",
+    version,
+    "/data/en_US/champion/",
+    champion$id,
+    ".json"
+  )
+  detail_payload <- jsonlite::fromJSON(
+    detail_url,
+    simplifyDataFrame = FALSE
+  )
+  detail <- detail_payload$data[[champion$id]]
+  functional <- derive_functional_champion_scores(detail)
+  base <- data.frame(
     champion = as.character(champion$name),
     tank = "Tank" %in% tags,
     fighter = "Fighter" %in% tags,
@@ -31,6 +44,10 @@ rows <- lapply(champions, function(champion) {
     difficulty = as.numeric(champion$info$difficulty) / 10,
     stringsAsFactors = FALSE
   )
+  for (name in names(functional)) {
+    base[[name]] <- functional[[name]]
+  }
+  base
 })
 taxonomy <- do.call(rbind, rows)
 taxonomy <- taxonomy[order(taxonomy$champion), , drop = FALSE]
@@ -52,7 +69,7 @@ taxonomy_path <- file.path(output_dir, "champions-2026.yml")
 manifest_path <- file.path(output_dir, "manifest.yml")
 yaml::write_yaml(
   list(
-    version = "2026-static-v1",
+    version = "2026-functional-v2",
     champions = split(taxonomy, seq_len(nrow(taxonomy)))
   ),
   taxonomy_path
@@ -64,14 +81,16 @@ source_sha256 <- digest::digest(
 )
 yaml::write_yaml(
   list(
-    taxonomy_version = "2026-static-v1",
+    taxonomy_version = "2026-functional-v2",
     data_dragon_version = version,
     source_url = source_url,
     source_sha256 = source_sha256,
     generated_at = format(Sys.time(), tz = "UTC", usetz = TRUE),
     champion_count = nrow(taxonomy),
     historical_coverage_count = nrow(coverage),
-    rework_versions = FALSE
+    rework_versions = FALSE,
+    functional_method = "deterministic_kit_text_v1",
+    functional_columns = .functional_champion_columns()
   ),
   manifest_path
 )

@@ -48,6 +48,35 @@ derive_team_signal_features <- function(maps) {
     result$blue_hist_damage_taken_per_minute +
       result$red_hist_damage_taken_per_minute
   ) / 2
+  result$blue_matchup_intensity <- (
+    result$blue_hist_kills_per_minute +
+      result$red_hist_deaths_per_minute
+  ) / 2
+  result$red_matchup_intensity <- (
+    result$red_hist_kills_per_minute +
+      result$blue_hist_deaths_per_minute
+  ) / 2
+  result$team_opponent_intensity <-
+    result$blue_matchup_intensity +
+      result$red_matchup_intensity
+  result$matchup_intensity_imbalance <- abs(
+    result$blue_matchup_intensity -
+      result$red_matchup_intensity
+  )
+  duration_columns <- c(
+    "blue_hist_game_length_minutes",
+    "red_hist_game_length_minutes"
+  )
+  if (all(duration_columns %in% names(result))) {
+    result$duration_history <- (
+      result$blue_hist_game_length_minutes +
+        result$red_hist_game_length_minutes
+    ) / 2
+    result$duration_history_imbalance <- abs(
+      result$blue_hist_game_length_minutes -
+        result$red_hist_game_length_minutes
+    )
+  }
   result
 }
 

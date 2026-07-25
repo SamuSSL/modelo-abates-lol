@@ -1693,6 +1693,10 @@ list(
       result <- deployment_team_snapshot
       result$league_canonical <-
         history$league_canonical[matched]
+      result$latest_history_datetime <-
+        history$game_datetime[matched]
+      result$latest_team_name <-
+        history$team_name[matched]
       result
     }
   ),

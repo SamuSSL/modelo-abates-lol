@@ -23,6 +23,7 @@ if (!file.exists(team_metrics_path)) {
 }
 metric_names <- c(
   "combined_kills_per_minute",
+  "game_length_minutes",
   "damage_per_minute",
   "damage_taken_per_minute",
   "kills_per_minute",

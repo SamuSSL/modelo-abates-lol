@@ -36,6 +36,11 @@ test_that("portable bundle contains model and lookup contracts", {
   team_snapshot <- data.frame(
     team_id = "team",
     team_name = "Team",
+    latest_team_name = "Team",
+    latest_history_datetime = as.POSIXct(
+      "2026-02-01 12:00:00",
+      tz = "UTC"
+    ),
     hist_combined_kills_per_minute = 0.8,
     effective_combined_kills_per_minute_games = 5,
     stringsAsFactors = FALSE
@@ -88,6 +93,11 @@ test_that("portable bundle contains model and lookup contracts", {
 
   expect_equal(bundle$model$feature_names, "pace")
   expect_equal(bundle$teams[[1L]]$key, "id:team")
+  expect_equal(bundle$teams[[1L]]$latest_team_name, "Team")
+  expect_match(
+    bundle$teams[[1L]]$last_game_datetime,
+    "^2026-02-01"
+  )
   expect_equal(bundle$players[[1L]]$key, "id:player|top")
   expect_equal(bundle$champion_samples$A, 3)
 })

@@ -289,3 +289,103 @@ PMF tail tolerance
 evaluation summary
 promotion status
 ```
+
+## Rodada estrutural pós-V1
+
+Esta rodada investiga quatro mecanismos antes de aumentar a complexidade do
+algoritmo:
+
+1. `intensidade × duração prevista`: o total esperado é a taxa prevista de
+   kills por minuto multiplicada por uma distribuição de duração prevista;
+2. ataque da equipe e exposição do adversário: cada equipe contribui com uma
+   propensão ofensiva e cada adversário com uma propensão a conceder kills;
+3. composição funcional: os dez campeões são descritos por funções de jogo,
+   não apenas pelas tags gerais do Data Dragon;
+4. familiaridade jogador–campeão: a experiência específica recebe shrinkage
+   forte para não transformar poucas partidas em uma falsa vantagem.
+
+O submodelo de duração compara Gamma e log-normal. O submodelo de intensidade
+usa uma distribuição Negative Binomial com `log(duração)` como offset. A PMF
+final integra a incerteza de duração, em vez de substituir a duração pela sua
+média. A duração real do mapa previsto nunca entra como feature.
+
+Os efeitos de equipe e adversário são estimados separadamente no modelo
+hierárquico. Ambos usam pooling parcial por liga. Equipes novas ou com pouca
+amostra permanecem próximas da média da liga.
+
+As interações jogador–campeão são desvios em relação ao histórico do jogador na
+função. O prior dessas interações deve ser mais forte que o prior do jogador.
+Uma interação sem histórico recebe desvio zero; uma interação com poucas
+partidas permanece próxima de zero.
+
+## Arquétipos funcionais completos
+
+Cada campeão deve ter valores entre zero e um para:
+
+```text
+engage
+disengage
+dive
+pick
+poke
+siege
+frontline
+protect
+scaling
+early_pressure
+skirmish
+split_push
+wave_clear
+mobility
+crowd_control
+global_pressure
+damage_physical
+damage_magic
+execution_difficulty
+snowball_dependency
+```
+
+O classificador calcula os scores `engage`, `pick`, `poke_siege`, `dive`,
+`protect`, `front_to_back`, `split_map`, `skirmish` e `scaling`. Ele também
+mede cobertura funcional, redundância, equilíbrio de dano e dificuldade de
+execução. O rótulo primário é o maior score; o secundário é o segundo maior.
+A confiança depende da distância entre os dois primeiros scores e da cobertura
+do catálogo. Os scores contínuos entram na ablação; os rótulos servem primeiro
+para interpretação e avaliação segmentada.
+
+## Modelo bayesiano congelável
+
+O primeiro Bayes é uma Negative Binomial hierárquica com:
+
+- distribuição preditiva de duração;
+- intensidade por minuto;
+- interceptos parcialmente agrupados por liga;
+- efeitos parcialmente agrupados de ataque da equipe e exposição do adversário;
+- coeficientes regularizados dos scores de composição;
+- desvios jogador–campeão com shrinkage mais forte que os efeitos de jogador.
+
+Todos os priors, features, transformações, número de chains, iterações, warmup,
+seed e critérios de diagnóstico são congelados usando somente os folds de
+2022–2025. O ano de 2026 pode ser relatado depois como comparação secundária,
+mas não pode alterar nenhuma decisão. A confirmação limpa de promoção usa
+somente mapas posteriores ao cutoff registrado no bundle congelado.
+
+## Challengers de transformação e aprendizado de máquina
+
+`qcut` só pode aprender seus pontos de corte dentro do treino de cada fold.
+PCA também é ajustada apenas no treino e é challenger, porque pode esconder o
+significado das variáveis. Boosting deve usar validação temporal, regularização
+e produzir uma PMF calibrada. Nenhum desses métodos será escolhido por uma
+métrica interna ou por desempenho em 2026; todos competem nos mesmos mapas
+out-of-fold de 2022–2025.
+
+Ridge, Lasso e Elastic Net escolhem a penalização em uma janela interna
+formada pela parte mais recente do treino. Nenhum mapa do fold externo entra
+na escolha de `lambda`. Os modelos recebem ratings de ataque e defesa contra
+pares da liga e contra todas as ligas-alvo, momentum de 21 contra 120 dias,
+perfis de agressividade por estado aos 15 minutos e sinais de snowball.
+
+As referências locais e globais excluem a própria equipe. Snowball exige
+vantagem mínima de duas kills aos 15 minutos e separa conversão em vitória de
+velocidade de encerramento. Agressividade quando à frente ou atrás usa o sinal
+do gold diff aos 15 minutos, não o resultado final.

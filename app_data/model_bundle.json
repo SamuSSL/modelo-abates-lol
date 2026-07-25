@@ -49,7 +49,9 @@
       "team_name": "GamersOrigin",
       "league_canonical": "LFL",
       "effective_team_games": 1.74164362511658e-07,
-      "hist_pace": 0.999790162297754
+      "hist_pace": 0.999790162297754,
+      "last_game_datetime": "2022-03-16 19:33:31 UTC",
+      "latest_team_name": "GamersOrigin"
     },
     {
       "key": "id:oe:team:6575d9a58f0b41a108f2d6a565a0650",
@@ -57,7 +59,8 @@
       "team_name": "ORDER",
       "league_canonical": null,
       "effective_team_games": 1.65057361904441e-07,
-      "hist_pace": 0.899806107849677
+      "hist_pace": 0.899806107849677,
+      "latest_team_name": "ORDER"
     },
     {
       "key": "id:oe:team:0a9aa50beea19fcbc6b939fe6b94f08",
@@ -65,7 +68,8 @@
       "team_name": "Team Aze",
       "league_canonical": null,
       "effective_team_games": 1.24367446169444e-07,
-      "hist_pace": 0.89980610889681
+      "hist_pace": 0.89980610889681,
+      "latest_team_name": "Team Aze"
     },
     {
       "key": "id:oe:team:b350e8583018688fb4cea844b7f9806",
@@ -73,7 +77,9 @@
       "team_name": "G2 Arctic",
       "league_canonical": "LES",
       "effective_team_games": 1.08983258435334e-06,
-      "hist_pace": 1.03186337954446
+      "hist_pace": 1.03186337954446,
+      "last_game_datetime": "2022-08-01 19:39:58 UTC",
+      "latest_team_name": "G2 Arctic"
     },
     {
       "key": "id:oe:team:c59bcb753bac65c0397bf9ebbcf850b",
@@ -81,7 +87,9 @@
       "team_name": "Misfits Premier",
       "league_canonical": "LFL",
       "effective_team_games": 9.7447215197058e-07,
-      "hist_pace": 0.999790151010399
+      "hist_pace": 0.999790151010399,
+      "last_game_datetime": "2022-08-03 17:31:11 UTC",
+      "latest_team_name": "Misfits Premier"
     },
     {
       "key": "id:oe:team:92ede2510f2ad0234b1dd75f03108ae",
@@ -89,7 +97,9 @@
       "team_name": "Rensga eSports",
       "league_canonical": "CBLOL",
       "effective_team_games": 8.9220367248344e-07,
-      "hist_pace": 0.836315579598119
+      "hist_pace": 0.836315579598119,
+      "last_game_datetime": "2022-08-07 18:47:06 UTC",
+      "latest_team_name": "Rensga eSports"
     },
     {
       "key": "id:oe:team:64a41d3f257e38f07d4bd8570809432",
@@ -97,7 +107,9 @@
       "team_name": "Miners",
       "league_canonical": "CBLOL",
       "effective_team_games": 1.10545465747202e-06,
-      "hist_pace": 0.836315571691739
+      "hist_pace": 0.836315571691739,
+      "last_game_datetime": "2022-08-12 17:48:02 UTC",
+      "latest_team_name": "Miners"
     },
     {
       "key": "id:oe:team:594b183f8fb081ef64820f31ab8d641",
@@ -105,7 +117,9 @@
       "team_name": "Misfits Gaming",
       "league_canonical": "LEC",
       "effective_team_games": 1.59689192498454e-06,
-      "hist_pace": 0.829547796225011
+      "hist_pace": 0.829547796225011,
+      "last_game_datetime": "2022-09-02 17:50:46 UTC",
+      "latest_team_name": "Misfits Gaming"
     },
     {
       "key": "id:oe:team:972ebfdff75f6a30cc82aad4a35e2af",
@@ -113,7 +127,9 @@
       "team_name": "Mirage Elyandra",
       "league_canonical": "LFL",
       "effective_team_games": 1.40868964682807e-06,
-      "hist_pace": 0.999790116717981
+      "hist_pace": 0.999790116717981,
+      "last_game_datetime": "2022-09-19 18:14:13 UTC",
+      "latest_team_name": "Mirage Elyandra"
     },
     {
       "key": "id:oe:team:6e14f9bf67e6e4000df4d600ad43bfa",
@@ -121,7 +137,9 @@
       "team_name": "Team MCES",
       "league_canonical": "LFL",
       "effective_team_games": 1.06270200184829e-06,
-      "hist_pace": 0.999790141707455
+      "hist_pace": 0.999790141707455,
+      "last_game_datetime": "2022-09-20 18:24:04 UTC",
+      "latest_team_name": "Team MCES"
     },
     {
       "key": "id:oe:team:a17419c119598748edfc4c00e060572",
@@ -129,7 +147,9 @@
       "team_name": "Team Oplon",
       "league_canonical": "LFL",
       "effective_team_games": 1.86436598641757e-06,
-      "hist_pace": 0.999790119931015
+      "hist_pace": 0.999790119931015,
+      "last_game_datetime": "2022-09-20 18:24:04 UTC",
+      "latest_team_name": "Team Oplon"
     },
     {
       "key": "id:oe:team:89008bdacc273b554227d6b76869381",
@@ -137,7 +157,8 @@
       "team_name": "Beyond Gaming",
       "league_canonical": null,
       "effective_team_games": 5.29261233217249e-07,
-      "hist_pace": 0.899806102858014
+      "hist_pace": 0.899806102858014,
+      "latest_team_name": "Beyond Gaming"
     },
     {
       "key": "id:oe:team:692bccdba8ec7050f5aeb916815439e",
@@ -145,7 +166,8 @@
       "team_name": "Chiefs Esports Club",
       "league_canonical": null,
       "effective_team_games": 5.29461237224941e-07,
-      "hist_pace": 0.899806111194821
+      "hist_pace": 0.899806111194821,
+      "latest_team_name": "Chiefs Esports Club"
     },
     {
       "key": "id:oe:team:a65adb2808377018a2a7832eb2bd7f4",
@@ -153,7 +175,8 @@
       "team_name": "İstanbul Wildcats",
       "league_canonical": null,
       "effective_team_games": 6.71451277649377e-07,
-      "hist_pace": 0.899806118968646
+      "hist_pace": 0.899806118968646,
+      "latest_team_name": "İstanbul Wildcats"
     },
     {
       "key": "id:oe:team:8e27b674a472ab529e758f13f0bace0",
@@ -161,7 +184,8 @@
       "team_name": "Saigon Buffalo",
       "league_canonical": null,
       "effective_team_games": 1.31733873255928e-06,
-      "hist_pace": 0.899806114110057
+      "hist_pace": 0.899806114110057,
+      "latest_team_name": "Saigon Buffalo"
     },
     {
       "key": "id:oe:team:a84c56ac7e3b489e0c1d580bc179a58",
@@ -169,7 +193,8 @@
       "team_name": "AYM Esports",
       "league_canonical": null,
       "effective_team_games": 2.55062443105284e-07,
-      "hist_pace": 0.899806109162412
+      "hist_pace": 0.899806109162412,
+      "latest_team_name": "AYM Esports"
     },
     {
       "key": "id:oe:team:30c141fd39621b22cf67eb62dbaea69",
@@ -177,7 +202,8 @@
       "team_name": "eMonkeyz",
       "league_canonical": null,
       "effective_team_games": 2.58011427672899e-07,
-      "hist_pace": 0.899806104731718
+      "hist_pace": 0.899806104731718,
+      "latest_team_name": "eMonkeyz"
     },
     {
       "key": "id:oe:team:6ac25692553cc34c6f3fd717b12fe61",
@@ -185,7 +211,8 @@
       "team_name": "seQura ZEST",
       "league_canonical": null,
       "effective_team_games": 2.58240584405115e-07,
-      "hist_pace": 0.899806103091635
+      "hist_pace": 0.899806103091635,
+      "latest_team_name": "seQura ZEST"
     },
     {
       "key": "id:oe:team:588c0f09975443cbfbbe71a9ac1d75c",
@@ -193,7 +220,8 @@
       "team_name": "Bis Esports",
       "league_canonical": null,
       "effective_team_games": 2.61008817002493e-07,
-      "hist_pace": 0.899806117994348
+      "hist_pace": 0.899806117994348,
+      "latest_team_name": "Bis Esports"
     },
     {
       "key": "name:serpientes",
@@ -201,7 +229,8 @@
       "team_name": "Serpientes",
       "league_canonical": null,
       "effective_team_games": 2.61217738254356e-07,
-      "hist_pace": 0.899806116119515
+      "hist_pace": 0.899806116119515,
+      "latest_team_name": "Serpientes"
     },
     {
       "key": "id:oe:team:22e85b1589714de8f4aa211025bf1fb",
@@ -209,7 +238,8 @@
       "team_name": "QLASH Spain",
       "league_canonical": null,
       "effective_team_games": 2.76544779056165e-07,
-      "hist_pace": 0.899806128077865
+      "hist_pace": 0.899806128077865,
+      "latest_team_name": "QLASH Spain"
     },
     {
       "key": "id:oe:team:3a82a0efc78faf326cdc53735dbaebb",
@@ -217,7 +247,8 @@
       "team_name": "Córdoba Patrimonio eSports",
       "league_canonical": null,
       "effective_team_games": 2.7679222377198e-07,
-      "hist_pace": 0.899806115014205
+      "hist_pace": 0.899806115014205,
+      "latest_team_name": "Córdoba Patrimonio eSports"
     },
     {
       "key": "name:pawned mercenaries",
@@ -225,7 +256,8 @@
       "team_name": "Pawned Mercenaries",
       "league_canonical": null,
       "effective_team_games": 2.80103565904094e-07,
-      "hist_pace": 0.899806114115934
+      "hist_pace": 0.899806114115934,
+      "latest_team_name": "Pawned Mercenaries"
     },
     {
       "key": "name:cute cats",
@@ -233,7 +265,8 @@
       "team_name": "Cute Cats",
       "league_canonical": null,
       "effective_team_games": 2.82992319466369e-07,
-      "hist_pace": 0.89980613013725
+      "hist_pace": 0.89980613013725,
+      "latest_team_name": "Cute Cats"
     },
     {
       "key": "id:oe:team:c20f8549c29d0dd0bb92d7aa8028547",
@@ -241,7 +274,8 @@
       "team_name": "Phlox Gaming",
       "league_canonical": null,
       "effective_team_games": 2.8322425100701e-07,
-      "hist_pace": 0.89980611744507
+      "hist_pace": 0.89980611744507,
+      "latest_team_name": "Phlox Gaming"
     },
     {
       "key": "id:oe:team:f44643241cfd17320bf6320016fd4dc",
@@ -249,7 +283,8 @@
       "team_name": "TDC Esports",
       "league_canonical": null,
       "effective_team_games": 2.86278676027858e-07,
-      "hist_pace": 0.899806100348901
+      "hist_pace": 0.899806100348901,
+      "latest_team_name": "TDC Esports"
     },
     {
       "key": "id:oe:team:37612c1a4e90b5ed7e0900448c1c198",
@@ -257,7 +292,8 @@
       "team_name": "Herbalife Real Betis",
       "league_canonical": null,
       "effective_team_games": 5.55057638265062e-07,
-      "hist_pace": 0.899806114831399
+      "hist_pace": 0.899806114831399,
+      "latest_team_name": "Herbalife Real Betis"
     },
     {
       "key": "id:oe:team:9b4c0a1b3fce5f8df14d86277203dfe",
@@ -265,7 +301,9 @@
       "team_name": "MAD Lions Madrid",
       "league_canonical": "LES",
       "effective_team_games": 1.97076325129403e-06,
-      "hist_pace": 0.899806112291846
+      "hist_pace": 0.899806112291846,
+      "last_game_datetime": "2022-09-19 17:37:30 UTC",
+      "latest_team_name": "MAD Lions Madrid"
     },
     {
       "key": "id:oe:team:d31f40e636f946b6081f341864eb157",
@@ -273,7 +311,8 @@
       "team_name": "Falcons",
       "league_canonical": null,
       "effective_team_games": 7.50979121383915e-07,
-      "hist_pace": 0.899806129058567
+      "hist_pace": 0.899806129058567,
+      "latest_team_name": "Falcons"
     },
     {
       "key": "name:g2 esports academy",
@@ -281,7 +320,8 @@
       "team_name": "G2 Esports Academy",
       "league_canonical": null,
       "effective_team_games": 9.16525799279721e-07,
-      "hist_pace": 0.899806138172603
+      "hist_pace": 0.899806138172603,
+      "latest_team_name": "G2 Esports Academy"
     },
     {
       "key": "name:hhh",
@@ -289,7 +329,8 @@
       "team_name": "HHH",
       "league_canonical": null,
       "effective_team_games": 4.99536389807541e-07,
-      "hist_pace": 0.899806129427338
+      "hist_pace": 0.899806129427338,
+      "latest_team_name": "HHH"
     },
     {
       "key": "name:qsg",
@@ -297,7 +338,8 @@
       "team_name": "QSG",
       "league_canonical": null,
       "effective_team_games": 7.53764115215061e-07,
-      "hist_pace": 0.899806123391524
+      "hist_pace": 0.899806123391524,
+      "latest_team_name": "QSG"
     },
     {
       "key": "name:huya rtl",
@@ -305,7 +347,8 @@
       "team_name": "Huya RTL",
       "league_canonical": null,
       "effective_team_games": 1.01103286678703e-06,
-      "hist_pace": 0.899806124592981
+      "hist_pace": 0.899806124592981,
+      "latest_team_name": "Huya RTL"
     },
     {
       "key": "id:oe:team:ca3c8e270b623c1ed43ba1d912e23f4",
@@ -313,7 +356,8 @@
       "team_name": "Qing Jiu E-sport Club",
       "league_canonical": null,
       "effective_team_games": 1.01060981558694e-06,
-      "hist_pace": 0.899806098549181
+      "hist_pace": 0.899806098549181,
+      "latest_team_name": "Qing Jiu E-sport Club"
     },
     {
       "key": "id:oe:team:7f60009d2aa9ce24f05deec2010a33f",
@@ -321,7 +365,8 @@
       "team_name": "Shu Dai Xiong Gaming",
       "league_canonical": null,
       "effective_team_games": 7.56386536399921e-07,
-      "hist_pace": 0.899806134178567
+      "hist_pace": 0.899806134178567,
+      "latest_team_name": "Shu Dai Xiong Gaming"
     },
     {
       "key": "id:oe:team:752142f82bfee344e60754832e2d4d4",
@@ -329,7 +374,8 @@
       "team_name": "Bilibili Live",
       "league_canonical": null,
       "effective_team_games": 1.01069885726701e-06,
-      "hist_pace": 0.899806110819258
+      "hist_pace": 0.899806110819258,
+      "latest_team_name": "Bilibili Live"
     },
     {
       "key": "id:oe:team:f5ae665c5b772f9c081b30593177b9d",
@@ -337,7 +383,8 @@
       "team_name": "Team Pinnacle",
       "league_canonical": null,
       "effective_team_games": 1.01026859874816e-06,
-      "hist_pace": 0.899806113624301
+      "hist_pace": 0.899806113624301,
+      "latest_team_name": "Team Pinnacle"
     },
     {
       "key": "name:lcc",
@@ -345,7 +392,8 @@
       "team_name": "LCC",
       "league_canonical": null,
       "effective_team_games": 1.01121699612231e-06,
-      "hist_pace": 0.899806115931104
+      "hist_pace": 0.899806115931104,
+      "latest_team_name": "LCC"
     },
     {
       "key": "name:lya",
@@ -353,7 +401,8 @@
       "team_name": "LYA",
       "league_canonical": null,
       "effective_team_games": 1.01035073393991e-06,
-      "hist_pace": 0.899806113965995
+      "hist_pace": 0.899806113965995,
+      "latest_team_name": "LYA"
     },
     {
       "key": "id:oe:team:1486bbe432b1153d9a83ff6e75d6c90",
@@ -361,7 +410,8 @@
       "team_name": "Young Miracles",
       "league_canonical": null,
       "effective_team_games": 1.01170140372004e-06,
-      "hist_pace": 0.899806103801206
+      "hist_pace": 0.899806103801206,
+      "latest_team_name": "Young Miracles"
     },
     {
       "key": "name:douyu dhm",
@@ -369,7 +419,8 @@
       "team_name": "Douyu DHM",
       "league_canonical": null,
       "effective_team_games": 1.26790452822798e-06,
-      "hist_pace": 0.899806089716725
+      "hist_pace": 0.899806089716725,
+      "latest_team_name": "Douyu DHM"
     },
     {
       "key": "name:huya lml",
@@ -377,7 +428,8 @@
       "team_name": "Huya LML",
       "league_canonical": null,
       "effective_team_games": 1.26834897025253e-06,
-      "hist_pace": 0.899806110128102
+      "hist_pace": 0.899806110128102,
+      "latest_team_name": "Huya LML"
     },
     {
       "key": "name:dyu (chinese team)",
@@ -385,7 +437,8 @@
       "team_name": "DYU (Chinese Team)",
       "league_canonical": null,
       "effective_team_games": 1.79196960186318e-06,
-      "hist_pace": 0.899806113569947
+      "hist_pace": 0.899806113569947,
+      "latest_team_name": "DYU (Chinese Team)"
     },
     {
       "key": "id:oe:team:b5454c08654c7f6175d1d887f80c769",
@@ -393,7 +446,9 @@
       "team_name": "Victory Five",
       "league_canonical": "LPL",
       "effective_team_games": 3.52138338975868e-06,
-      "hist_pace": 0.899806104701724
+      "hist_pace": 0.899806104701724,
+      "last_game_datetime": "2022-08-21 12:49:52 UTC",
+      "latest_team_name": "Victory Five"
     },
     {
       "key": "name:huya moj",
@@ -401,7 +456,8 @@
       "team_name": "Huya MOJ",
       "league_canonical": null,
       "effective_team_games": 2.90356342403945e-06,
-      "hist_pace": 0.89980615901742
+      "hist_pace": 0.89980615901742,
+      "latest_team_name": "Huya MOJ"
     },
     {
       "key": "id:oe:team:cbfaf0ca2181f0903d2fcceb6c28f3b",
@@ -409,7 +465,9 @@
       "team_name": "Counter Logic Gaming",
       "league_canonical": "LCS",
       "effective_team_games": 1.8591500344493e-05,
-      "hist_pace": 0.773704275447829
+      "hist_pace": 0.773704275447829,
+      "last_game_datetime": "2023-03-26 22:57:23 UTC",
+      "latest_team_name": "Counter Logic Gaming"
     },
     {
       "key": "id:oe:team:128d0cec08b877912eb91f94a1f3295",
@@ -417,7 +475,9 @@
       "team_name": "Astralis",
       "league_canonical": "LEC",
       "effective_team_games": 4.34300953237596e-05,
-      "hist_pace": 0.82954804466991
+      "hist_pace": 0.82954804466991,
+      "last_game_datetime": "2023-07-03 17:53:27 UTC",
+      "latest_team_name": "Astralis"
     },
     {
       "key": "id:oe:team:5aef7c486046c4885a0baad37b027e8",
@@ -425,7 +485,9 @@
       "team_name": "KOI",
       "league_canonical": "LEC",
       "effective_team_games": 6.10729614814618e-05,
-      "hist_pace": 0.829547314067
+      "hist_pace": 0.829547314067,
+      "last_game_datetime": "2023-07-22 19:08:57 UTC",
+      "latest_team_name": "KOI"
     },
     {
       "key": "id:oe:team:e31c6dcc465e0b94500ef023f42cdc1",
@@ -433,7 +495,9 @@
       "team_name": "LDLC OL",
       "league_canonical": "LFL",
       "effective_team_games": 6.15113026764451e-05,
-      "hist_pace": 0.999789036215905
+      "hist_pace": 0.999789036215905,
+      "last_game_datetime": "2023-07-27 18:29:42 UTC",
+      "latest_team_name": "LDLC OL"
     },
     {
       "key": "id:oe:team:a22510a4756fa424cb0771b13261139",
@@ -441,7 +505,9 @@
       "team_name": "TSM",
       "league_canonical": "LCS",
       "effective_team_games": 9.30165212534435e-05,
-      "hist_pace": 0.773704795405226
+      "hist_pace": 0.773704795405226,
+      "last_game_datetime": "2023-08-04 01:14:20 UTC",
+      "latest_team_name": "TSM"
     },
     {
       "key": "id:oe:team:c75f1f337fc5867914749d438a4871d",
@@ -449,7 +515,9 @@
       "team_name": "Liiv SANDBOX",
       "league_canonical": "LCK",
       "effective_team_games": 0.000135880230804948,
-      "hist_pace": 0.931532129948692
+      "hist_pace": 0.931532129948692,
+      "last_game_datetime": "2023-08-06 09:43:51 UTC",
+      "latest_team_name": "Liiv SANDBOX"
     },
     {
       "key": "id:oe:team:f7f7324c151aa6ed770b244ce08e027",
@@ -457,7 +525,9 @@
       "team_name": "Evil Geniuses",
       "league_canonical": "LCS",
       "effective_team_games": 0.000110880973615206,
-      "hist_pace": 0.773705557500083
+      "hist_pace": 0.773705557500083,
+      "last_game_datetime": "2023-08-10 23:37:02 UTC",
+      "latest_team_name": "Evil Geniuses"
     },
     {
       "key": "id:oe:team:b346309564f4fc7f30ac14403e93010",
@@ -465,7 +535,9 @@
       "team_name": "BISONS ECLUB",
       "league_canonical": "LES",
       "effective_team_games": 8.18882093894499e-05,
-      "hist_pace": 1.03186400020945
+      "hist_pace": 1.03186400020945,
+      "last_game_datetime": "2023-08-12 19:32:59 UTC",
+      "latest_team_name": "BISONS ECLUB"
     },
     {
       "key": "id:oe:team:8f995652631df209ff11c4542abdcaf",
@@ -473,7 +545,9 @@
       "team_name": "Excel Esports",
       "league_canonical": "LEC",
       "effective_team_games": 0.000125184128799207,
-      "hist_pace": 0.829548783568652
+      "hist_pace": 0.829548783568652,
+      "last_game_datetime": "2023-08-27 19:29:23 UTC",
+      "latest_team_name": "Excel Esports"
     },
     {
       "key": "id:oe:team:8a7675b5d0c1386df989adf7428201b",
@@ -481,7 +555,9 @@
       "team_name": "Fnatic TQ",
       "league_canonical": "LES",
       "effective_team_games": 7.94825722595742e-05,
-      "hist_pace": 0.899806595168852
+      "hist_pace": 0.899806595168852,
+      "last_game_datetime": "2023-07-20 16:04:22 UTC",
+      "latest_team_name": "Fnatic TQ"
     },
     {
       "key": "id:oe:team:6da30cd905c797eaea30aeb18bc091a",
@@ -489,7 +565,8 @@
       "team_name": "Dango SB",
       "league_canonical": null,
       "effective_team_games": 1.48842758147619e-05,
-      "hist_pace": 0.899806365273753
+      "hist_pace": 0.899806365273753,
+      "latest_team_name": "Dango SB"
     },
     {
       "key": "id:oe:team:3300cac03807753d6b1c9a80f4a34bc",
@@ -497,7 +574,8 @@
       "team_name": "Xoldiers",
       "league_canonical": null,
       "effective_team_games": 1.4897512489764e-05,
-      "hist_pace": 0.899806156793862
+      "hist_pace": 0.899806156793862,
+      "latest_team_name": "Xoldiers"
     },
     {
       "key": "name:hijos de patria",
@@ -505,7 +583,8 @@
       "team_name": "Hijos De Patria",
       "league_canonical": null,
       "effective_team_games": 1.50579376126397e-05,
-      "hist_pace": 0.899806727604499
+      "hist_pace": 0.899806727604499,
+      "latest_team_name": "Hijos De Patria"
     },
     {
       "key": "id:oe:team:07837648624136cfa442f4d3bf29de0",
@@ -513,7 +592,8 @@
       "team_name": "Boavista FC",
       "league_canonical": null,
       "effective_team_games": 1.50702543836106e-05,
-      "hist_pace": 0.899806174424379
+      "hist_pace": 0.899806174424379,
+      "latest_team_name": "Boavista FC"
     },
     {
       "key": "id:oe:team:ecaf2adae2ff7f9511c9f662f18ffe7",
@@ -521,7 +601,8 @@
       "team_name": "For The Win Esports",
       "league_canonical": null,
       "effective_team_games": 1.52449617783177e-05,
-      "hist_pace": 0.899806396949702
+      "hist_pace": 0.899806396949702,
+      "latest_team_name": "For The Win Esports"
     },
     {
       "key": "name:panza",
@@ -529,7 +610,8 @@
       "team_name": "Panza",
       "league_canonical": null,
       "effective_team_games": 1.54091346371908e-05,
-      "hist_pace": 0.899806945382999
+      "hist_pace": 0.899806945382999,
+      "latest_team_name": "Panza"
     },
     {
       "key": "id:oe:team:29ebc72f4b298bdef44063a8fe89751",
@@ -537,7 +619,8 @@
       "team_name": "Villarreal QLASH",
       "league_canonical": null,
       "effective_team_games": 1.56074748809337e-05,
-      "hist_pace": 0.899805729461928
+      "hist_pace": 0.899805729461928,
+      "latest_team_name": "Villarreal QLASH"
     },
     {
       "key": "id:oe:team:87ee02298073abc2d55060f097d4041",
@@ -545,7 +628,9 @@
       "team_name": "Golden Guardians",
       "league_canonical": "LCS",
       "effective_team_games": 0.000169758909209275,
-      "hist_pace": 0.899804957444665
+      "hist_pace": 0.899804957444665,
+      "last_game_datetime": "2023-08-14 01:25:01 UTC",
+      "latest_team_name": "Golden Guardians"
     },
     {
       "key": "id:oe:team:4103ef051074f24e9566d1b7443c3fb",
@@ -553,7 +638,8 @@
       "team_name": "Erfolg Esports",
       "league_canonical": null,
       "effective_team_games": 1.57697415825301e-05,
-      "hist_pace": 0.899807319430087
+      "hist_pace": 0.899807319430087,
+      "latest_team_name": "Erfolg Esports"
     },
     {
       "key": "id:oe:team:d9f29b4eac8fd2a40f5a117e294316f",
@@ -561,7 +647,8 @@
       "team_name": "Keypulse Esports",
       "league_canonical": null,
       "effective_team_games": 2.36802343249082e-05,
-      "hist_pace": 0.899807852395039
+      "hist_pace": 0.899807852395039,
+      "latest_team_name": "Keypulse Esports"
     },
     {
       "key": "id:oe:team:407a64574852482edb8c1560eab637c",
@@ -569,7 +656,8 @@
       "team_name": "Team Whales",
       "league_canonical": null,
       "effective_team_games": 8.21504181420064e-05,
-      "hist_pace": 0.899805808216592
+      "hist_pace": 0.899805808216592,
+      "latest_team_name": "Team Whales"
     },
     {
       "key": "id:oe:team:8120bc8b433f77dac74abd20771f8a1",
@@ -577,7 +665,8 @@
       "team_name": "ECORP",
       "league_canonical": null,
       "effective_team_games": 3.96738052996901e-05,
-      "hist_pace": 0.899806540112785
+      "hist_pace": 0.899806540112785,
+      "latest_team_name": "ECORP"
     },
     {
       "key": "id:oe:team:8d48390319b4f7c25c13dd410b3a0bf",
@@ -585,7 +674,8 @@
       "team_name": "EGN Esports",
       "league_canonical": null,
       "effective_team_games": 3.2056254634845e-05,
-      "hist_pace": 0.899806690555067
+      "hist_pace": 0.899806690555067,
+      "latest_team_name": "EGN Esports"
     },
     {
       "key": "id:oe:team:82e3504486eabe3575dc4b5ff507451",
@@ -593,7 +683,8 @@
       "team_name": "BWE Esports",
       "league_canonical": null,
       "effective_team_games": 3.39989949214501e-05,
-      "hist_pace": 0.899805703741765
+      "hist_pace": 0.899805703741765,
+      "latest_team_name": "BWE Esports"
     },
     {
       "key": "id:oe:team:f135d4a15fb5acaad384bd86d20ba15",
@@ -601,7 +692,9 @@
       "team_name": "Wizards",
       "league_canonical": "LES",
       "effective_team_games": 0.000129563412605422,
-      "hist_pace": 0.899809955892105
+      "hist_pace": 0.899809955892105,
+      "last_game_datetime": "2023-09-22 19:35:28 UTC",
+      "latest_team_name": "Wizards"
     },
     {
       "key": "id:oe:team:6468029fb605bd6fdf1cf866e890739",
@@ -609,7 +702,8 @@
       "team_name": "White Dragons",
       "league_canonical": null,
       "effective_team_games": 3.38853548281258e-05,
-      "hist_pace": 0.899806002872124
+      "hist_pace": 0.899806002872124,
+      "latest_team_name": "White Dragons"
     },
     {
       "key": "id:oe:team:6dd9fc16013a656e475c1b1eb7d4e06",
@@ -617,7 +711,9 @@
       "team_name": "Giants",
       "league_canonical": "LES",
       "effective_team_games": 0.000148376704551056,
-      "hist_pace": 0.899806743189831
+      "hist_pace": 0.899806743189831,
+      "last_game_datetime": "2023-08-01 19:49:23 UTC",
+      "latest_team_name": "Giants"
     },
     {
       "key": "id:oe:team:ca93fb52911145b76f82c3a3af6d007",
@@ -625,7 +721,9 @@
       "team_name": "Finetwork KOI",
       "league_canonical": "LES",
       "effective_team_games": 0.000227399292725121,
-      "hist_pace": 0.899803270653511
+      "hist_pace": 0.899803270653511,
+      "last_game_datetime": "2023-08-03 19:02:03 UTC",
+      "latest_team_name": "Finetwork KOI"
     },
     {
       "key": "id:oe:team:7f470540da8b0e7f3731c8273f8489e",
@@ -633,7 +731,8 @@
       "team_name": "EQX",
       "league_canonical": null,
       "effective_team_games": 5.84095364139027e-05,
-      "hist_pace": 0.899809851634703
+      "hist_pace": 0.899809851634703,
+      "latest_team_name": "EQX"
     },
     {
       "key": "id:oe:team:3fbe14cabc2c91b41d58e14930276fd",
@@ -641,7 +740,8 @@
       "team_name": "MiaoJing (妙竞)",
       "league_canonical": null,
       "effective_team_games": 7.82301050096598e-05,
-      "hist_pace": 0.899809860830413
+      "hist_pace": 0.899809860830413,
+      "latest_team_name": "MiaoJing (妙竞)"
     },
     {
       "key": "name:huya rst",
@@ -649,7 +749,8 @@
       "team_name": "Huya RST",
       "league_canonical": null,
       "effective_team_games": 7.82235845181921e-05,
-      "hist_pace": 0.899809409244954
+      "hist_pace": 0.899809409244954,
+      "latest_team_name": "Huya RST"
     },
     {
       "key": "name:huya bug",
@@ -657,7 +758,8 @@
       "team_name": "Huya BUG",
       "league_canonical": null,
       "effective_team_games": 7.91481717249229e-05,
-      "hist_pace": 0.899806263841088
+      "hist_pace": 0.899806263841088,
+      "latest_team_name": "Huya BUG"
     },
     {
       "key": "id:oe:team:91c9cf14d344ea993274f77fd9fa508",
@@ -665,7 +767,8 @@
       "team_name": "MAX",
       "league_canonical": null,
       "effective_team_games": 8.04514875717187e-05,
-      "hist_pace": 0.899809211860259
+      "hist_pace": 0.899809211860259,
+      "latest_team_name": "MAX"
     },
     {
       "key": "id:oe:team:a7d0fbf8d498d1ecf38752df7f6259d",
@@ -673,7 +776,9 @@
       "team_name": "Case Esports",
       "league_canonical": "LES",
       "effective_team_games": 0.00123949112382009,
-      "hist_pace": 1.03184580373348
+      "hist_pace": 1.03184580373348,
+      "last_game_datetime": "2024-03-27 20:21:34 UTC",
+      "latest_team_name": "Case Esports"
     },
     {
       "key": "id:oe:team:1dc6411295a36bd29c29b1096ba859d",
@@ -681,7 +786,9 @@
       "team_name": "Team du Sud",
       "league_canonical": "LFL",
       "effective_team_games": 0.00342278868478442,
-      "hist_pace": 0.99974559210237
+      "hist_pace": 0.99974559210237,
+      "last_game_datetime": "2024-07-18 20:02:20 UTC",
+      "latest_team_name": "Team du Sud"
     },
     {
       "key": "id:oe:team:bcb21457414eb9be1d27489ff7e8e59",
@@ -689,7 +796,9 @@
       "team_name": "INTZ",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.00384973663086664,
-      "hist_pace": 0.8363418373035
+      "hist_pace": 0.8363418373035,
+      "last_game_datetime": "2024-07-28 18:11:21 UTC",
+      "latest_team_name": "INTZ"
     },
     {
       "key": "id:oe:team:84e1da9e55480128662cfdfe79cb892",
@@ -697,7 +806,9 @@
       "team_name": "Liberty",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.00380111807947738,
-      "hist_pace": 0.83636204172393
+      "hist_pace": 0.83636204172393,
+      "last_game_datetime": "2024-07-28 18:52:56 UTC",
+      "latest_team_name": "Liberty"
     },
     {
       "key": "id:oe:team:86e551648da70c86cb473ce5d5f26f7",
@@ -705,7 +816,9 @@
       "team_name": "KaBuM! Esports",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.00443757946097963,
-      "hist_pace": 0.836283023880814
+      "hist_pace": 0.836283023880814,
+      "last_game_datetime": "2024-07-29 16:11:48 UTC",
+      "latest_team_name": "KaBuM! Esports"
     },
     {
       "key": "id:oe:team:8d538207b9de9d20e1a525aae593515",
@@ -713,7 +826,9 @@
       "team_name": "Team GO",
       "league_canonical": "LFL",
       "effective_team_games": 0.00588661760548524,
-      "hist_pace": 0.999658375459107
+      "hist_pace": 0.999658375459107,
+      "last_game_datetime": "2024-07-29 18:53:05 UTC",
+      "latest_team_name": "Team GO"
     },
     {
       "key": "id:oe:team:8516ca63facc91286d6c00212ca945e",
@@ -721,7 +836,9 @@
       "team_name": "Rare Atom",
       "league_canonical": "LPL",
       "effective_team_games": 0.0079389847916861,
-      "hist_pace": 0.881051727520169
+      "hist_pace": 0.881051727520169,
+      "last_game_datetime": "2024-08-04 12:04:37 UTC",
+      "latest_team_name": "Rare Atom"
     },
     {
       "key": "id:oe:team:ca3882dbcefa68eac0892e3218080db",
@@ -729,7 +846,9 @@
       "team_name": "Fluxo",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.00615597145425417,
-      "hist_pace": 0.836269500946348
+      "hist_pace": 0.836269500946348,
+      "last_game_datetime": "2024-08-10 01:32:53 UTC",
+      "latest_team_name": "Fluxo"
     },
     {
       "key": "id:oe:team:c334c629fea759876e9e04afbe4aee7",
@@ -737,7 +856,9 @@
       "team_name": "Immortals",
       "league_canonical": "LCS",
       "effective_team_games": 0.00368364697369257,
-      "hist_pace": 0.773688937078903
+      "hist_pace": 0.773688937078903,
+      "last_game_datetime": "2024-08-11 23:48:41 UTC",
+      "latest_team_name": "Immortals"
     },
     {
       "key": "id:oe:team:e758ebe9a5a2cc81b9c8078479c2d87",
@@ -745,7 +866,9 @@
       "team_name": "NRG",
       "league_canonical": "LCS",
       "effective_team_games": 0.00676583349404973,
-      "hist_pace": 0.773767508128304
+      "hist_pace": 0.773767508128304,
+      "last_game_datetime": "2024-08-23 23:39:20 UTC",
+      "latest_team_name": "NRG"
     },
     {
       "key": "id:oe:team:84bc703e28859788770611d94cf02ac",
@@ -753,7 +876,9 @@
       "team_name": "IziDream",
       "league_canonical": "LFL",
       "effective_team_games": 0.00158610606866632,
-      "hist_pace": 0.999774252737107
+      "hist_pace": 0.999774252737107,
+      "last_game_datetime": "2024-09-05 18:59:34 UTC",
+      "latest_team_name": "IziDream"
     },
     {
       "key": "id:oe:team:e3a29387c70230d76837b86c2aefd14",
@@ -761,7 +886,9 @@
       "team_name": "Aegis",
       "league_canonical": "LFL",
       "effective_team_games": 0.00598781353528299,
-      "hist_pace": 0.999724704584655
+      "hist_pace": 0.999724704584655,
+      "last_game_datetime": "2024-09-06 18:53:28 UTC",
+      "latest_team_name": "Aegis"
     },
     {
       "key": "id:oe:team:fe099196385a285d6d6edde504dc1f6",
@@ -769,7 +896,8 @@
       "team_name": "MGN Vikings Esports",
       "league_canonical": null,
       "effective_team_games": 0.00186935025458393,
-      "hist_pace": 0.899799533588721
+      "hist_pace": 0.899799533588721,
+      "latest_team_name": "MGN Vikings Esports"
     },
     {
       "key": "id:oe:team:2cb996a4b0ffaca3bcf66fe91450243",
@@ -777,7 +905,8 @@
       "team_name": "Movistar R7",
       "league_canonical": null,
       "effective_team_games": 0.00382079244736211,
-      "hist_pace": 0.899783316347906
+      "hist_pace": 0.899783316347906,
+      "latest_team_name": "Movistar R7"
     },
     {
       "key": "id:oe:team:6a0084dacefb228be863fbb64cefe11",
@@ -785,7 +914,9 @@
       "team_name": "MAD Lions KOI",
       "league_canonical": "LEC",
       "effective_team_games": 0.0139425908310402,
-      "hist_pace": 0.899786224298899
+      "hist_pace": 0.899786224298899,
+      "last_game_datetime": "2024-08-31 18:40:10 UTC",
+      "latest_team_name": "MAD Lions KOI"
     },
     {
       "key": "id:oe:team:94223abdc94b7506183935d070fa35d",
@@ -793,7 +924,8 @@
       "team_name": "eQuizers",
       "league_canonical": null,
       "effective_team_games": 0.00107062116899738,
-      "hist_pace": 0.899907553624352
+      "hist_pace": 0.899907553624352,
+      "latest_team_name": "eQuizers"
     },
     {
       "key": "id:oe:team:c0ef3d9a9da956711db67cce9abe4a8",
@@ -801,7 +933,8 @@
       "team_name": "Team GMask",
       "league_canonical": null,
       "effective_team_games": 0.00107064650697247,
-      "hist_pace": 0.899820564285146
+      "hist_pace": 0.899820564285146,
+      "latest_team_name": "Team GMask"
     },
     {
       "key": "id:oe:team:f33930460c641ba8c7ffe11342c08ef",
@@ -809,7 +942,8 @@
       "team_name": "Dream Makers",
       "league_canonical": null,
       "effective_team_games": 0.00108168219396891,
-      "hist_pace": 0.89982707836693
+      "hist_pace": 0.89982707836693,
+      "latest_team_name": "Dream Makers"
     },
     {
       "key": "name:ucam university esports",
@@ -817,7 +951,8 @@
       "team_name": "UCAM University Esports",
       "league_canonical": null,
       "effective_team_games": 0.00108181852786567,
-      "hist_pace": 0.899842425423599
+      "hist_pace": 0.899842425423599,
+      "latest_team_name": "UCAM University Esports"
     },
     {
       "key": "name:la alta parroquia",
@@ -825,7 +960,8 @@
       "team_name": "La Alta Parroquia",
       "league_canonical": null,
       "effective_team_games": 0.00115933508965734,
-      "hist_pace": 0.899888857024293
+      "hist_pace": 0.899888857024293,
+      "latest_team_name": "La Alta Parroquia"
     },
     {
       "key": "id:oe:team:8c3a7c804b6606ebd0684ca41204759",
@@ -833,7 +969,8 @@
       "team_name": "Tan'i eSports",
       "league_canonical": null,
       "effective_team_games": 0.00173948419228428,
-      "hist_pace": 0.899792903464514
+      "hist_pace": 0.899792903464514,
+      "latest_team_name": "Tan'i eSports"
     },
     {
       "key": "id:oe:team:2bcca6d95dbad6ed6d3e7479522e19d",
@@ -841,7 +978,8 @@
       "team_name": "Green Dolphin Gaming",
       "league_canonical": null,
       "effective_team_games": 0.00116090682978703,
-      "hist_pace": 0.899816300182709
+      "hist_pace": 0.899816300182709,
+      "latest_team_name": "Green Dolphin Gaming"
     },
     {
       "key": "id:oe:team:d58a84867e710510653aaecb2723984",
@@ -849,7 +987,8 @@
       "team_name": "PRINCIPALITY",
       "league_canonical": null,
       "effective_team_games": 0.00116093593754437,
-      "hist_pace": 0.899892767240654
+      "hist_pace": 0.899892767240654,
+      "latest_team_name": "PRINCIPALITY"
     },
     {
       "key": "id:oe:team:d81ac1020360a3e79e8276cd0ae7d52",
@@ -857,7 +996,8 @@
       "team_name": "Fortune Makers",
       "league_canonical": null,
       "effective_team_games": 0.00175956966477611,
-      "hist_pace": 0.899897564347299
+      "hist_pace": 0.899897564347299,
+      "latest_team_name": "Fortune Makers"
     },
     {
       "key": "id:oe:team:2d02ba0b874367692a25110f0e321f6",
@@ -865,7 +1005,8 @@
       "team_name": "Universae Instituto FP",
       "league_canonical": null,
       "effective_team_games": 0.00117419132718008,
-      "hist_pace": 0.899837278841881
+      "hist_pace": 0.899837278841881,
+      "latest_team_name": "Universae Instituto FP"
     },
     {
       "key": "name:rip mamberroi",
@@ -873,7 +1014,8 @@
       "team_name": "RIP MAMBERROI",
       "league_canonical": null,
       "effective_team_games": 0.00117428295183438,
-      "hist_pace": 0.899845160892511
+      "hist_pace": 0.899845160892511,
+      "latest_team_name": "RIP MAMBERROI"
     },
     {
       "key": "id:oe:team:b469fd5f0912d223dd70c3bbb5ddcb9",
@@ -881,7 +1023,9 @@
       "team_name": "Stormbringers",
       "league_canonical": "LES",
       "effective_team_games": 0.00344935655560829,
-      "hist_pace": 0.899976360912083
+      "hist_pace": 0.899976360912083,
+      "last_game_datetime": "2024-09-05 17:28:04 UTC",
+      "latest_team_name": "Stormbringers"
     },
     {
       "key": "id:oe:team:3659b5cb3434354530c31ce71461fc1",
@@ -889,7 +1033,8 @@
       "team_name": "GTZ Esports",
       "league_canonical": null,
       "effective_team_games": 0.00306135604691921,
-      "hist_pace": 0.899947378680466
+      "hist_pace": 0.899947378680466,
+      "latest_team_name": "GTZ Esports"
     },
     {
       "key": "id:oe:team:a599bf4fe20c6be57044f7319b04e3d",
@@ -897,7 +1042,8 @@
       "team_name": "Guinea Pink",
       "league_canonical": null,
       "effective_team_games": 0.00302691375985614,
-      "hist_pace": 0.899863881988292
+      "hist_pace": 0.899863881988292,
+      "latest_team_name": "Guinea Pink"
     },
     {
       "key": "id:oe:team:fca935f82fd01de843aa2799eb575ea",
@@ -905,7 +1051,8 @@
       "team_name": "Odivelas Sports Club",
       "league_canonical": null,
       "effective_team_games": 0.00315505650383812,
-      "hist_pace": 0.899938007159083
+      "hist_pace": 0.899938007159083,
+      "latest_team_name": "Odivelas Sports Club"
     },
     {
       "key": "id:oe:team:60411922d8062ecea0c728af9c876a0",
@@ -913,7 +1060,9 @@
       "team_name": "Rebels Gaming",
       "league_canonical": "LES",
       "effective_team_games": 0.00609967383497764,
-      "hist_pace": 0.899912522389305
+      "hist_pace": 0.899912522389305,
+      "last_game_datetime": "2024-07-18 16:02:22 UTC",
+      "latest_team_name": "Rebels Gaming"
     },
     {
       "key": "id:oe:team:38eebf1d7f1cbc9ee434d8bea9b33cc",
@@ -921,7 +1070,8 @@
       "team_name": "Hurricane of Feathers",
       "league_canonical": null,
       "effective_team_games": 0.0030243509927516,
-      "hist_pace": 0.899924407836439
+      "hist_pace": 0.899924407836439,
+      "latest_team_name": "Hurricane of Feathers"
     },
     {
       "key": "id:oe:team:9c11dcc627ab2baf49d113ce6aba078",
@@ -929,7 +1079,8 @@
       "team_name": "Heracles Gaming",
       "league_canonical": null,
       "effective_team_games": 0.0046395148032452,
-      "hist_pace": 0.900128242903241
+      "hist_pace": 0.900128242903241,
+      "latest_team_name": "Heracles Gaming"
     },
     {
       "key": "id:oe:team:ced368512306a716c05f553ffa2a9c3",
@@ -937,7 +1088,8 @@
       "team_name": "Chinese Taipei (National Team)",
       "league_canonical": null,
       "effective_team_games": 0.00913421272151797,
-      "hist_pace": 0.899997572987847
+      "hist_pace": 0.899997572987847,
+      "latest_team_name": "Chinese Taipei (National Team)"
     },
     {
       "key": "id:oe:team:73f3126d91d35faa5d5ce34abadb865",
@@ -945,7 +1097,9 @@
       "team_name": "Royal Never Give Up",
       "league_canonical": "LPL",
       "effective_team_games": 0.126264642753288,
-      "hist_pace": 0.880806186225156
+      "hist_pace": 0.880806186225156,
+      "last_game_datetime": "2025-05-10 09:05:45 UTC",
+      "latest_team_name": "Royal Never Give Up"
     },
     {
       "key": "id:oe:team:cd62e47544f14f1d239afa659b9d243",
@@ -953,7 +1107,9 @@
       "team_name": "Rogue",
       "league_canonical": "LEC",
       "effective_team_games": 0.115312781404106,
-      "hist_pace": 0.829251374199802
+      "hist_pace": 0.829251374199802,
+      "last_game_datetime": "2025-05-12 17:43:15 UTC",
+      "latest_team_name": "Rogue"
     },
     {
       "key": "id:oe:team:ea57e93bc73880655acdc795361215b",
@@ -961,7 +1117,9 @@
       "team_name": "Isurus Estral",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.211974811510124,
-      "hist_pace": 0.837775674305644
+      "hist_pace": 0.837775674305644,
+      "last_game_datetime": "2025-06-14 18:39:54 UTC",
+      "latest_team_name": "Isurus Estral"
     },
     {
       "key": "id:oe:team:50c26816bdd3bb2a02def8e11a5cd5a",
@@ -969,7 +1127,9 @@
       "team_name": "ZETA",
       "league_canonical": "LES",
       "effective_team_games": 0.20049806598406,
-      "hist_pace": 1.03084022184381
+      "hist_pace": 1.03084022184381,
+      "last_game_datetime": "2025-07-31 16:01:34 UTC",
+      "latest_team_name": "ZETA"
     },
     {
       "key": "id:oe:team:312ee76ca74cbb5cb984d8b71ef4847",
@@ -977,7 +1137,9 @@
       "team_name": "GameWard",
       "league_canonical": "LFL",
       "effective_team_games": 0.512220505543199,
-      "hist_pace": 0.991210079325785
+      "hist_pace": 0.991210079325785,
+      "last_game_datetime": "2025-08-29 17:00:22 UTC",
+      "latest_team_name": "GameWard"
     },
     {
       "key": "id:oe:team:33d17f3717f58e12a3da80b377221fb",
@@ -985,7 +1147,9 @@
       "team_name": "FunPlus Phoenix",
       "league_canonical": "LPL",
       "effective_team_games": 1.11751860583321,
-      "hist_pace": 0.888951683506547
+      "hist_pace": 0.888951683506547,
+      "last_game_datetime": "2025-08-30 13:10:27 UTC",
+      "latest_team_name": "FunPlus Phoenix"
     },
     {
       "key": "id:oe:team:7338408a0fe0217451d2c9a567db999",
@@ -993,7 +1157,9 @@
       "team_name": "Team BDS",
       "league_canonical": "LEC",
       "effective_team_games": 0.401741623743204,
-      "hist_pace": 0.830011147588498
+      "hist_pace": 0.830011147588498,
+      "last_game_datetime": "2025-09-06 16:55:25 UTC",
+      "latest_team_name": "Team BDS"
     },
     {
       "key": "id:oe:team:d2c27cb51cedbbac1752f1ec81addc4",
@@ -1001,7 +1167,9 @@
       "team_name": "Gentle Mates",
       "league_canonical": "LFL",
       "effective_team_games": 0.900787524558235,
-      "hist_pace": 0.980520587763727
+      "hist_pace": 0.980520587763727,
+      "last_game_datetime": "2025-09-11 20:05:19 UTC",
+      "latest_team_name": "Gentle Mates"
     },
     {
       "key": "id:oe:team:91c35185025768de7d8aa448933f56c",
@@ -1009,7 +1177,9 @@
       "team_name": "Guasones",
       "league_canonical": "LES",
       "effective_team_games": 0.379271028961227,
-      "hist_pace": 1.02829439380817
+      "hist_pace": 1.02829439380817,
+      "last_game_datetime": "2025-09-12 17:42:06 UTC",
+      "latest_team_name": "Guasones"
     },
     {
       "key": "id:oe:team:9adc852fe2e027c5e4abd53ae8915ff",
@@ -1017,7 +1187,9 @@
       "team_name": "Team BDS Academy",
       "league_canonical": "LFL",
       "effective_team_games": 0.779572733201881,
-      "hist_pace": 1.00623933880117
+      "hist_pace": 1.00623933880117,
+      "last_game_datetime": "2025-09-18 20:00:51 UTC",
+      "latest_team_name": "Team BDS Academy"
     },
     {
       "key": "id:oe:team:2facdac25fac9b0db3b80bf3a089e88",
@@ -1025,7 +1197,9 @@
       "team_name": "Sicar Esports",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.0991774221565857,
-      "hist_pace": 0.83991375902528
+      "hist_pace": 0.83991375902528,
+      "last_game_datetime": "2025-09-30 17:44:36 UTC",
+      "latest_team_name": "Sicar Esports"
     },
     {
       "key": "id:oe:team:7e7a493811702587ac939452a0333c3",
@@ -1033,7 +1207,9 @@
       "team_name": "Farenvehn",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.306994695974989,
-      "hist_pace": 0.842031932974598
+      "hist_pace": 0.842031932974598,
+      "last_game_datetime": "2025-10-04 19:39:48 UTC",
+      "latest_team_name": "Farenvehn"
     },
     {
       "key": "id:oe:team:ed026f019f5d0091c44014578ed7a8f",
@@ -1041,7 +1217,9 @@
       "team_name": "Conviction",
       "league_canonical": "LCS",
       "effective_team_games": 0.173516596643375,
-      "hist_pace": 0.779487488127691
+      "hist_pace": 0.779487488127691,
+      "last_game_datetime": "2025-10-04 23:28:14 UTC",
+      "latest_team_name": "Conviction"
     },
     {
       "key": "id:oe:team:50b9075ca20fb326456aded56aa7937",
@@ -1049,7 +1227,9 @@
       "team_name": "Flamengo MDL",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.616816234892739,
-      "hist_pace": 0.846858509132331
+      "hist_pace": 0.846858509132331,
+      "last_game_datetime": "2025-10-05 19:50:13 UTC",
+      "latest_team_name": "Flamengo MDL"
     },
     {
       "key": "id:oe:team:64ea90e46b8491a5fca803051d42463",
@@ -1057,7 +1237,9 @@
       "team_name": "Alpha7 Esports",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.520484716911089,
-      "hist_pace": 0.848594976981854
+      "hist_pace": 0.848594976981854,
+      "last_game_datetime": "2025-10-08 17:48:17 UTC",
+      "latest_team_name": "Alpha7 Esports"
     },
     {
       "key": "id:oe:team:5737b101780a9835142549164be1ac4",
@@ -1065,7 +1247,9 @@
       "team_name": "Isurus",
       "league_canonical": "CBLOL",
       "effective_team_games": 0.621823002124209,
-      "hist_pace": 0.845427279572248
+      "hist_pace": 0.845427279572248,
+      "last_game_datetime": "2025-10-08 17:48:17 UTC",
+      "latest_team_name": "Isurus"
     },
     {
       "key": "id:oe:team:804b7284c54110d826f11a5a521ab69",
@@ -1073,7 +1257,9 @@
       "team_name": "SDM Tigres",
       "league_canonical": "LCS",
       "effective_team_games": 0.215549940760729,
-      "hist_pace": 0.779008934141835
+      "hist_pace": 0.779008934141835,
+      "last_game_datetime": "2025-10-09 22:00:29 UTC",
+      "latest_team_name": "SDM Tigres"
     },
     {
       "key": "id:oe:team:1c81857b6ce6a3c1cd9220fd97e077f",
@@ -1081,7 +1267,9 @@
       "team_name": "Estral Esports",
       "league_canonical": "LCS",
       "effective_team_games": 0.538095762518092,
-      "hist_pace": 0.789700057759603
+      "hist_pace": 0.789700057759603,
+      "last_game_datetime": "2025-10-10 21:41:48 UTC",
+      "latest_team_name": "Estral Esports"
     },
     {
       "key": "id:oe:team:f59945d4b3a3148637047638acb88b7",
@@ -1089,7 +1277,9 @@
       "team_name": "Luminosity Gaming",
       "league_canonical": "LCS",
       "effective_team_games": 0.478059094141374,
-      "hist_pace": 0.77671686304672
+      "hist_pace": 0.77671686304672,
+      "last_game_datetime": "2025-10-12 22:55:28 UTC",
+      "latest_team_name": "Luminosity Gaming"
     },
     {
       "key": "id:oe:team:4880b157399745e82e26e229d8bbf48",
@@ -1097,7 +1287,8 @@
       "team_name": "PSG Talon",
       "league_canonical": null,
       "effective_team_games": 0.209929985382569,
-      "hist_pace": 0.902901752620192
+      "hist_pace": 0.902901752620192,
+      "latest_team_name": "PSG Talon"
     },
     {
       "key": "id:oe:team:4bd1751425ef6a9bc9d4d8e9385b4a6",
@@ -1105,7 +1296,9 @@
       "team_name": "100 Thieves",
       "league_canonical": "LCS",
       "effective_team_games": 1.24138616385749,
-      "hist_pace": 0.904225135019887
+      "hist_pace": 0.904225135019887,
+      "last_game_datetime": "2025-09-07 22:50:47 UTC",
+      "latest_team_name": "100 Thieves"
     },
     {
       "key": "id:oe:team:8eb9a212591f919a353abfac0c0a52a",
@@ -1113,7 +1306,8 @@
       "team_name": "Kawaii Kiwis",
       "league_canonical": null,
       "effective_team_games": 0.150453616548029,
-      "hist_pace": 0.902113576312756
+      "hist_pace": 0.902113576312756,
+      "latest_team_name": "Kawaii Kiwis"
     },
     {
       "key": "id:oe:team:f559203c4bdf14dbfb2e440de75d53e",
@@ -1121,7 +1315,9 @@
       "team_name": "Oxygen Gaming",
       "league_canonical": "LES",
       "effective_team_games": 0.180315827789657,
-      "hist_pace": 0.903036514597491
+      "hist_pace": 0.903036514597491,
+      "last_game_datetime": "2025-09-09 18:47:16 UTC",
+      "latest_team_name": "Oxygen Gaming"
     },
     {
       "key": "name:legacy5",
@@ -1129,7 +1325,8 @@
       "team_name": "LEGACY5",
       "league_canonical": null,
       "effective_team_games": 0.101499844469506,
-      "hist_pace": 0.903678769566885
+      "hist_pace": 0.903678769566885,
+      "latest_team_name": "LEGACY5"
     },
     {
       "key": "id:oe:team:d17ce7a4192b52f8e1daf94c381c75f",
@@ -1137,7 +1334,9 @@
       "team_name": "Ramboot Club",
       "league_canonical": "LES",
       "effective_team_games": 0.60168771036042,
-      "hist_pace": 0.910869246850063
+      "hist_pace": 0.910869246850063,
+      "last_game_datetime": "2025-08-12 17:42:03 UTC",
+      "latest_team_name": "Ramboot Club"
     },
     {
       "key": "id:oe:team:7ec8796996a3f88bc9c94d9214ef13f",
@@ -1145,7 +1344,9 @@
       "team_name": "Nocturne Gale",
       "league_canonical": "LES",
       "effective_team_games": 0.467809421764754,
-      "hist_pace": 0.907734505292522
+      "hist_pace": 0.907734505292522,
+      "last_game_datetime": "2025-09-12 17:42:06 UTC",
+      "latest_team_name": "Nocturne Gale"
     },
     {
       "key": "id:oe:team:bae5c5b458ee21472c7f6f270990bfe",
@@ -1153,7 +1354,9 @@
       "team_name": "Veni Vidi Vici",
       "league_canonical": "LES",
       "effective_team_games": 0.74400061487714,
-      "hist_pace": 0.920064580119589
+      "hist_pace": 0.920064580119589,
+      "last_game_datetime": "2025-08-30 13:05:14 UTC",
+      "latest_team_name": "Veni Vidi Vici"
     },
     {
       "key": "id:oe:team:4e0dd298cbb6e92265a616c94a4553a",
@@ -1161,7 +1364,8 @@
       "team_name": "Vietnam (National Team)",
       "league_canonical": null,
       "effective_team_games": 0.292471744496213,
-      "hist_pace": 0.906667387740027
+      "hist_pace": 0.906667387740027,
+      "latest_team_name": "Vietnam (National Team)"
     },
     {
       "key": "name:japan (national team)",
@@ -1169,7 +1373,8 @@
       "team_name": "Japan (National Team)",
       "league_canonical": null,
       "effective_team_games": 0.218614958125824,
-      "hist_pace": 0.90358650046304
+      "hist_pace": 0.90358650046304,
+      "latest_team_name": "Japan (National Team)"
     },
     {
       "key": "name:frk",
@@ -1177,7 +1382,8 @@
       "team_name": "FRK",
       "league_canonical": null,
       "effective_team_games": 0.162322528444223,
-      "hist_pace": 0.90294360424092
+      "hist_pace": 0.90294360424092,
+      "latest_team_name": "FRK"
     },
     {
       "key": "name:zsm",
@@ -1185,7 +1391,8 @@
       "team_name": "ZSM",
       "league_canonical": null,
       "effective_team_games": 0.483135331180711,
-      "hist_pace": 0.909834492360564
+      "hist_pace": 0.909834492360564,
+      "latest_team_name": "ZSM"
     },
     {
       "key": "id:oe:team:2c6e7ebd2b826d217cd4987841bd899",
@@ -1193,7 +1400,9 @@
       "team_name": "Zephyr Esport",
       "league_canonical": "LFL",
       "effective_team_games": 0.255753506055631,
-      "hist_pace": 0.990873835362791
+      "hist_pace": 0.990873835362791,
+      "last_game_datetime": "2026-01-29 17:04:44 UTC",
+      "latest_team_name": "Zephyr Esport"
     },
     {
       "key": "id:oe:team:91b412c563fc3316ad48e31547a3143",
@@ -1201,7 +1410,9 @@
       "team_name": "Caldya Esport",
       "league_canonical": "LFL",
       "effective_team_games": 0.256023681990988,
-      "hist_pace": 0.995069095629341
+      "hist_pace": 0.995069095629341,
+      "last_game_datetime": "2026-01-29 18:03:32 UTC",
+      "latest_team_name": "Caldya Esport"
     },
     {
       "key": "id:oe:team:6606d319df3ef6a3871af152550b35d",
@@ -1209,7 +1420,9 @@
       "team_name": "Vitality Rising Bees",
       "league_canonical": "LFL",
       "effective_team_games": 0.256045270482601,
-      "hist_pace": 1.0024612450459
+      "hist_pace": 1.0024612450459,
+      "last_game_datetime": "2026-01-29 19:04:28 UTC",
+      "latest_team_name": "Vitality Rising Bees"
     },
     {
       "key": "id:oe:team:6add5ac306c225698bd2f8b170dcf36",
@@ -1217,7 +1430,9 @@
       "team_name": "Yumeea",
       "league_canonical": "LFL",
       "effective_team_games": 0.256001178018901,
-      "hist_pace": 1.00294705557009
+      "hist_pace": 1.00294705557009,
+      "last_game_datetime": "2026-01-29 19:53:55 UTC",
+      "latest_team_name": "Yumeea"
     },
     {
       "key": "id:oe:team:70930cb6eb35f5c8f86248c4ea2a454",
@@ -1225,7 +1440,9 @@
       "team_name": "Galions Sharks",
       "league_canonical": "LFL",
       "effective_team_games": 0.257604982073231,
-      "hist_pace": 1.00698334430923
+      "hist_pace": 1.00698334430923,
+      "last_game_datetime": "2026-01-29 20:49:19 UTC",
+      "latest_team_name": "Galions Sharks"
     },
     {
       "key": "id:oe:team:ad003d7f74930eeab29a6029c3b9f52",
@@ -1233,7 +1450,9 @@
       "team_name": "Project Conquerors",
       "league_canonical": "LFL",
       "effective_team_games": 0.478109557350535,
-      "hist_pace": 0.994132160559901
+      "hist_pace": 0.994132160559901,
+      "last_game_datetime": "2026-01-30 17:04:38 UTC",
+      "latest_team_name": "Project Conquerors"
     },
     {
       "key": "id:oe:team:d0d67d484dc965246efb5ad61417e55",
@@ -1241,7 +1460,9 @@
       "team_name": "Lausanne-Sport Esports",
       "league_canonical": "LFL",
       "effective_team_games": 0.391648469925745,
-      "hist_pace": 1.00150526393596
+      "hist_pace": 1.00150526393596,
+      "last_game_datetime": "2026-01-30 20:14:57 UTC",
+      "latest_team_name": "Lausanne-Sport Esports"
     },
     {
       "key": "id:oe:team:343268a42863e8fc2767e02e4042de8",
@@ -1249,7 +1470,9 @@
       "team_name": "Karmine Corp Blue Stars",
       "league_canonical": "LFL",
       "effective_team_games": 0.392964772913216,
-      "hist_pace": 1.00000459731592
+      "hist_pace": 1.00000459731592,
+      "last_game_datetime": "2026-01-30 21:17:14 UTC",
+      "latest_team_name": "Karmine Corp Blue Stars"
     },
     {
       "key": "id:oe:team:2d096df29ab7e32950c86e0d72fc986",
@@ -1257,7 +1480,9 @@
       "team_name": "Los Ratones",
       "league_canonical": "LEC",
       "effective_team_games": 1.45136359445508,
-      "hist_pace": 0.815625372232558
+      "hist_pace": 0.815625372232558,
+      "last_game_datetime": "2026-02-08 15:53:10 UTC",
+      "latest_team_name": "Los Ratones"
     },
     {
       "key": "id:oe:team:c40f6d0d20a7a718c60342e48c144a2",
@@ -1265,7 +1490,9 @@
       "team_name": "BK ROG Esports",
       "league_canonical": "LFL",
       "effective_team_games": 2.59818004450587,
-      "hist_pace": 0.965847125677426
+      "hist_pace": 0.965847125677426,
+      "last_game_datetime": "2026-02-19 17:09:08 UTC",
+      "latest_team_name": "BK ROG Esports"
     },
     {
       "key": "id:oe:team:f9d5cf621532c5ac51e0947d7098b7f",
@@ -1273,7 +1500,9 @@
       "team_name": "Lille Esport",
       "league_canonical": "LFL",
       "effective_team_games": 1.79356622333858,
-      "hist_pace": 1.01153765995474
+      "hist_pace": 1.01153765995474,
+      "last_game_datetime": "2026-02-19 19:09:58 UTC",
+      "latest_team_name": "Lille Esport"
     },
     {
       "key": "id:oe:team:3898fd39b2d31e0d0c2449e5b8eefba",
@@ -1281,7 +1510,9 @@
       "team_name": "French Flair",
       "league_canonical": "LFL",
       "effective_team_games": 4.33911009896713,
-      "hist_pace": 0.98434193020382
+      "hist_pace": 0.98434193020382,
+      "last_game_datetime": "2026-03-05 20:52:58 UTC",
+      "latest_team_name": "French Flair"
     },
     {
       "key": "id:oe:team:75760dca486d4682426196b76bd1a54",
@@ -1289,7 +1520,9 @@
       "team_name": "SK Gaming",
       "league_canonical": "LEC",
       "effective_team_games": 10.5162516950773,
-      "hist_pace": 0.872956329589438
+      "hist_pace": 0.872956329589438,
+      "last_game_datetime": "2026-05-02 18:34:28 UTC",
+      "latest_team_name": "SK Gaming"
     },
     {
       "key": "id:oe:team:1285e1c04d54de96502f12da4d49458",
@@ -1297,7 +1530,9 @@
       "team_name": "Team Heretics",
       "league_canonical": "LEC",
       "effective_team_games": 10.5533052374201,
-      "hist_pace": 0.793130482196339
+      "hist_pace": 0.793130482196339,
+      "last_game_datetime": "2026-05-03 16:12:33 UTC",
+      "latest_team_name": "Team Heretics"
     },
     {
       "key": "id:oe:team:78f183fa5a7d8ecb22b9ad272c3abd7",
@@ -1305,7 +1540,9 @@
       "team_name": "Fnatic",
       "league_canonical": "LEC",
       "effective_team_games": 13.4870726609477,
-      "hist_pace": 0.800992632214763
+      "hist_pace": 0.800992632214763,
+      "last_game_datetime": "2026-05-04 17:01:22 UTC",
+      "latest_team_name": "Fnatic"
     },
     {
       "key": "id:oe:team:e435aa3ecb82a89e60544f5f5857a81",
@@ -1313,7 +1550,8 @@
       "team_name": "DetonatioN FocusMe",
       "league_canonical": null,
       "effective_team_games": 1.68456710722817,
-      "hist_pace": 0.936250925499675
+      "hist_pace": 0.936250925499675,
+      "latest_team_name": "DetonatioN FocusMe"
     },
     {
       "key": "id:oe:team:788115a84f68bc65fa6d3a4e0f67a3e",
@@ -1321,7 +1559,8 @@
       "team_name": "Ground Zero Gaming",
       "league_canonical": null,
       "effective_team_games": 2.10304953316032,
-      "hist_pace": 0.952996625162894
+      "hist_pace": 0.952996625162894,
+      "latest_team_name": "Ground Zero Gaming"
     },
     {
       "key": "id:oe:team:0916b3c324c8577b0c6344f3e067f62",
@@ -1329,7 +1568,8 @@
       "team_name": "CTBC Flying Oyster",
       "league_canonical": null,
       "effective_team_games": 4.10480625092956,
-      "hist_pace": 0.941002460693197
+      "hist_pace": 0.941002460693197,
+      "latest_team_name": "CTBC Flying Oyster"
     },
     {
       "key": "id:oe:team:bc3824b0bbb8139d16109178faa4822",
@@ -1337,7 +1577,8 @@
       "team_name": "MVK Esports",
       "league_canonical": null,
       "effective_team_games": 2.58035902367484,
-      "hist_pace": 0.914288271870875
+      "hist_pace": 0.914288271870875,
+      "latest_team_name": "MVK Esports"
     },
     {
       "key": "id:oe:team:a2065488a11a2c0a2403a7b347eec61",
@@ -1345,7 +1586,9 @@
       "team_name": "Shifters",
       "league_canonical": "LEC",
       "effective_team_games": 11.9378195584128,
-      "hist_pace": 0.895872207400639
+      "hist_pace": 0.895872207400639,
+      "last_game_datetime": "2026-05-04 19:47:06 UTC",
+      "latest_team_name": "Shifters"
     },
     {
       "key": "id:oe:team:8d09428f093dfbf3c488bce350af0b1",
@@ -1353,7 +1596,9 @@
       "team_name": "Ultra Prime",
       "league_canonical": "LPL",
       "effective_team_games": 7.55083311276531,
-      "hist_pace": 0.84482815412476
+      "hist_pace": 0.84482815412476,
+      "last_game_datetime": "2026-05-15 10:06:44 UTC",
+      "latest_team_name": "Ultra Prime"
     },
     {
       "key": "id:oe:team:f4c4528c6981e104a11ea7548630c23",
@@ -1361,7 +1606,9 @@
       "team_name": "Oh My God",
       "league_canonical": "LPL",
       "effective_team_games": 9.67172780478985,
-      "hist_pace": 0.823378417210973
+      "hist_pace": 0.823378417210973,
+      "last_game_datetime": "2026-05-15 10:06:44 UTC",
+      "latest_team_name": "Oh My God"
     },
     {
       "key": "id:oe:team:289284911fb6f41c0ccaecc3a0c2891",
@@ -1369,7 +1616,9 @@
       "team_name": "Disguised",
       "league_canonical": "LCS",
       "effective_team_games": 10.8349720345219,
-      "hist_pace": 0.852234452655691
+      "hist_pace": 0.852234452655691,
+      "last_game_datetime": "2026-05-16 22:51:58 UTC",
+      "latest_team_name": "Disguised"
     },
     {
       "key": "id:oe:team:0dbb780176ecad18f17292d1f5653af",
@@ -1377,7 +1626,9 @@
       "team_name": "Dignitas",
       "league_canonical": "LCS",
       "effective_team_games": 8.83506760712878,
-      "hist_pace": 0.777997290525697
+      "hist_pace": 0.777997290525697,
+      "last_game_datetime": "2026-05-17 20:56:14 UTC",
+      "latest_team_name": "Dignitas"
     },
     {
       "key": "id:oe:team:d8ca3fc1f0827ec76369af7b70d43e3",
@@ -1385,7 +1636,8 @@
       "team_name": "Fukuoka SoftBank HAWKS gaming",
       "league_canonical": null,
       "effective_team_games": 4.35570162670317,
-      "hist_pace": 0.875065914539608
+      "hist_pace": 0.875065914539608,
+      "latest_team_name": "Fukuoka SoftBank HAWKS gaming"
     },
     {
       "key": "id:oe:team:a9145b7711873f53e610fbba0493484",
@@ -1393,7 +1645,9 @@
       "team_name": "LNG Esports",
       "league_canonical": "LPL",
       "effective_team_games": 12.4151192212548,
-      "hist_pace": 0.844450707386145
+      "hist_pace": 0.844450707386145,
+      "last_game_datetime": "2026-05-23 09:45:05 UTC",
+      "latest_team_name": "LNG Esports"
     },
     {
       "key": "id:oe:team:53a258f289c26d94431c0496a54e151",
@@ -1401,7 +1655,9 @@
       "team_name": "Invictus Gaming",
       "league_canonical": "LPL",
       "effective_team_games": 22.9685143902197,
-      "hist_pace": 0.928390114153252
+      "hist_pace": 0.928390114153252,
+      "last_game_datetime": "2026-05-23 12:38:43 UTC",
+      "latest_team_name": "Invictus Gaming"
     },
     {
       "key": "id:oe:team:48d7941ccbd5b89aca46c57b0c2f8fb",
@@ -1409,7 +1665,9 @@
       "team_name": "Ninjas in Pyjamas",
       "league_canonical": "LPL",
       "effective_team_games": 20.8691710469185,
-      "hist_pace": 0.865238507855758
+      "hist_pace": 0.865238507855758,
+      "last_game_datetime": "2026-05-24 10:09:19 UTC",
+      "latest_team_name": "Ninjas in Pyjamas"
     },
     {
       "key": "id:oe:team:606c6ac695907af3823ee6405c58ff1",
@@ -1417,7 +1675,9 @@
       "team_name": "Weibo Gaming",
       "league_canonical": "LPL",
       "effective_team_games": 24.5143668297334,
-      "hist_pace": 0.858225076758133
+      "hist_pace": 0.858225076758133,
+      "last_game_datetime": "2026-05-24 14:58:11 UTC",
+      "latest_team_name": "Weibo Gaming"
     },
     {
       "key": "id:oe:team:d2ba9f92d85cff67d60aaad88e61048",
@@ -1425,7 +1685,9 @@
       "team_name": "Natus Vincere",
       "league_canonical": "LEC",
       "effective_team_games": 17.1185666545087,
-      "hist_pace": 0.83432754016835
+      "hist_pace": 0.83432754016835,
+      "last_game_datetime": "2026-05-30 17:54:23 UTC",
+      "latest_team_name": "Natus Vincere"
     },
     {
       "key": "id:oe:team:e8d8ae992fe72acb7adc7bfcee31dbb",
@@ -1433,7 +1695,9 @@
       "team_name": "Team Vitality",
       "league_canonical": "LEC",
       "effective_team_games": 17.0345757266772,
-      "hist_pace": 0.839026829655371
+      "hist_pace": 0.839026829655371,
+      "last_game_datetime": "2026-05-31 17:09:50 UTC",
+      "latest_team_name": "Team Vitality"
     },
     {
       "key": "id:oe:team:b360f1d729b0a8e0f29a5243c4200fa",
@@ -1441,7 +1705,9 @@
       "team_name": "Shopify Rebellion",
       "league_canonical": "LCS",
       "effective_team_games": 10.097969602319,
-      "hist_pace": 0.821363051735338
+      "hist_pace": 0.821363051735338,
+      "last_game_datetime": "2026-05-31 21:55:09 UTC",
+      "latest_team_name": "Shopify Rebellion"
     },
     {
       "key": "id:oe:team:6cd05f0ac20bfb965a59dc8bcc4f184",
@@ -1449,7 +1715,9 @@
       "team_name": "GiantX",
       "league_canonical": "LEC",
       "effective_team_games": 18.0595010072579,
-      "hist_pace": 0.831043931007751
+      "hist_pace": 0.831043931007751,
+      "last_game_datetime": "2026-06-01 16:56:41 UTC",
+      "latest_team_name": "GiantX"
     },
     {
       "key": "id:oe:team:df80f468a3f9a722df056fe9104f052",
@@ -1457,7 +1725,9 @@
       "team_name": "ThunderTalk Gaming",
       "league_canonical": "LPL",
       "effective_team_games": 15.2243931657912,
-      "hist_pace": 0.893637973583391
+      "hist_pace": 0.893637973583391,
+      "last_game_datetime": "2026-06-02 13:00:07 UTC",
+      "latest_team_name": "ThunderTalk Gaming"
     },
     {
       "key": "id:oe:team:056c3140a119e44a03d462e2c832f27",
@@ -1465,7 +1735,9 @@
       "team_name": "EDward Gaming",
       "league_canonical": "LPL",
       "effective_team_games": 15.8457623050824,
-      "hist_pace": 0.827385334681989
+      "hist_pace": 0.827385334681989,
+      "last_game_datetime": "2026-06-03 11:02:45 UTC",
+      "latest_team_name": "EDward Gaming"
     },
     {
       "key": "id:oe:team:5f401785b6b78326f9a46b3c6b206ed",
@@ -1473,7 +1745,9 @@
       "team_name": "LGD Gaming",
       "league_canonical": "LPL",
       "effective_team_games": 17.5198808324637,
-      "hist_pace": 0.813225054390993
+      "hist_pace": 0.813225054390993,
+      "last_game_datetime": "2026-06-05 11:09:57 UTC",
+      "latest_team_name": "LGD Gaming"
     },
     {
       "key": "id:oe:team:2e66da41dc460dd378e3bcc57042d31",
@@ -1481,7 +1755,9 @@
       "team_name": "FlyQuest",
       "league_canonical": "LCS",
       "effective_team_games": 22.438647434289,
-      "hist_pace": 0.831483536990033
+      "hist_pace": 0.831483536990033,
+      "last_game_datetime": "2026-06-06 22:42:06 UTC",
+      "latest_team_name": "FlyQuest"
     },
     {
       "key": "id:oe:team:53ef3d5a3ac5d88bc000eff7d87aeb3",
@@ -1489,7 +1765,9 @@
       "team_name": "Leviatan",
       "league_canonical": "CBLOL",
       "effective_team_games": 10.8415825877619,
-      "hist_pace": 0.880006091940553
+      "hist_pace": 0.880006091940553,
+      "last_game_datetime": "2026-05-02 16:56:25 UTC",
+      "latest_team_name": "Leviatan"
     },
     {
       "key": "id:oe:team:45c362a0cfc4b81f597b5ab89250df5",
@@ -1497,7 +1775,9 @@
       "team_name": "Fluxo W7M",
       "league_canonical": "CBLOL",
       "effective_team_games": 17.6149835078815,
-      "hist_pace": 0.863690146204848
+      "hist_pace": 0.863690146204848,
+      "last_game_datetime": "2026-05-30 19:31:22 UTC",
+      "latest_team_name": "Fluxo W7M"
     },
     {
       "key": "id:oe:team:61450737f7b683db4da7b3e0bf0dced",
@@ -1505,7 +1785,9 @@
       "team_name": "paiN Gaming",
       "league_canonical": "CBLOL",
       "effective_team_games": 11.9379250688884,
-      "hist_pace": 0.900208615213862
+      "hist_pace": 0.900208615213862,
+      "last_game_datetime": "2026-05-02 16:56:25 UTC",
+      "latest_team_name": "paiN Gaming"
     },
     {
       "key": "id:oe:team:658a021a796aa5501503220adb38cf4",
@@ -1513,7 +1795,9 @@
       "team_name": "LOUD",
       "league_canonical": "CBLOL",
       "effective_team_games": 21.4720473582579,
-      "hist_pace": 0.857443065830113
+      "hist_pace": 0.857443065830113,
+      "last_game_datetime": "2026-05-26 00:35:59 UTC",
+      "latest_team_name": "LOUD"
     },
     {
       "key": "id:oe:team:62c1cd9465dc63824593ee5046f5aa8",
@@ -1521,7 +1805,9 @@
       "team_name": "Team WE",
       "league_canonical": "LPL",
       "effective_team_games": 30.6175498144786,
-      "hist_pace": 0.911778145631262
+      "hist_pace": 0.911778145631262,
+      "last_game_datetime": "2026-06-13 12:26:09 UTC",
+      "latest_team_name": "Team WE"
     },
     {
       "key": "id:oe:team:b9e44c69c1a70fb35df9be96f9eafea",
@@ -1529,7 +1815,9 @@
       "team_name": "Vivo Keyd Stars",
       "league_canonical": "CBLOL",
       "effective_team_games": 18.595769877826,
-      "hist_pace": 0.892092054796432
+      "hist_pace": 0.892092054796432,
+      "last_game_datetime": "2026-05-23 18:04:34 UTC",
+      "latest_team_name": "Vivo Keyd Stars"
     },
     {
       "key": "id:oe:team:fc8e90107dabb9a35c490b0d86adea0",
@@ -1537,7 +1825,9 @@
       "team_name": "Cloud9",
       "league_canonical": "LCS",
       "effective_team_games": 18.9589999390588,
-      "hist_pace": 0.786008719129145
+      "hist_pace": 0.786008719129145,
+      "last_game_datetime": "2026-06-13 21:59:47 UTC",
+      "latest_team_name": "Cloud9"
     },
     {
       "key": "id:oe:team:67169969ecc058b307edfa9c6b7a3c0",
@@ -1545,7 +1835,9 @@
       "team_name": "RED Canids",
       "league_canonical": "CBLOL",
       "effective_team_games": 19.9931208640615,
-      "hist_pace": 0.852220156932805
+      "hist_pace": 0.852220156932805,
+      "last_game_datetime": "2026-05-31 17:56:13 UTC",
+      "latest_team_name": "RED Canids"
     },
     {
       "key": "id:oe:team:7e56e9367c023df96cc8257ff4e16c0",
@@ -1553,7 +1845,8 @@
       "team_name": "Deep Cross Gaming",
       "league_canonical": null,
       "effective_team_games": 8.86514984592548,
-      "hist_pace": 1.00655467541723
+      "hist_pace": 1.00655467541723,
+      "latest_team_name": "Deep Cross Gaming"
     },
     {
       "key": "id:oe:team:8eb884e168f28402ce685bedebb5250",
@@ -1561,7 +1854,9 @@
       "team_name": "Team Liquid",
       "league_canonical": "LCS",
       "effective_team_games": 33.4291954783023,
-      "hist_pace": 0.872654611431031
+      "hist_pace": 0.872654611431031,
+      "last_game_datetime": "2026-06-14 22:24:48 UTC",
+      "latest_team_name": "Team Liquid"
     },
     {
       "key": "id:oe:team:fcec508e780bbd1ad493852640f5b36",
@@ -1569,7 +1864,9 @@
       "team_name": "Top Esports",
       "league_canonical": "LPL",
       "effective_team_games": 34.6728649246473,
-      "hist_pace": 0.958238988222017
+      "hist_pace": 0.958238988222017,
+      "last_game_datetime": "2026-06-14 10:20:00 UTC",
+      "latest_team_name": "Top Esports"
     },
     {
       "key": "id:oe:team:740de582f50775c516c77ed7b923fd5",
@@ -1577,7 +1874,8 @@
       "team_name": "Team Secret Whales",
       "league_canonical": null,
       "effective_team_games": 12.7954483529131,
-      "hist_pace": 0.896860388376316
+      "hist_pace": 0.896860388376316,
+      "latest_team_name": "Team Secret Whales"
     },
     {
       "key": "id:oe:team:4acc40654379b4da680be1bd3129dfa",
@@ -1585,7 +1883,9 @@
       "team_name": "Movistar KOI",
       "league_canonical": "LEC",
       "effective_team_games": 28.4909490313643,
-      "hist_pace": 0.905317900725124
+      "hist_pace": 0.905317900725124,
+      "last_game_datetime": "2026-06-06 17:10:38 UTC",
+      "latest_team_name": "Movistar KOI"
     },
     {
       "key": "id:oe:team:ee140e8e9d6abd0bfd2b7bc94639d43",
@@ -1593,7 +1893,8 @@
       "team_name": "Team Secret",
       "league_canonical": null,
       "effective_team_games": 5.60121313811847,
-      "hist_pace": 0.87008612754126
+      "hist_pace": 0.87008612754126,
+      "latest_team_name": "Team Secret"
     },
     {
       "key": "id:oe:team:da1143bf9a245b78a8dc86417de85b3",
@@ -1601,7 +1902,9 @@
       "team_name": "LYON",
       "league_canonical": "LCS",
       "effective_team_games": 39.724319871789,
-      "hist_pace": 0.878984103809442
+      "hist_pace": 0.878984103809442,
+      "last_game_datetime": "2026-06-14 22:24:48 UTC",
+      "latest_team_name": "LYON"
     },
     {
       "key": "id:oe:team:87e3e1e75839f75a10bbc66e894d806",
@@ -1609,7 +1912,9 @@
       "team_name": "FURIA",
       "league_canonical": "CBLOL",
       "effective_team_games": 22.8733868457979,
-      "hist_pace": 0.845414861215095
+      "hist_pace": 0.845414861215095,
+      "last_game_datetime": "2026-06-06 18:50:05 UTC",
+      "latest_team_name": "FURIA"
     },
     {
       "key": "id:oe:team:f90422f1cbcb24bc2a855202582ec29",
@@ -1617,7 +1922,9 @@
       "team_name": "Sentinels",
       "league_canonical": "LCS",
       "effective_team_games": 18.9092688971065,
-      "hist_pace": 0.842310357515988
+      "hist_pace": 0.842310357515988,
+      "last_game_datetime": "2026-05-30 21:55:42 UTC",
+      "latest_team_name": "Sentinels"
     },
     {
       "key": "id:oe:team:9cae7677cd0dbcc1cd86653870b73c2",
@@ -1625,7 +1932,8 @@
       "team_name": "GAM Esports",
       "league_canonical": null,
       "effective_team_games": 12.8621584310844,
-      "hist_pace": 0.985360558198613
+      "hist_pace": 0.985360558198613,
+      "latest_team_name": "GAM Esports"
     },
     {
       "key": "id:oe:team:ea65e6cc48a9be50fc5334369a5fca5",
@@ -1633,7 +1941,9 @@
       "team_name": "LØS",
       "league_canonical": "CBLOL",
       "effective_team_games": 34.1785543997275,
-      "hist_pace": 0.909096155100827
+      "hist_pace": 0.909096155100827,
+      "last_game_datetime": "2026-06-06 18:50:05 UTC",
+      "latest_team_name": "LØS"
     },
     {
       "key": "id:oe:team:7d6673d3a9d00363c6bebc1a630da6e",
@@ -1641,7 +1951,9 @@
       "team_name": "G2 Esports",
       "league_canonical": "LEC",
       "effective_team_games": 43.1147873928192,
-      "hist_pace": 0.934741152273187
+      "hist_pace": 0.934741152273187,
+      "last_game_datetime": "2026-06-07 18:59:23 UTC",
+      "latest_team_name": "G2 Esports"
     },
     {
       "key": "id:oe:team:2dfc66b98002c5afad2a98dbf86e350",
@@ -1649,7 +1961,9 @@
       "team_name": "Team Heretics Academy",
       "league_canonical": "LES",
       "effective_team_games": 16.8640416907596,
-      "hist_pace": 0.954341726707565
+      "hist_pace": 0.954341726707565,
+      "last_game_datetime": "2026-07-16 18:44:50 UTC",
+      "latest_team_name": "Team Heretics Academy"
     },
     {
       "key": "id:oe:team:b42d0f31f2727621b963042276817c4",
@@ -1657,7 +1971,9 @@
       "team_name": "JD Gaming",
       "league_canonical": "LPL",
       "effective_team_games": 39.0345270539065,
-      "hist_pace": 0.881414132958511
+      "hist_pace": 0.881414132958511,
+      "last_game_datetime": "2026-06-06 12:14:41 UTC",
+      "latest_team_name": "JD Gaming"
     },
     {
       "key": "id:oe:team:ed28f87f0cfdba0a2a8f183cebae73a",
@@ -1665,7 +1981,9 @@
       "team_name": "Anyone's Legend",
       "league_canonical": "LPL",
       "effective_team_games": 31.3037024843241,
-      "hist_pace": 0.879935994023963
+      "hist_pace": 0.879935994023963,
+      "last_game_datetime": "2026-06-08 11:29:50 UTC",
+      "latest_team_name": "Anyone's Legend"
     },
     {
       "key": "id:oe:team:d356a144644879dabb5f34cd99c886d",
@@ -1673,7 +1991,9 @@
       "team_name": "Bilibili Gaming",
       "league_canonical": "LPL",
       "effective_team_games": 56.6769351602511,
-      "hist_pace": 0.951424406951623
+      "hist_pace": 0.951424406951623,
+      "last_game_datetime": "2026-06-14 10:20:00 UTC",
+      "latest_team_name": "Bilibili Gaming"
     },
     {
       "key": "id:oe:team:f3aa9bbd924ce3af42ac53f8326bc7c",
@@ -1681,7 +2001,9 @@
       "team_name": "Karmine Corp",
       "league_canonical": "LEC",
       "effective_team_games": 48.8923018551505,
-      "hist_pace": 0.918919510782874
+      "hist_pace": 0.918919510782874,
+      "last_game_datetime": "2026-06-07 18:59:23 UTC",
+      "latest_team_name": "Karmine Corp"
     },
     {
       "key": "id:oe:team:5c2e7e9ea8dfcba0150d9a5619baecf",
@@ -1689,7 +2011,9 @@
       "team_name": "BNK FEARX",
       "league_canonical": "LCK",
       "effective_team_games": 31.680728297103,
-      "hist_pace": 1.01509990435328
+      "hist_pace": 1.01509990435328,
+      "last_game_datetime": "2026-05-30 11:23:27 UTC",
+      "latest_team_name": "BNK FEARX"
     },
     {
       "key": "id:oe:team:ef69efa6acebe94107f0cf1ba716806",
@@ -1697,7 +2021,9 @@
       "team_name": "Dplus Kia",
       "league_canonical": "LCK",
       "effective_team_games": 50.5506154776333,
-      "hist_pace": 0.891937334324379
+      "hist_pace": 0.891937334324379,
+      "last_game_datetime": "2026-06-07 12:08:41 UTC",
+      "latest_team_name": "Dplus Kia"
     },
     {
       "key": "id:oe:team:d723992568441c6bafa2658129eade7",
@@ -1705,7 +2031,9 @@
       "team_name": "KT Rolster",
       "league_canonical": "LCK",
       "effective_team_games": 31.2030945877847,
-      "hist_pace": 0.93543945978934
+      "hist_pace": 0.93543945978934,
+      "last_game_datetime": "2026-06-13 08:24:58 UTC",
+      "latest_team_name": "KT Rolster"
     },
     {
       "key": "id:oe:team:50f58982d91a36557ec8aec52ab014f",
@@ -1713,7 +2041,9 @@
       "team_name": "Gen.G",
       "league_canonical": "LCK",
       "effective_team_games": 41.829891363341,
-      "hist_pace": 0.940997278289559
+      "hist_pace": 0.940997278289559,
+      "last_game_datetime": "2026-06-14 10:35:36 UTC",
+      "latest_team_name": "Gen.G"
     },
     {
       "key": "id:oe:team:b77b3f6068e20a2b3edc0ecd3dc70d4",
@@ -1721,7 +2051,9 @@
       "team_name": "HANJIN BRION",
       "league_canonical": "LCK",
       "effective_team_games": 28.0466087554345,
-      "hist_pace": 0.940470617654435
+      "hist_pace": 0.940470617654435,
+      "last_game_datetime": "2026-06-06 09:57:23 UTC",
+      "latest_team_name": "HANJIN BRION"
     },
     {
       "key": "id:oe:team:5cd2cd09ec94296f605dd13a2924d6c",
@@ -1729,7 +2061,9 @@
       "team_name": "Nongshim RedForce",
       "league_canonical": "LCK",
       "effective_team_games": 29.3624200124982,
-      "hist_pace": 1.07994439805708
+      "hist_pace": 1.07994439805708,
+      "last_game_datetime": "2026-05-31 11:10:18 UTC",
+      "latest_team_name": "Nongshim RedForce"
     },
     {
       "key": "id:oe:team:1d0389df0c5eea93b04122ba167c010",
@@ -1737,7 +2071,9 @@
       "team_name": "Kiwoom DRX",
       "league_canonical": "LCK",
       "effective_team_games": 28.7035063356924,
-      "hist_pace": 0.966815976184801
+      "hist_pace": 0.966815976184801,
+      "last_game_datetime": "2026-05-29 09:49:54 UTC",
+      "latest_team_name": "Kiwoom DRX"
     },
     {
       "key": "id:oe:team:ce499dea30cfce118f4fe85da0227e8",
@@ -1745,7 +2081,9 @@
       "team_name": "T1",
       "league_canonical": "LCK",
       "effective_team_games": 61.9446262523191,
-      "hist_pace": 1.02595767004894
+      "hist_pace": 1.02595767004894,
+      "last_game_datetime": "2026-06-14 10:35:36 UTC",
+      "latest_team_name": "T1"
     },
     {
       "key": "id:oe:team:b3c72a20aa56f5d28022ac04a7dc294",
@@ -1753,7 +2091,9 @@
       "team_name": "DN SOOPers",
       "league_canonical": "LCK",
       "effective_team_games": 27.7677288502285,
-      "hist_pace": 0.933041419262313
+      "hist_pace": 0.933041419262313,
+      "last_game_datetime": "2026-05-30 08:58:01 UTC",
+      "latest_team_name": "DN SOOPers"
     },
     {
       "key": "id:oe:team:3a1d18f46bcb3716ebcfcf4ef068934",
@@ -1761,7 +2101,9 @@
       "team_name": "Hanwha Life Esports",
       "league_canonical": "LCK",
       "effective_team_games": 53.8203113696305,
-      "hist_pace": 1.0769259669849
+      "hist_pace": 1.0769259669849,
+      "last_game_datetime": "2026-06-12 11:22:17 UTC",
+      "latest_team_name": "Hanwha Life Esports"
     },
     {
       "key": "id:oe:team:374ab80ad8c28c38cd170e188e4aca8",
@@ -1769,7 +2111,9 @@
       "team_name": "LUA Gaming",
       "league_canonical": "LES",
       "effective_team_games": 12.3412731861725,
-      "hist_pace": 1.01249708016075
+      "hist_pace": 1.01249708016075,
+      "last_game_datetime": "2026-07-21 16:01:24 UTC",
+      "latest_team_name": "LUA Gaming"
     },
     {
       "key": "id:oe:team:86dbb7cea91eaf08738bdc93a8442ce",
@@ -1777,7 +2121,9 @@
       "team_name": "Movistar KOI Fénix",
       "league_canonical": "LES",
       "effective_team_games": 16.8405023300332,
-      "hist_pace": 1.07474621763237
+      "hist_pace": 1.07474621763237,
+      "last_game_datetime": "2026-07-21 18:03:03 UTC",
+      "latest_team_name": "Movistar KOI Fénix"
     },
     {
       "key": "id:oe:team:4349ed857362135b73b20e8b27c4114",
@@ -1785,7 +2131,9 @@
       "team_name": "GIANTX iTero",
       "league_canonical": "LES",
       "effective_team_games": 11.235525848104,
-      "hist_pace": 1.04338929434102
+      "hist_pace": 1.04338929434102,
+      "last_game_datetime": "2026-07-21 18:03:03 UTC",
+      "latest_team_name": "GIANTX iTero"
     },
     {
       "key": "id:oe:team:ccd089bf173a5fff1063eb0576201a7",
@@ -1793,7 +2141,9 @@
       "team_name": "Vitality.Bee",
       "league_canonical": "LFL",
       "effective_team_games": 11.2696524498919,
-      "hist_pace": 0.99270471893536
+      "hist_pace": 0.99270471893536,
+      "last_game_datetime": "2026-07-22 16:05:51 UTC",
+      "latest_team_name": "Vitality.Bee"
     },
     {
       "key": "id:oe:team:1ed6b03efea53b635f14a490c45756f",
@@ -1801,7 +2151,9 @@
       "team_name": "TLN Pirates",
       "league_canonical": "LFL",
       "effective_team_games": 14.1651385387268,
-      "hist_pace": 0.931618040654021
+      "hist_pace": 0.931618040654021,
+      "last_game_datetime": "2026-07-22 16:05:51 UTC",
+      "latest_team_name": "TLN Pirates"
     },
     {
       "key": "id:oe:team:50074114f4e5791ba2bda471c1baa3c",
@@ -1809,7 +2161,9 @@
       "team_name": "Falke Esports",
       "league_canonical": "LES",
       "effective_team_games": 12.9590152926849,
-      "hist_pace": 1.09154261433242
+      "hist_pace": 1.09154261433242,
+      "last_game_datetime": "2026-07-22 16:12:02 UTC",
+      "latest_team_name": "Falke Esports"
     },
     {
       "key": "id:oe:team:6f2c9aa9d310fca2e24df32fe6071b7",
@@ -1817,7 +2171,9 @@
       "team_name": "UB Alma Mater",
       "league_canonical": "LES",
       "effective_team_games": 12.0190167777109,
-      "hist_pace": 1.06818335947201
+      "hist_pace": 1.06818335947201,
+      "last_game_datetime": "2026-07-22 16:12:02 UTC",
+      "latest_team_name": "UB Alma Mater"
     },
     {
       "key": "id:oe:team:0845e5e1dfba7d3865e8692152c1b52",
@@ -1825,7 +2181,9 @@
       "team_name": "ZYB Esport",
       "league_canonical": "LFL",
       "effective_team_games": 8.91462456583336,
-      "hist_pace": 1.05395817044758
+      "hist_pace": 1.05395817044758,
+      "last_game_datetime": "2026-07-22 17:00:40 UTC",
+      "latest_team_name": "ZYB Esport"
     },
     {
       "key": "id:oe:team:b659295189ec2ddd1a30e39fd3a0bd8",
@@ -1833,7 +2191,9 @@
       "team_name": "Skillcamp",
       "league_canonical": "LFL",
       "effective_team_games": 7.15341547334723,
-      "hist_pace": 0.955695507298011
+      "hist_pace": 0.955695507298011,
+      "last_game_datetime": "2026-07-22 17:00:40 UTC",
+      "latest_team_name": "Skillcamp"
     },
     {
       "key": "id:oe:team:2d1b8a518ba70fe8352fb0fdd8aec1a",
@@ -1841,7 +2201,9 @@
       "team_name": "Barça eSports",
       "league_canonical": "LES",
       "effective_team_games": 19.4989701555245,
-      "hist_pace": 1.06907119272049
+      "hist_pace": 1.06907119272049,
+      "last_game_datetime": "2026-07-22 17:46:40 UTC",
+      "latest_team_name": "Barça eSports"
     },
     {
       "key": "id:oe:team:746e6715fc4295c54954be5efc385af",
@@ -1849,7 +2211,9 @@
       "team_name": "UCAM Esports",
       "league_canonical": "LES",
       "effective_team_games": 20.0611975648134,
-      "hist_pace": 0.967722092619224
+      "hist_pace": 0.967722092619224,
+      "last_game_datetime": "2026-07-22 17:46:40 UTC",
+      "latest_team_name": "UCAM Esports"
     },
     {
       "key": "id:oe:team:e0143514c5de64f62eb418004ca2751",
@@ -1857,7 +2221,9 @@
       "team_name": "Galions",
       "league_canonical": "LFL",
       "effective_team_games": 22.6138029173299,
-      "hist_pace": 1.01379546768988
+      "hist_pace": 1.01379546768988,
+      "last_game_datetime": "2026-07-22 17:55:21 UTC",
+      "latest_team_name": "Galions"
     },
     {
       "key": "id:oe:team:7d2c778dc03e3fe0db9e45a57895b88",
@@ -1865,7 +2231,9 @@
       "team_name": "Ici Japon Corp. Esport",
       "league_canonical": "LFL",
       "effective_team_games": 7.62505375566105,
-      "hist_pace": 1.02276327352421
+      "hist_pace": 1.02276327352421,
+      "last_game_datetime": "2026-07-22 17:55:21 UTC",
+      "latest_team_name": "Ici Japon Corp. Esport"
     },
     {
       "key": "id:oe:team:90938c428db11f6e372f5c6833b9743",
@@ -1873,7 +2241,9 @@
       "team_name": "Solary",
       "league_canonical": "LFL",
       "effective_team_games": 16.9601051322768,
-      "hist_pace": 1.00179765542303
+      "hist_pace": 1.00179765542303,
+      "last_game_datetime": "2026-07-22 18:53:13 UTC",
+      "latest_team_name": "Solary"
     },
     {
       "key": "id:oe:team:7380b73561abdd86c2391e9481acd4b",
@@ -1881,7 +2251,9 @@
       "team_name": "Joblife",
       "league_canonical": "LFL",
       "effective_team_games": 8.52630592531827,
-      "hist_pace": 0.987363992849243
+      "hist_pace": 0.987363992849243,
+      "last_game_datetime": "2026-07-22 18:53:13 UTC",
+      "latest_team_name": "Joblife"
     },
     {
       "key": "id:oe:team:42bf6c1040db8f2221ff017fa4d34e4",
@@ -1889,7 +2261,9 @@
       "team_name": "Karmine Corp Blue",
       "league_canonical": "LFL",
       "effective_team_games": 12.8063581784541,
-      "hist_pace": 1.01847691456894
+      "hist_pace": 1.01847691456894,
+      "last_game_datetime": "2026-07-22 20:02:30 UTC",
+      "latest_team_name": "Karmine Corp Blue"
     },
     {
       "key": "id:oe:team:df682d5adfed257780a68a85004ed27",
@@ -1897,7 +2271,9 @@
       "team_name": "Esprit Shōnen",
       "league_canonical": "LFL",
       "effective_team_games": 8.28775876345423,
-      "hist_pace": 1.01978199371954
+      "hist_pace": 1.01978199371954,
+      "last_game_datetime": "2026-07-22 20:02:30 UTC",
+      "latest_team_name": "Esprit Shōnen"
     }
   ],
   "players": [

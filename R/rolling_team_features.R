@@ -125,6 +125,7 @@ build_team_rolling_features <- function(
   metric_states <- lapply(metric_names, function(metric) {
     list(
       team = new.env(hash = TRUE, parent = emptyenv()),
+      target_team = new.env(hash = TRUE, parent = emptyenv()),
       league = new.env(hash = TRUE, parent = emptyenv()),
       global = new.env(hash = TRUE, parent = emptyenv())
     )
@@ -152,6 +153,9 @@ build_team_rolling_features <- function(
     features[[paste0("hist_", metric)]] <- NA_real_
     features[[paste0("effective_", metric, "_games")]] <- NA_real_
     features[[paste0("league_prior_", metric)]] <- NA_real_
+    features[[paste0("global_prior_", metric)]] <- NA_real_
+    features[[paste0("league_peer_prior_", metric)]] <- NA_real_
+    features[[paste0("global_peer_prior_", metric)]] <- NA_real_
   }
 
   outcome_pointer <- 1L
@@ -189,6 +193,13 @@ build_team_rolling_features <- function(
           half_life_days
         )
         if (role == "target") {
+          .update_state(
+            states$target_team,
+            outcome_team_key,
+            outcome_time,
+            value,
+            half_life_days
+          )
           .update_state(
             states$league,
             outcome_league,
@@ -242,6 +253,12 @@ build_team_rolling_features <- function(
         cutoff,
         half_life_days
       )
+      target_team_state <- .query_state(
+        states$target_team,
+        team_key,
+        cutoff,
+        half_life_days
+      )
       prior_mean <- if (league_state[["weight"]] > 0) {
         league_state[["sum"]] / league_state[["weight"]]
       } else if (global_state[["weight"]] > 0) {
@@ -269,6 +286,37 @@ build_team_rolling_features <- function(
       features[[
         paste0("league_prior_", metric)
       ]][[query_position]] <- prior_mean
+      features[[
+        paste0("global_prior_", metric)
+      ]][[query_position]] <- if (global_state[["weight"]] > 0) {
+        global_state[["sum"]] / global_state[["weight"]]
+      } else {
+        NA_real_
+      }
+      league_peer_weight <- league_state[["weight"]] -
+        target_team_state[["weight"]]
+      global_peer_weight <- global_state[["weight"]] -
+        target_team_state[["weight"]]
+      features[[
+        paste0("league_peer_prior_", metric)
+      ]][[query_position]] <- if (league_peer_weight > 0) {
+        (
+          league_state[["sum"]] -
+            target_team_state[["sum"]]
+        ) / league_peer_weight
+      } else {
+        NA_real_
+      }
+      features[[
+        paste0("global_peer_prior_", metric)
+      ]][[query_position]] <- if (global_peer_weight > 0) {
+        (
+          global_state[["sum"]] -
+            target_team_state[["sum"]]
+        ) / global_peer_weight
+      } else {
+        NA_real_
+      }
     }
   }
 

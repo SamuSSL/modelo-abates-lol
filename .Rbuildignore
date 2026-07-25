@@ -19,3 +19,9 @@
 ^config
 ^\.\.Rcheck
 ^lolkills_.*\.tar\.gz$
+^lolkills\.Rcheck$
+^tmp$
+^\.local$
+^\.pytest_cache$
+^\.streamlit$
+^stan/.*\.exe$

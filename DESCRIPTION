@@ -21,11 +21,14 @@ Imports:
     MASS,
     yaml
 Suggests:
+    cmdstanr,
+    glmnet,
     pkgload,
     plumber,
     roxygen2,
     rprojroot,
     targets,
-    testthat (>= 3.0.0)
+    testthat (>= 3.0.0),
+    xgboost
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0

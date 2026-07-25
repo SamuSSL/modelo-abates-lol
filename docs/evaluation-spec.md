@@ -216,6 +216,36 @@ Os limites numéricos serão propostos depois dos folds de desenvolvimento, ante
 
 Alterar o gate depois de ver o holdout invalida a avaliação e exige novo holdout futuro.
 
+## Protocolo da rodada estrutural e bayesiana
+
+As decisões usam exclusivamente mapas anteriores a 2026. Os folds trimestrais
+de 2023–2025 continuam sendo a unidade de validação; mapas de 2022 formam o
+histórico inicial. Em cada fold, duração, intensidade, shrinkage, taxonomia
+derivada de dados, discretização, PCA e tuning de machine learning são
+reajustados sem observar o bloco futuro.
+
+O ano de 2026 não participa de seleção, tuning, escolha de features, escolha de
+prior, calibração ou ensemble. Depois do congelamento, ele pode ser executado
+uma única vez como comparação secundária rotulada como já conhecida durante o
+desenvolvimento do projeto. Não será chamado de confirmação final.
+
+O cutoff prospectivo é a maior data de resultado presente no manifesto no
+momento do congelamento. Somente mapas recebidos depois desse cutoff compõem a
+confirmação limpa.
+
+Além de CRPS, Log Score, Brier e calibração, a decomposição deve reportar:
+
+- erro e cobertura da duração;
+- erro e calibração da intensidade por minuto;
+- correlação residual entre duração e intensidade;
+- contribuição da incerteza de duração para a largura da PMF;
+- ablação dos efeitos de equipe, adversário, arquétipo e jogador–campeão.
+
+O Bayes só é elegível quando todas as chains apresentam R-hat aceitável, ESS
+suficiente, zero divergências materiais, tree depth controlado e posterior
+predictive checks coerentes. Se os diagnósticos falharem, aumentar iterações
+sozinho não constitui correção.
+
 ## Gate de promoção
 
 O candidato só pode receber `promotion_status = "production"` quando:

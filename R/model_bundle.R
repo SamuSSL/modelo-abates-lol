@@ -64,7 +64,27 @@ build_portable_model_bundle <- function(
       key = .rolling_team_key(row$team_id, row$team_name),
       team_id = if (is.na(row$team_id)) NULL else row$team_id,
       team_name = as.character(row$team_name),
+      latest_team_name = if (
+        "latest_team_name" %in% names(row) &&
+          !is.na(row$latest_team_name)
+      ) {
+        as.character(row$latest_team_name)
+      } else {
+        as.character(row$team_name)
+      },
       league_canonical = as.character(row$league_canonical),
+      last_game_datetime = if (
+        "latest_history_datetime" %in% names(row) &&
+          !is.na(row$latest_history_datetime)
+      ) {
+        format(
+          row$latest_history_datetime,
+          tz = "UTC",
+          usetz = TRUE
+        )
+      } else {
+        NULL
+      },
       effective_team_games = as.numeric(
         row$effective_combined_kills_per_minute_games
       ),

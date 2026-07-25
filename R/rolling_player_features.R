@@ -13,13 +13,15 @@
 #' @param metric_names Historical metrics to estimate.
 #' @param half_life_days Exponential-decay half-life.
 #' @param prior_games League-position prior strength.
+#' @param interaction_prior_games Strong player-champion interaction prior.
 #' @return Target-player rows with frozen pre-series features.
 #' @export
 build_player_rolling_features <- function(
   player_metrics,
   metric_names,
   half_life_days = 60,
-  prior_games = 10
+  prior_games = 10,
+  interaction_prior_games = 30
 ) {
   required <- c(
     "gameid",
@@ -65,6 +67,7 @@ build_player_rolling_features <- function(
   states <- lapply(metric_names, function(metric) {
     list(
       player = new.env(hash = TRUE, parent = emptyenv()),
+      interaction = new.env(hash = TRUE, parent = emptyenv()),
       prior = new.env(hash = TRUE, parent = emptyenv()),
       global = new.env(hash = TRUE, parent = emptyenv())
     )
@@ -73,6 +76,7 @@ build_player_rolling_features <- function(
   raw_state <- new.env(hash = TRUE, parent = emptyenv())
   champion_state <- new.env(hash = TRUE, parent = emptyenv())
   raw_champion_state <- new.env(hash = TRUE, parent = emptyenv())
+  raw_interaction_state <- new.env(hash = TRUE, parent = emptyenv())
   features <- rows[query_order, c(
     "gameid",
     "game_datetime",
@@ -88,7 +92,13 @@ build_player_rolling_features <- function(
   features$raw_player_games <- integer(nrow(features))
   features$raw_champion_games <- integer(nrow(features))
   features$effective_champion_games <- numeric(nrow(features))
+  features$raw_player_champion_games <- integer(nrow(features))
   features$latest_history_datetime <- as.POSIXct(
+    rep(NA_real_, nrow(features)),
+    origin = "1970-01-01",
+    tz = "UTC"
+  )
+  features$latest_player_champion_history_datetime <- as.POSIXct(
     rep(NA_real_, nrow(features)),
     origin = "1970-01-01",
     tz = "UTC"
@@ -96,6 +106,15 @@ build_player_rolling_features <- function(
   for (metric in metric_names) {
     features[[paste0("hist_", metric)]] <- NA_real_
     features[[paste0("effective_", metric, "_games")]] <- NA_real_
+    features[[paste0(
+      "hist_player_champion_",
+      metric
+    )]] <- NA_real_
+    features[[paste0(
+      "effective_player_champion_",
+      metric,
+      "_games"
+    )]] <- NA_real_
   }
   pointer <- 1L
   for (query_position in seq_along(query_order)) {
@@ -117,6 +136,11 @@ build_player_rolling_features <- function(
         rows$position[[outcome_index]],
         sep = "|"
       )
+      interaction_key <- paste(
+        player_key,
+        as.character(rows$champion[[outcome_index]]),
+        sep = "|champion:"
+      )
       for (metric in metric_names) {
         value <- suppressWarnings(
           as.numeric(rows[[metric]][[outcome_index]])
@@ -124,6 +148,13 @@ build_player_rolling_features <- function(
         .update_state(
           states[[metric]]$player,
           player_key,
+          outcome_time,
+          value,
+          half_life_days
+        )
+        .update_state(
+          states[[metric]]$interaction,
+          interaction_key,
           outcome_time,
           value,
           half_life_days
@@ -146,6 +177,11 @@ build_player_rolling_features <- function(
         }
       }
       .update_raw_team_state(raw_state, player_key, outcome_time)
+      .update_raw_team_state(
+        raw_interaction_state,
+        interaction_key,
+        outcome_time
+      )
       champion_key <- as.character(rows$champion[[outcome_index]])
       .update_state(
         champion_state,
@@ -175,6 +211,11 @@ build_player_rolling_features <- function(
     features$raw_player_games[[query_position]] <- raw$games
     features$latest_history_datetime[[query_position]] <- raw$last
     champion_key <- as.character(rows$champion[[row_index]])
+    interaction_key <- paste(
+      player_key,
+      champion_key,
+      sep = "|champion:"
+    )
     raw_champion <- .raw_team_state(
       raw_champion_state,
       champion_key
@@ -189,6 +230,14 @@ build_player_rolling_features <- function(
       raw_champion$games
     features$effective_champion_games[[query_position]] <-
       champion_history[["weight"]]
+    raw_interaction <- .raw_team_state(
+      raw_interaction_state,
+      interaction_key
+    )
+    features$raw_player_champion_games[[query_position]] <-
+      raw_interaction$games
+    features$latest_player_champion_history_datetime[[query_position]] <-
+      raw_interaction$last
     for (metric in metric_names) {
       player_state <- .query_state(
         states[[metric]]$player,
@@ -205,6 +254,12 @@ build_player_rolling_features <- function(
       global_state <- .query_state(
         states[[metric]]$global,
         as.character(rows$position[[row_index]]),
+        cutoff,
+        half_life_days
+      )
+      interaction_state <- .query_state(
+        states[[metric]]$interaction,
+        interaction_key,
         cutoff,
         half_life_days
       )
@@ -228,6 +283,28 @@ build_player_rolling_features <- function(
       features[[
         paste0("effective_", metric, "_games")
       ]][[query_position]] <- player_state[["weight"]]
+      interaction_estimate <- if (is.finite(estimate)) {
+        (
+          interaction_state[["sum"]] +
+            interaction_prior_games * estimate
+        ) / (
+          interaction_state[["weight"]] +
+            interaction_prior_games
+        )
+      } else if (interaction_state[["weight"]] > 0) {
+        interaction_state[["sum"]] / interaction_state[["weight"]]
+      } else {
+        NA_real_
+      }
+      features[[paste0(
+        "hist_player_champion_",
+        metric
+      )]][[query_position]] <- interaction_estimate
+      features[[paste0(
+        "effective_player_champion_",
+        metric,
+        "_games"
+      )]][[query_position]] <- interaction_state[["weight"]]
     }
   }
   features <- features[
@@ -301,7 +378,7 @@ assemble_player_draft_features <- function(player_features, taxonomy) {
           side_scores$red[[column]]
       )
     }
-    data.frame(
+    result_row <- data.frame(
       gameid = as.character(map$gameid[[1L]]),
       player_conflict = mean(
         map$hist_conflict_involvement_per_minute
@@ -329,6 +406,65 @@ assemble_player_draft_features <- function(player_features, taxonomy) {
       draft_damage_imbalance = imbalance("damage_score"),
       stringsAsFactors = FALSE
     )
+    interaction_column <- paste0(
+      "hist_player_champion_",
+      "conflict_involvement_per_minute"
+    )
+    if (interaction_column %in% names(map)) {
+      result_row$player_champion_conflict <- mean(
+        map[[interaction_column]]
+      )
+      result_row$player_champion_conflict_delta <- mean(
+        map[[interaction_column]] -
+          map$hist_conflict_involvement_per_minute
+      )
+      if ("raw_player_champion_games" %in% names(map)) {
+        result_row$minimum_raw_player_champion_games <- min(
+          map$raw_player_champion_games
+        )
+      }
+      effective_column <- paste0(
+        "effective_player_champion_",
+        "conflict_involvement_per_minute_games"
+      )
+      if (effective_column %in% names(map)) {
+        result_row$minimum_effective_player_champion_games <- min(
+          map[[effective_column]]
+        )
+      }
+    }
+    functional_scores <- intersect(
+      c(
+        "engage_score", "pick_score", "poke_siege_score",
+        "dive_score", "protect_score", "front_to_back_score",
+        "split_map_score", "skirmish_score", "scaling_score"
+      ),
+      names(side_scores$blue)
+    )
+    for (score in functional_scores) {
+      name <- sub("_score$", "", score)
+      result_row[[paste0("draft_", name)]] <-
+        average_score(score)
+      result_row[[paste0("draft_", name, "_imbalance")]] <-
+        imbalance(score)
+    }
+    if ("primary_archetype" %in% names(side_scores$blue)) {
+      result_row$blue_primary_archetype <-
+        side_scores$blue$primary_archetype
+      result_row$red_primary_archetype <-
+        side_scores$red$primary_archetype
+      result_row$blue_secondary_archetype <-
+        side_scores$blue$secondary_archetype
+      result_row$red_secondary_archetype <-
+        side_scores$red$secondary_archetype
+      result_row$draft_archetype_confidence <- average_score(
+        "archetype_confidence"
+      )
+      result_row$draft_functional_coverage <- average_score(
+        "functional_coverage"
+      )
+    }
+    result_row
   })
   result <- do.call(rbind, rows)
   rownames(result) <- NULL

@@ -154,6 +154,27 @@ player_draft_research:
       feature_block: pace_player_draft
   status: pre_registered
   pre_registered_at: "2026-07-24"
+
+dynamic_team_round:
+  rating_half_life_days: 60
+  short_momentum_half_life_days: 21
+  long_momentum_half_life_days: 120
+  prior_games: 20
+  early_kill_lead_at_15: 2
+  profile_neutral_margin_percent: 3
+  references_exclude_current_team: true
+  regularized_alphas:
+    ridge: 0
+    elastic_net_025: 0.25
+    elastic_net_050: 0.50
+    elastic_net_075: 0.75
+    lasso: 1
+  inner_temporal_validation_fraction: 0.20
+  selected_prospective_challenger: ridge_plus_behavior
+  momentum_promoted: false
+  comparison_year_2026_can_select: false
+  status: frozen_for_prospective_confirmation
+  frozen_at: "2026-07-24"
   selected_candidate_id: nb_pace_draft
   rejected_feature_blocks:
     - pace_player
@@ -224,3 +245,46 @@ recency_sensitivity:
     - 120
     - 180
     - 365
+
+structural_bayesian_round:
+  development_end: "2026-01-01 00:00:00"
+  secondary_comparison_start: "2026-01-01 00:00:00"
+  observation_half_life_days: 60
+  team_prior_games: 10
+  player_prior_games: 10
+  player_champion_interaction_prior_games: 30
+  duration_distributions:
+    - gamma
+    - lognormal
+  mcmc:
+    chains: 4
+    parallel_chains: 4
+    iter_warmup: 1000
+    iter_sampling: 1000
+    adapt_delta: 0.95
+    max_treedepth: 12
+    seed: 20260724
+  transformations:
+    qcut_bins:
+      - 3
+      - 5
+      - 10
+    pca_variance:
+      - 0.80
+      - 0.90
+      - 0.95
+  boosting:
+    objective: count:poisson
+    nrounds: 300
+    eta: 0.03
+    max_depth: 3
+    min_child_weight: 20
+    subsample: 0.8
+    colsample_bytree: 0.8
+    lambda: 10
+    alpha: 1
+    nthread: 4
+  selection_metric: crps
+  comparison_year_2026_can_select: false
+  status: pre_registered
+  pre_registered_at: "2026-07-24"

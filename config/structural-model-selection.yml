@@ -1,0 +1,56 @@
+decision_at: 2026-07-24 09:08:00 UTC
+development_period:
+  start: 2022-01-01 00:00:00 UTC
+  end_exclusive: 2026-01-01 00:00:00 UTC
+  maps: 7586
+  folds: 9
+secondary_comparison:
+  start: 2026-01-01 00:00:00 UTC
+  can_change_selection: false
+prospective_confirmation:
+  result_cutoff: 2026-07-22 20:02:30 UTC
+  clean_maps_must_be_after_cutoff: true
+selected_reference: nb_v1_rebuilt
+promotion_status: no_new_model_promoted
+research_challenger: ridge_plus_behavior
+previous_research_challenger: nb_pca90
+decisions:
+  ridge_plus_behavior:
+    mean_crps: 4.545573
+    difference_vs_v1: -0.016580
+    bootstrap_ci: [-0.037189, 0.003228]
+    probability_better: 0.9535
+    secondary_2026_crps: 4.471662
+    secondary_2026_difference_vs_v1: -0.025815
+    decision: freeze_as_prospective_challenger
+    reason: best_development_and_secondary_result_but_development_ci_crosses_zero
+  nb_pca90:
+    mean_crps: 4.557134
+    difference_vs_v1: -0.005018
+    bootstrap_ci: [-0.021894, 0.012131]
+    probability_better: 0.7235
+    decision: retain_as_research_challenger
+    reason: small_uncertain_gain_with_fold_and_league_instability
+  bayesian_hierarchical:
+    mean_crps: 4.751530
+    difference_vs_v1: 0.189378
+    coverage_90: 0.979436
+    decision: reject
+    reason: materially_worse_and_overdispersed
+  decomposed_gamma:
+    mean_crps: 4.615217
+    decision: reject
+    reason: worse_crps_and_underdispersed
+  decomposed_lognormal:
+    mean_crps: 4.613947
+    decision: reject
+    reason: worse_crps_and_underdispersed
+  nb_qcut5:
+    mean_crps: 4.664384
+    decision: reject
+    reason: materially_worse
+  xgboost_poisson_mean_nb_pmf:
+    mean_crps: 4.586550
+    coverage_90: 0.873847
+    decision: reject
+    reason: worse_crps_and_underdispersed

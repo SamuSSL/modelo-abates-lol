@@ -47,6 +47,33 @@ test_that("team signals are symmetric and use only frozen histories", {
   )
 })
 
+test_that("team and opponent effects preserve explicit matchup direction", {
+  maps <- data.frame(
+    gameid = "G1",
+    blue_hist_combined_kills_per_minute = 0.9,
+    red_hist_combined_kills_per_minute = 0.7,
+    blue_hist_kills_per_minute = 0.6,
+    red_hist_kills_per_minute = 0.3,
+    blue_hist_deaths_per_minute = 0.2,
+    red_hist_deaths_per_minute = 0.5,
+    blue_hist_damage_per_minute = 2100,
+    red_hist_damage_per_minute = 1800,
+    blue_hist_damage_taken_per_minute = 1700,
+    red_hist_damage_taken_per_minute = 2200,
+    blue_hist_game_length_minutes = 30,
+    red_hist_game_length_minutes = 34,
+    stringsAsFactors = FALSE
+  )
+
+  result <- derive_team_signal_features(maps)
+
+  expect_equal(result$blue_matchup_intensity, mean(c(0.6, 0.5)))
+  expect_equal(result$red_matchup_intensity, mean(c(0.3, 0.2)))
+  expect_equal(result$team_opponent_intensity, 0.8)
+  expect_equal(result$duration_history, 32)
+  expect_equal(result$duration_history_imbalance, 4)
+})
+
 test_that("pre-registered candidates are nested in fixed order", {
   config <- list(simple_team_models = list(candidates = list(
     list(

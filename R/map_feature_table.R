@@ -40,7 +40,11 @@ assemble_map_feature_table <- function(team_features, games) {
     "raw_team_games",
     "latest_history_datetime",
     grep(
-      "^(hist_|effective_|league_prior_)",
+      paste0(
+        "^(hist_|effective_|league_prior_|global_prior_|",
+        "league_peer_prior_|global_peer_prior_|",
+        "rating_|momentum_|aggression_|snowball_|behavior_)"
+      ),
       names(team_features),
       value = TRUE
     )

@@ -86,3 +86,59 @@ test_that("map player and draft features are symmetric", {
   expect_equal(result$minimum_effective_champion_games, 8)
   expect_equal(result$draft_frontline_imbalance, 0)
 })
+
+test_that("player champion interaction uses strong shrinkage and no future maps", {
+  metrics <- data.frame(
+    gameid = c("A1", "B1", "A2", "NEXT"),
+    game_datetime = as.POSIXct(
+      c(
+        "2025-01-01 12:00:00",
+        "2025-01-10 12:00:00",
+        "2025-01-20 12:00:00",
+        "2025-02-01 12:00:00"
+      ),
+      tz = "UTC"
+    ),
+    series_cutoff = as.POSIXct(
+      c(
+        "2025-01-01 12:00:00",
+        "2025-01-10 12:00:00",
+        "2025-01-20 12:00:00",
+        "2025-02-01 00:00:00"
+      ),
+      tz = "UTC"
+    ),
+    league_canonical = "LCK",
+    competition_role = "target",
+    side = "Blue",
+    position = "mid",
+    player_id = "player-1",
+    player_name = "Player",
+    champion = c("A", "B", "A", "A"),
+    conflict_involvement_per_minute = c(2, 1, 2, 100),
+    stringsAsFactors = FALSE
+  )
+
+  result <- build_player_rolling_features(
+    metrics,
+    "conflict_involvement_per_minute",
+    half_life_days = 60,
+    prior_games = 5,
+    interaction_prior_games = 30
+  )
+  next_map <- result[result$gameid == "NEXT", ]
+
+  expect_equal(next_map$raw_player_champion_games, 2L)
+  expect_lt(
+    next_map$hist_player_champion_conflict_involvement_per_minute,
+    2
+  )
+  expect_gt(
+    next_map$hist_player_champion_conflict_involvement_per_minute,
+    next_map$hist_conflict_involvement_per_minute
+  )
+  expect_lt(
+    next_map$latest_player_champion_history_datetime,
+    next_map$series_cutoff
+  )
+})

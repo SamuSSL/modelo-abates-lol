@@ -229,3 +229,14 @@ Os comandos definitivos serão registrados após o ambiente R existir. A verific
 - documentação e decision log foram atualizados;
 - outputs são reproduzíveis;
 - nenhuma decisão empírica foi promovida sem evidência.
+
+## Cobertura da rodada de ratings dinâmicos
+
+- todas as equipes permanecem selecionáveis na interface;
+- pouca amostra é sinalizada sem esconder a entidade;
+- jogadores de pouca amostra permanecem visíveis e elencos ausentes usam
+  fallback global explicitamente identificado;
+- ratings locais e globais excluem a própria equipe da referência;
+- momentum, snowball e agressividade permanecem congelados antes da série;
+- Ridge, Lasso e Elastic Net aprendem imputação e `lambda` somente no treino;
+- um draft padrão conclui a previsão no teste funcional do Streamlit.

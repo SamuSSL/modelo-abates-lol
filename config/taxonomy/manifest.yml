@@ -1,8 +1,30 @@
-taxonomy_version: 2026-static-v1
+taxonomy_version: 2026-functional-v2
 data_dragon_version: 16.14.1
 source_url: https://ddragon.leagueoflegends.com/cdn/16.14.1/data/en_US/champion.json
 source_sha256: 19717cae1dd13aa448c6be423723ee57d787b34161e843a82c9ca03100dc9220
-generated_at: 2026-07-24 02:04:06 UTC
+generated_at: 2026-07-24 04:17:32 UTC
 champion_count: 173
 historical_coverage_count: 170
 rework_versions: no
+functional_method: deterministic_kit_text_v1
+functional_columns:
+- engage
+- disengage
+- dive
+- pick
+- poke
+- siege
+- frontline
+- protect
+- scaling
+- early_pressure
+- skirmish
+- split_push
+- wave_clear
+- mobility
+- crowd_control
+- global_pressure
+- damage_physical
+- damage_magic
+- execution_difficulty
+- snowball_dependency

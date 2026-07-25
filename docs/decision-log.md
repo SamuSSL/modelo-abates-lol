@@ -1,5 +1,44 @@
 # Registro de decisões
 
+## 2026-07-24 — Rodada estrutural antes do Bayes
+
+Decisão aprovada pelo usuário:
+
+- decompor explicitamente intensidade e duração prevista;
+- criar taxonomia funcional completa e arquétipos de composição;
+- trazer efeitos separados de equipe e adversário;
+- estudar interação jogador–campeão com shrinkage forte;
+- desenvolver Bayes usando apenas folds de 2022–2025;
+- usar 2026 somente como comparação secundária após congelamento;
+- reservar a confirmação limpa para mapas posteriores ao cutoff atual;
+- comparar Bayes, modelos diretos, decomposição e challengers de transformação
+  ou machine learning nos mesmos mapas temporais.
+
+Motivo: representar mecanismos mais estáveis do fenômeno e evitar que a escolha
+do modelo seja guiada pelo ruído do total final ou pelo período de 2026 já
+observado.
+
+## 2026-07-24 — Seleção congelada após nove folds
+
+Os nove folds de 2023–2025 usaram somente histórico iniciado em 2022. O V1
+reconstruído permaneceu como referência com CRPS 4,5622.
+
+PCA + Negative Binomial obteve CRPS 4,5571. A diferença de -0,0050 teve
+intervalo bootstrap de -0,0219 a 0,0121. O ganho foi pequeno, incerto e não
+uniforme por fold e liga. PCA permanece challenger de pesquisa e não é
+promovida.
+
+O Bayes hierárquico convergiu nos nove folds, com zero divergências e R-hat
+máximo inferior a 1,01. Mesmo assim, obteve CRPS 4,7515 e cobertura de 90% de
+97,94%, indicando excesso de dispersão. Mais iterações não corrigem esse erro
+estrutural. Ele não é promovido.
+
+QCut, XGBoost e as decomposições Gamma e log-normal também ficaram abaixo da
+referência. Nenhum modelo novo foi promovido. O resultado de 2026 será
+comparação secundária e não poderá alterar esta decisão.
+
+O cutoff prospectivo congelado é 2026-07-22 20:02:30 UTC. Confirmação limpa
+exige mapas com resultado posterior a esse cutoff.
 ## D-031 — Taxonomia estática de 2026
 
 - Contexto: o usuário dispensou tratamento de reworks e quer uma taxonomia única baseada em 2026.
@@ -432,3 +471,35 @@ Cada decisão possui contexto, alternativas, decisão, consequência, data e sta
 - Holdout: 2026 permaneceu selado.
 - Data: 2026-07-23.
 - Status: selecionado em desenvolvimento e implementado.
+
+## D-031 — Ratings dinâmicos e regressão regularizada
+
+- A interface passa a mostrar todas as equipes das ligas suportadas. Pouca
+  amostra gera aviso e bloqueio posterior, não remoção da lista.
+- Ratings de ataque e defesa usam índice 100 contra pares da liga e contra
+  todas as ligas. A própria equipe é excluída da referência.
+- Momentum compara meias-vidas de 21 e 120 dias.
+- Agressividade usa vantagem ou desvantagem de ouro aos 15 minutos.
+- Snowball exige vantagem mínima de duas kills aos 15 minutos.
+- Ridge, Lasso e Elastic Net selecionam `lambda` somente dentro do treino.
+- Ridge com ratings, agressividade e snowball obteve CRPS 4,545573 em
+  2022–2025, contra 4,562152 do V1.
+- Momentum piorou a ablação e não entra no challenger congelado.
+- O intervalo bootstrap do Ridge contra o V1 foi
+  [-0,037189; 0,003228]. O ganho ainda não é conclusivo.
+- Em 2026, usado apenas como comparação secundária, o Ridge obteve CRPS
+  4,471662 contra 4,497477 do V1.
+- O V1 permanece em produção. `ridge_plus_behavior` foi congelado como
+  challenger prospectivo para mapas posteriores a 22/07/2026 20:02:30 UTC.
+- Data: 2026-07-24.
+- Status: challenger congelado, aguardando confirmação prospectiva.
+# 2026-07-24 — séries temporais como diagnóstico, não como feature da V1
+
+- Foram criadas séries semanais normalizadas para liga, equipe, target e
+  ratings, com momentum, tendência, volatilidade e regime.
+- O join preditivo usa somente semanas completas anteriores ao cutoff da série.
+- O challenger Ridge com 16 features temporais piorou o CRPS de 4,5456 para
+  4,5681 nos folds 2022–2025.
+- A comparação secundária de 2026 também piorou, de 4,4717 para 4,4909.
+- Decisão: manter o tracking no painel para diagnóstico e pesquisa; não alterar
+  o modelo congelado.

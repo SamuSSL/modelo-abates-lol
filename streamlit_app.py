@@ -10,6 +10,13 @@ from streamlit.errors import StreamlitSecretNotFoundError
 
 from app.lolkills_inference import POSITIONS, load_bundle, predict
 from app.persistence import save_prediction
+from app.tracking import load_tracking_data, render_tracking_page
+from app.ui_options import (
+    player_label,
+    player_options,
+    team_label,
+    team_options,
+)
 
 
 st.set_page_config(
@@ -50,6 +57,23 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
+view = st.radio(
+    "Área",
+    ("Previsão", "Tracking temporal"),
+    horizontal=True,
+    label_visibility="collapsed",
+)
+if view == "Tracking temporal":
+    tracking_path = Path("app_data/time_series_tracking.csv.gz")
+    if not tracking_path.exists():
+        st.error(
+            "As séries temporais ainda não foram geradas. "
+            "Execute o script 31."
+        )
+        st.stop()
+    render_tracking_page(load_tracking_data(tracking_path))
+    st.stop()
+
 BUNDLE_PATH = Path("app_data/model_bundle.json")
 if not BUNDLE_PATH.exists():
     st.error("O bundle do modelo não está disponível. O deploy está incompleto.")
@@ -57,11 +81,11 @@ if not BUNDLE_PATH.exists():
 
 
 @st.cache_resource
-def get_bundle():
+def get_bundle(bundle_mtime_ns):
     return load_bundle(BUNDLE_PATH)
 
 
-bundle = get_bundle()
+bundle = get_bundle(BUNDLE_PATH.stat().st_mtime_ns)
 player_rows = bundle["players"]
 champions = sorted(
     champion
@@ -90,25 +114,19 @@ st.markdown(
     help="Bloqueio significa que não há base histórica suficiente para apostar.",
 )
 
-with st.form("prediction_form"):
+with st.container(border=True):
     st.subheader("Partida")
     match_columns = st.columns(4)
     league_options = bundle["model"]["league_levels"]
-    eligible_league_counts = {
-        league_name: sum(
-            1
-            for row in bundle["teams"]
-            if row.get("league_canonical") == league_name
-            and row["effective_team_games"]
-            >= bundle["sample_limits"]["team_effective_games"]
-        )
+    league_team_counts = {
+        league_name: len(team_options(bundle, league_name))
         for league_name in league_options
     }
     default_league_index = next(
         (
             index
             for index, league_name in enumerate(league_options)
-            if eligible_league_counts[league_name] >= 2
+            if league_team_counts[league_name] >= 2
         ),
         0,
     )
@@ -117,17 +135,12 @@ with st.form("prediction_form"):
         league_options,
         index=default_league_index,
     )
-    team_names = sorted(
-        {
-            row["team_name"]
-            for row in bundle["teams"]
-            if row.get("league_canonical") == league
-            and row["effective_team_games"]
-            >= bundle["sample_limits"]["team_effective_games"]
-        }
-    )
-    if len(team_names) < 2:
-        st.error("A liga não possui duas equipes elegíveis no snapshot atual.")
+    available_teams = team_options(bundle, league)
+    team_keys = [row["key"] for row in available_teams]
+    team_by_key = {row["key"]: row for row in available_teams}
+    team_limit = float(bundle["sample_limits"]["team_effective_games"])
+    if len(team_keys) < 2:
+        st.error("A liga não possui duas equipes no snapshot atual.")
         st.stop()
     planned_date = match_columns[1].date_input("Data prevista")
     planned_time = match_columns[2].time_input(
@@ -144,7 +157,9 @@ with st.form("prediction_form"):
 
     team_columns = st.columns(2)
     selected_teams = {}
+    selected_team_records = {}
     selected_players = {}
+    selected_player_records = {}
     selected_champions = {}
     for side, label, column in (
         ("blue", "Equipe azul", team_columns[0]),
@@ -152,42 +167,59 @@ with st.form("prediction_form"):
     ):
         with column:
             st.subheader(label)
-            selected_teams[side] = st.selectbox(
+            selected_team_key = st.selectbox(
                 "Equipe",
-                team_names,
-                index=0 if side == "blue" else min(1, len(team_names) - 1),
+                team_keys,
+                index=0 if side == "blue" else min(1, len(team_keys) - 1),
+                format_func=lambda key: team_label(
+                    team_by_key[key],
+                    team_limit,
+                ),
                 key=f"{side}_team",
             )
+            selected_team_records[side] = team_by_key[selected_team_key]
+            selected_teams[side] = selected_team_records[side]["team_name"]
+            if (
+                selected_team_records[side]["effective_team_games"]
+                < team_limit
+            ):
+                st.warning(
+                    "Equipe disponível para consulta, mas atualmente abaixo "
+                    "do limite mínimo de amostra. A previsão será bloqueada."
+                )
             selected_players[side] = []
+            selected_player_records[side] = []
             selected_champions[side] = []
             with st.expander("Jogadores e campeões", expanded=True):
                 for position_index, position in enumerate(POSITIONS):
-                    team_choices = sorted(
-                        {
-                            row["player_name"]
-                            for row in player_rows
-                            if row["position"] == position
-                            and row.get("team_name") == selected_teams[side]
-                            and row["effective_player_games"]
-                            >= bundle["sample_limits"]["player_effective_games"]
-                        }
+                    roster_rows, using_global_fallback = player_options(
+                        bundle,
+                        position,
+                        selected_teams[side],
                     )
-                    choices = team_choices or sorted(
-                        {
-                            row["player_name"]
-                            for row in player_rows
-                            if row["position"] == position
-                            and row["effective_player_games"]
-                            >= bundle["sample_limits"]["player_effective_games"]
-                        }
+                    player_by_key = {
+                        row["key"]: row for row in roster_rows
+                    }
+                    choices = list(player_by_key)
+                    player_limit = float(
+                        bundle["sample_limits"]["player_effective_games"]
                     )
                     field_columns = st.columns(2)
+                    selected_player_key = field_columns[0].selectbox(
+                        f"Jogador {position}",
+                        choices,
+                        format_func=lambda key, lookup=player_by_key,
+                        fallback=using_global_fallback: player_label(
+                            lookup[key],
+                            player_limit,
+                            show_team=fallback,
+                        ),
+                        key=f"{side}_{position}_player",
+                    )
+                    selected_player = player_by_key[selected_player_key]
+                    selected_player_records[side].append(selected_player)
                     selected_players[side].append(
-                        field_columns[0].selectbox(
-                            f"Jogador {position}",
-                            choices,
-                            key=f"{side}_{position}_player",
-                        )
+                        selected_player["player_name"]
                     )
                     selected_champions[side].append(
                         field_columns[1].selectbox(
@@ -228,10 +260,10 @@ with st.form("prediction_form"):
         ("Nenhuma", "Over", "Under"),
         help="A confirmação registra stake fixa de 1 unidade.",
     )
-    submitted = st.form_submit_button(
+    submitted = st.button(
         "Calcular previsão",
         type="primary",
-        use_container_width=True,
+        width="stretch",
     )
 
 if submitted:
@@ -251,23 +283,16 @@ if submitted:
         "bet_side": bet_side.lower() if bet_side != "Nenhuma" else None,
     }
     for side in ("blue", "red"):
-        team_record = next(
-            row
-            for row in bundle["teams"]
-            if row["team_name"] == selected_teams[side]
-            and row.get("league_canonical") == league
-        )
+        team_record = selected_team_records[side]
         request[side] = {
             "team_name": selected_teams[side],
             "team_id": team_record.get("team_id"),
             "players": [
                 {
                     "player_name": selected_players[side][index],
-                    "player_id": resolve_player_record(
-                        selected_players[side][index],
-                        position,
-                        selected_teams[side],
-                    ).get("player_id"),
+                    "player_id": selected_player_records[side][index].get(
+                        "player_id"
+                    ),
                     "position": position,
                     "champion": selected_champions[side][index],
                 }
@@ -323,7 +348,7 @@ if submitted:
                     "probabilidade": result["pmf"],
                 },
                 hide_index=True,
-                use_container_width=True,
+                width="stretch",
             )
     if database_url:
         st.info("Evento salvo no histórico permanente.")

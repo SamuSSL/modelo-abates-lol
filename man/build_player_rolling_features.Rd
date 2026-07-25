@@ -8,7 +8,8 @@ build_player_rolling_features(
   player_metrics,
   metric_names,
   half_life_days = 60,
-  prior_games = 10
+  prior_games = 10,
+  interaction_prior_games = 30
 )
 }
 \arguments{
@@ -19,6 +20,8 @@ build_player_rolling_features(
 \item{half_life_days}{Exponential-decay half-life.}
 
 \item{prior_games}{League-position prior strength.}
+
+\item{interaction_prior_games}{Strong player-champion interaction prior.}
 }
 \value{
 Target-player rows with frozen pre-series features.
