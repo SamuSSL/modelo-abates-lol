@@ -503,3 +503,15 @@ Cada decisão possui contexto, alternativas, decisão, consequência, data e sta
 - A comparação secundária de 2026 também piorou, de 4,4717 para 4,4909.
 - Decisão: manter o tracking no painel para diagnóstico e pesquisa; não alterar
   o modelo congelado.
+
+## D-032 — Deploy atualizado e coleta prospectiva
+
+- A interface atualizada foi publicada no Streamlit Community Cloud.
+- O deploy usa o projeto Supabase exclusivo `modelo-abates-lol`.
+- O papel `lol_kills_writer` possui somente `SELECT` e `INSERT` no histórico.
+- A conexão usa o Transaction Pooler e fica somente nos Secrets do Streamlit.
+- Uma previsão pública com status `ok` foi gravada e confirmada diretamente em
+  `lol_kills.prediction_events`.
+- A coleta prospectiva começou em 2026-07-25 para mapas posteriores ao cutoff
+  congelado do challenger.
+- Status: concluído.

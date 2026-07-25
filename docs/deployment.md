@@ -51,9 +51,13 @@ O schema, a tabela, as políticas RLS e os grants reproduzíveis estão em
 Aplicação publicada em:
 https://modelo-abates-lol-sry25k3zh76r7ffs2qo8m3.streamlit.app/
 
-O caso `ok` foi validado no ambiente público. Enquanto o segredo
-PostgreSQL não for configurado, a aplicação usa SQLite temporário. Esse
-arquivo pode desaparecer quando o Streamlit reiniciar o processo.
+O caso `ok` foi validado no ambiente público. O segredo PostgreSQL está
+configurado no Streamlit Community Cloud e a aplicação grava no projeto
+Supabase exclusivo `modelo-abates-lol`.
+
+A coleta prospectiva começou em 2026-07-25. A primeira validação após a
+configuração gravou um evento `ok` em
+`lol_kills.prediction_events`, sem aposta confirmada.
 
 Referências oficiais:
 
