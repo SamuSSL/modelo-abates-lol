@@ -101,7 +101,10 @@ Toda chamada válida ao serviço de previsão, inclusive uma resposta bloqueada,
 
 ### PRD-009 — Registrar aposta opcional
 
-Se `bet_side` for `over` ou `under`, o snapshot deve ser marcado como aposta realizada com stake fixa de 1 unidade. Sem `bet_side`, o snapshot é apenas uma consulta.
+A previsão deve ser persistida antes da decisão de apostar. Depois de ver o
+resultado, o usuário deve registrar `over`, `under` ou `no_bet` em um evento
+append-only separado, ligado ao snapshot original. Over e Under usam stake fixa
+de 1 unidade e exigem a odd correspondente.
 
 ### PRD-010 — Reconciliar resultado
 
@@ -130,11 +133,20 @@ lineup_b[5]: player, position, champion
 line
 market_odds_over?
 market_odds_under?
-bet_side?
 model_version?
 ```
 
 IDs canônicos serão preferidos. Nomes poderão ser aceitos apenas quando a resolução for única.
+
+## Decisão posterior à previsão
+
+```text
+event_id
+prediction_id
+decision: over | under | no_bet
+offered_odds?
+stake: 1 | null
+```
 
 ## Outputs públicos
 
@@ -179,7 +191,10 @@ Campos probabilísticos e de EV poderão ser `null` quando `status = "blocked"`.
 - Jogador, equipe e campeão devem ser resolvidos no catálogo versionado.
 - Linha deve ser finita, não negativa e terminar em `.5`.
 - Odds, quando informadas, devem ser finitas e maiores que 1.
-- `bet_side` deve ser ausente, `over` ou `under`; a odd do lado apostado deve existir.
+- Uma decisão Over ou Under deve referenciar uma previsão existente e ter a
+  odd correspondente.
+- `no_bet` deve ser registrado sem odd e sem stake.
+- Cada previsão pode receber no máximo uma decisão append-only.
 
 ## Comportamento probabilístico
 

@@ -31,11 +31,11 @@ Nunca deve entrar no Git.
 Na V1 pública, o PostgreSQL é fornecido pelo projeto Supabase exclusivo
 `modelo-abates-lol`. Ele não compartilha banco com outros projetos. O aplicativo usa
 o Transaction Pooler na porta 6543 e um papel próprio chamado
-`lol_kills_writer`. Esse papel possui apenas `SELECT` e `INSERT` na
-tabela `lol_kills.prediction_events`; não possui `UPDATE` nem `DELETE`.
-O schema, a tabela, as políticas RLS e os grants reproduzíveis estão em
-`sql/001_supabase_prediction_events.sql`. A senha do papel não pertence
-à migração e existe somente nos Secrets do Streamlit.
+`lol_kills_writer`. Esse papel possui apenas `SELECT` e `INSERT` nas
+tabelas `lol_kills.prediction_events` e `lol_kills.bet_decisions`; não
+possui `UPDATE` nem `DELETE`. O schema, as tabelas, as políticas RLS e os
+grants reproduzíveis estão nas migrações da pasta `sql/`. A senha do papel
+não pertence às migrações e existe somente nos Secrets do Streamlit.
 
 ## Publicação
 
@@ -58,6 +58,10 @@ Supabase exclusivo `modelo-abates-lol`.
 A coleta prospectiva começou em 2026-07-25. A primeira validação após a
 configuração gravou um evento `ok` em
 `lol_kills.prediction_events`, sem aposta confirmada.
+
+A interface salva primeiro a previsão. Somente depois de mostrar as
+probabilidades ela oferece as decisões Over, Under ou Não apostar. A decisão
+é gravada separadamente em `lol_kills.bet_decisions`.
 
 Referências oficiais:
 

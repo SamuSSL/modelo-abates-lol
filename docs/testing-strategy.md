@@ -164,7 +164,10 @@ Reexecução com seed, restauração `renv`, equivalência entre scripts e `targ
 - campos ausentes e extras incompatíveis;
 - nomes ambíguos;
 - odds inválidas;
-- `bet_side` sem odd correspondente;
+- previsão salva antes da decisão de aposta;
+- decisão Over ou Under sem odd correspondente;
+- decisão `no_bet` sem stake;
+- segunda decisão para a mesma previsão rejeitada;
 - bloqueio persiste snapshot sem EV acionável;
 - falha de banco impede resposta `ok`;
 - timeout do cliente Python;

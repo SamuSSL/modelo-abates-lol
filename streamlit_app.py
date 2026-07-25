@@ -9,7 +9,7 @@ import streamlit as st
 from streamlit.errors import StreamlitSecretNotFoundError
 
 from app.lolkills_inference import POSITIONS, load_bundle, predict
-from app.persistence import save_prediction
+from app.persistence import save_bet_decision, save_prediction
 from app.tracking import load_tracking_data, render_tracking_page
 from app.ui_options import (
     player_label,
@@ -105,6 +105,16 @@ def resolve_player_record(player_name, position, team_name):
         row for row in position_matches if row.get("team_name") == team_name
     ]
     return (team_matches or position_matches)[0]
+
+
+def get_database_url():
+    database_url = os.getenv("DATABASE_URL")
+    try:
+        if "database" in st.secrets:
+            database_url = st.secrets["database"].get("url")
+    except StreamlitSecretNotFoundError:
+        pass
+    return database_url
 
 
 st.title("Total de kills por mapa")
@@ -235,7 +245,7 @@ with st.container(border=True):
                     )
 
     st.subheader("Linha e odds")
-    market_columns = st.columns(4)
+    market_columns = st.columns(3)
     line = market_columns[0].number_input(
         "Linha de kills",
         min_value=0.5,
@@ -254,11 +264,6 @@ with st.container(border=True):
         min_value=0.0,
         value=0.0,
         step=0.01,
-    )
-    bet_side = market_columns[3].selectbox(
-        "Aposta confirmada",
-        ("Nenhuma", "Over", "Under"),
-        help="A confirmação registra stake fixa de 1 unidade.",
     )
     submitted = st.button(
         "Calcular previsão",
@@ -280,7 +285,6 @@ if submitted:
         "line": float(line),
         "odds_over": float(odds_over) if odds_over > 0 else None,
         "odds_under": float(odds_under) if odds_under > 0 else None,
-        "bet_side": bet_side.lower() if bet_side != "Nenhuma" else None,
     }
     for side in ("blue", "red"):
         team_record = selected_team_records[side]
@@ -302,14 +306,23 @@ if submitted:
 
     with st.spinner("Calculando distribuição de kills..."):
         result = predict(request, bundle)
-        database_url = os.getenv("DATABASE_URL")
-        try:
-            if "database" in st.secrets:
-                database_url = st.secrets["database"].get("url")
-        except StreamlitSecretNotFoundError:
-            pass
+        database_url = get_database_url()
         event_id = save_prediction(request, result, database_url)
 
+    st.session_state["last_prediction"] = {
+        "request": request,
+        "result": result,
+        "event_id": event_id,
+        "decision": None,
+    }
+
+prediction_state = st.session_state.get("last_prediction")
+if prediction_state:
+    request = prediction_state["request"]
+    result = prediction_state["result"]
+    event_id = prediction_state["event_id"]
+    line = float(request["line"])
+    database_url = get_database_url()
     if result["status"] == "blocked":
         st.error(result["reason"])
     else:
@@ -350,11 +363,71 @@ if submitted:
                 hide_index=True,
                 width="stretch",
             )
+
+        st.subheader("Decisão da aposta")
+        if prediction_state["decision"]:
+            decision_label = {
+                "over": "Over, stake de 1 unidade.",
+                "under": "Under, stake de 1 unidade.",
+                "no_bet": "não apostar.",
+            }[prediction_state["decision"]]
+            st.success(f"Decisão salva: {decision_label}")
+        else:
+            st.write(
+                "Agora escolha se esta previsão virou uma aposta. "
+                "A decisão será ligada ao evento acima."
+            )
+            decision_columns = st.columns(3)
+            odds_over_saved = request.get("odds_over")
+            odds_under_saved = request.get("odds_under")
+            confirm_over = decision_columns[0].button(
+                "Confirmar Over",
+                disabled=not odds_over_saved or odds_over_saved <= 1,
+                width="stretch",
+                key=f"confirm_over_{event_id}",
+            )
+            confirm_under = decision_columns[1].button(
+                "Confirmar Under",
+                disabled=not odds_under_saved or odds_under_saved <= 1,
+                width="stretch",
+                key=f"confirm_under_{event_id}",
+            )
+            confirm_no_bet = decision_columns[2].button(
+                "Não apostar",
+                width="stretch",
+                key=f"confirm_no_bet_{event_id}",
+            )
+            decision = None
+            offered_odds = None
+            if confirm_over:
+                decision = "over"
+                offered_odds = odds_over_saved
+            elif confirm_under:
+                decision = "under"
+                offered_odds = odds_under_saved
+            elif confirm_no_bet:
+                decision = "no_bet"
+            if decision:
+                save_bet_decision(
+                    event_id,
+                    result["prediction_id"],
+                    decision,
+                    offered_odds,
+                    database_url,
+                )
+                prediction_state["decision"] = decision
+                st.session_state["last_prediction"] = prediction_state
+                st.rerun()
+            if not odds_over_saved or not odds_under_saved:
+                st.caption(
+                    "Para confirmar Over ou Under, informe a odd "
+                    "correspondente e calcule novamente."
+                )
     if database_url:
-        st.info("Evento salvo no histórico permanente.")
+        st.info("Previsão salva no histórico permanente.")
     else:
         st.warning(
-            "Evento registrado em armazenamento temporário. "
+            "Previsão registrada em armazenamento temporário. "
             "Ele pode ser apagado quando o aplicativo reiniciar."
         )
     st.caption(

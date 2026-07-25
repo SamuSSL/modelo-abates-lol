@@ -28,12 +28,26 @@ CREATE TABLE IF NOT EXISTS prediction_events (
 )
 """
 
+BET_DECISION_SCHEMA = """
+CREATE TABLE IF NOT EXISTS bet_decisions (
+    event_id TEXT PRIMARY KEY,
+    prediction_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    decision TEXT NOT NULL CHECK (
+        decision IN ('over', 'under', 'no_bet')
+    ),
+    stake REAL,
+    offered_odds REAL,
+    FOREIGN KEY (event_id) REFERENCES prediction_events(event_id)
+)
+"""
+
 
 def _event_values(
     request: dict[str, Any],
     result: dict[str, Any],
 ) -> tuple[Any, ...]:
-    bet_side = request.get("bet_side")
+    bet_side = None
     return (
         str(uuid.uuid4()),
         result.get("prediction_id", "blocked"),
@@ -90,3 +104,76 @@ def save_prediction(
             values,
         )
     return values[0]
+
+
+def save_bet_decision(
+    event_id: str,
+    prediction_id: str,
+    decision: str,
+    offered_odds: float | None = None,
+    database_url: str | None = None,
+) -> str:
+    if decision not in {"over", "under", "no_bet"}:
+        raise ValueError("Decisão inválida.")
+    if decision in {"over", "under"}:
+        if offered_odds is None or float(offered_odds) <= 1:
+            raise ValueError(
+                "Uma aposta confirmada precisa da odd decimal correspondente."
+            )
+        stake = 1.0
+        normalized_odds = float(offered_odds)
+    else:
+        stake = None
+        normalized_odds = None
+
+    values = (
+        event_id,
+        prediction_id,
+        datetime.now(timezone.utc).isoformat(),
+        decision,
+        stake,
+        normalized_odds,
+    )
+    database_url = database_url or os.getenv("DATABASE_URL")
+    if database_url and database_url.startswith(
+        ("postgres://", "postgresql://")
+    ):
+        import psycopg
+
+        with psycopg.connect(database_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    """
+                    INSERT INTO lol_kills.bet_decisions (
+                        event_id,
+                        prediction_id,
+                        created_at,
+                        decision,
+                        stake,
+                        offered_odds
+                    ) VALUES (%s, %s, %s, %s, %s, %s)
+                    """,
+                    values,
+                )
+        return event_id
+
+    local_path = Path(".local") / "predictions.sqlite"
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(local_path) as connection:
+        connection.execute("PRAGMA foreign_keys = ON")
+        connection.execute(SCHEMA)
+        connection.execute(BET_DECISION_SCHEMA)
+        connection.execute(
+            """
+            INSERT INTO bet_decisions (
+                event_id,
+                prediction_id,
+                created_at,
+                decision,
+                stake,
+                offered_odds
+            ) VALUES (?, ?, ?, ?, ?, ?)
+            """,
+            values,
+        )
+    return event_id

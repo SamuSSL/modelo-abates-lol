@@ -66,6 +66,33 @@ def test_default_draft_produces_a_prediction_without_ui_error():
     assert [message.value for message in app.success] == [
         "Previsão calculada."
     ]
+    assert "Aposta confirmada" not in [
+        selectbox.label for selectbox in app.selectbox
+    ]
+    assert {
+        "Confirmar Over",
+        "Confirmar Under",
+        "Não apostar",
+    }.issubset({button.label for button in app.button})
+
+
+def test_no_bet_is_confirmed_after_prediction():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+
+    app.button[0].click().run(timeout=30)
+    no_bet_button = next(
+        button for button in app.button if button.label == "Não apostar"
+    )
+    no_bet_button.click().run(timeout=30)
+
+    assert len(app.exception) == 0
+    assert any(
+        "Decisão salva: não apostar." in message.value
+        for message in app.success
+    )
 
 
 def test_tracking_page_loads_without_ui_error():

@@ -515,3 +515,15 @@ Cada decisão possui contexto, alternativas, decisão, consequência, data e sta
 - A coleta prospectiva começou em 2026-07-25 para mapas posteriores ao cutoff
   congelado do challenger.
 - Status: concluído.
+
+## D-033 — Decisão de aposta posterior à previsão
+
+- A previsão continua sendo salva no momento do cálculo para evitar viés de
+  seleção na avaliação prospectiva.
+- A decisão de apostar ocorre somente depois que as probabilidades são
+  apresentadas.
+- Over, Under e Não apostar são gravados em evento separado, ligado à previsão.
+- Cada previsão aceita no máximo uma decisão e o histórico permanece
+  append-only.
+- Over e Under exigem a odd correspondente e registram stake fixa de 1 unidade.
+- Status: aprovado e implementado.
