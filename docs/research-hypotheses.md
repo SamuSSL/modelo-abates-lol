@@ -171,6 +171,10 @@ estimativa ajustada
 2. Ataque, defesa e ritmo de conflito das equipes.
 3. Duração prevista como challenger.
 4. Jogadores e estabilidade de elenco.
+
+> Estado atual: hipóteses relacionadas a jogadores foram arquivadas por decisão
+> do produto. Elas não fazem parte do V1, dos challengers ativos nem do contrato
+> de inferência. A pesquisa operacional segue com efeitos de equipe e draft.
 5. Campeões individuais e familiaridade.
 6. Atributos e arquétipos de composição.
 7. Modelos mais complexos somente após ganho comprovado.

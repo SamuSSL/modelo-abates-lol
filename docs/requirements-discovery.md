@@ -166,6 +166,11 @@ Estas pendências não autorizam decisão arbitrária durante a implementação:
 - limites numéricos de calibração e degradação por liga;
 - distribuição final e arquitetura campeã;
 - utilidade incremental de jogadores, campeões, arquétipos e duração;
+
+> Decisão posterior aprovada: jogadores foram retirados do contrato e do modelo
+> operacional. A entrada atual exige equipes e cinco campeões por posição de
+> cada lado. Linhas de jogador da fonte permanecem apenas para auditoria das
+> kills e extração do draft; não existe bloqueio por amostra de jogador.
 - taxonomia final aprovada;
 - gatilhos de retreinamento e drift.
 

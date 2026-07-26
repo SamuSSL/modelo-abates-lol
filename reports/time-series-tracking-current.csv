@@ -8,15 +8,15 @@
 2026-06-08,"league","LCS","LCS","game_length_minutes",33.3,33.347936,33.1269,100.667242,0.667242,0.210578,3.450273,"hot_accelerating",110
 2026-06-08,"league","LCS","LCS","total_kills",21.5,23.192854,24.529225,94.551925,-5.448075,-2.008854,14.30331,"cold_deteriorating",110
 2026-06-08,"league","LCS","LCS","total_kills_per_minute",0.658443,0.703535,0.747696,94.09372,-5.90628,-2.32519,13.012665,"cold_deteriorating",110
-2026-06-01,"league","LEC","LEC","game_length_minutes",32.110606,33.010904,33.469452,98.629951,-1.370049,-0.395595,6.355277,"cold_deteriorating",112
-2026-06-01,"league","LEC","LEC","total_kills",25.090909,27.514282,27.656727,99.484954,-0.515046,0.90122,15.677864,"cold_recovering",112
-2026-06-01,"league","LEC","LEC","total_kills_per_minute",0.790619,0.83718,0.830824,100.764974,0.764974,1.228512,9.760454,"hot_accelerating",112
-2026-07-20,"league","LES","LES","game_length_minutes",31.410417,31.898422,31.247457,102.083257,2.083257,0.798738,9.637962,"hot_accelerating",111
-2026-07-20,"league","LES","LES","total_kills",36.25,33.784737,32.071017,105.343517,5.343517,0.803879,7.004839,"hot_accelerating",111
-2026-07-20,"league","LES","LES","total_kills_per_minute",1.154709,1.066715,1.03621,102.943908,2.943908,-0.044442,9.12819,"hot_cooling",111
-2026-07-20,"league","LFL","LFL","game_length_minutes",32.02,32.778291,32.664661,100.347869,0.347869,0.445409,13.479359,"hot_accelerating",112
-2026-07-20,"league","LFL","LFL","total_kills",35.2,34.723548,32.832659,105.759171,5.759171,0.828588,17.425291,"hot_accelerating",112
-2026-07-20,"league","LFL","LFL","total_kills_per_minute",1.104659,1.068463,1.01483,105.284967,5.284967,0.381563,10.658757,"hot_accelerating",112
+2026-07-20,"league","LEC","LEC","game_length_minutes",33.964583,33.392376,33.545626,99.543159,-0.456841,-0.226949,6.450368,"balanced",113
+2026-07-20,"league","LEC","LEC","total_kills",32,29.308569,28.324923,103.472724,3.472724,0.473988,17.054544,"hot_accelerating",113
+2026-07-20,"league","LEC","LEC","total_kills_per_minute",0.961416,0.886874,0.850915,104.225917,4.225917,0.674366,11.448536,"hot_accelerating",113
+2026-07-20,"league","LES","LES","game_length_minutes",31.293056,31.851477,31.229401,101.991956,1.991956,0.79219,9.687218,"hot_accelerating",111
+2026-07-20,"league","LES","LES","total_kills",36.166667,33.751404,32.058196,105.281668,5.281668,0.799352,6.972784,"hot_accelerating",111
+2026-07-20,"league","LES","LES","total_kills_per_minute",1.172169,1.0737,1.038896,103.350008,3.350008,-0.012977,9.483002,"hot_cooling",111
+2026-07-20,"league","LFL","LFL","game_length_minutes",31.75,32.670291,32.623122,100.144587,0.144587,0.420896,13.551923,"hot_accelerating",112
+2026-07-20,"league","LFL","LFL","total_kills",33.666667,34.110215,32.596761,104.642956,4.642956,0.692041,18.024831,"hot_accelerating",112
+2026-07-20,"league","LFL","LFL","total_kills_per_minute",1.059979,1.050591,1.007956,104.229862,4.229862,0.249838,11.196106,"hot_accelerating",112
 2026-06-08,"league","LPL","LPL","game_length_minutes",32.659091,32.669991,32.600605,100.212835,0.212835,0.223693,2.260291,"balanced",124
 2026-06-08,"league","LPL","LPL","total_kills",31.636364,29.557355,28.730448,102.878155,2.878155,0.700698,14.032326,"hot_accelerating",124
 2026-06-08,"league","LPL","LPL","total_kills_per_minute",0.987305,0.914386,0.889659,102.779336,2.779336,0.360215,13.534535,"hot_accelerating",124
@@ -603,17 +603,17 @@
 2026-05-04,"team","LEC","Fnatic","rating_defense_global",115.859441,112.903381,111.12526,101.600105,1.600105,-0.085924,3.490737,"hot_cooling",97
 2026-05-04,"team","LEC","Fnatic","rating_defense_league",105.472698,101.766501,100.124923,101.63953,1.63953,-0.16285,3.636346,"hot_cooling",97
 2026-05-04,"team","LEC","Fnatic","snowball_index_league",92.626096,94.725375,98.191273,96.470258,-3.529742,-0.295691,2.742792,"cold_deteriorating",97
-2026-06-01,"team","LEC","G2 Esports","aggression_ahead_league",105.171551,102.899658,100.734683,102.149186,2.149186,0.312815,1.304907,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","aggression_behind_league",100.457633,100.802076,101.684694,99.132005,-0.867995,-0.531743,1.11084,"cold_deteriorating",106
-2026-06-01,"team","LEC","G2 Esports","combined_kills_per_minute",0.869585,0.90333,0.857397,105.357228,5.357228,3.211095,28.037137,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","deaths_per_minute",0.345859,0.35994,0.342583,105.066675,5.066675,1.788793,20.967871,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","game_length_minutes",29.363333,31.393439,32.850252,95.565291,-4.434709,-1.71705,13.038354,"cold_deteriorating",106
-2026-06-01,"team","LEC","G2 Esports","kills_per_minute",0.523725,0.543389,0.514814,105.550576,5.550576,4.157565,44.136109,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","rating_attack_global",108.214983,105.484996,101.40924,104.019117,4.019117,0.750233,2.923541,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","rating_attack_league",119.459824,116.797796,113.302094,103.085294,3.085294,0.38157,2.564265,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","rating_defense_global",118.555419,119.682104,119.201257,100.403391,0.403391,0.309641,1.109645,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","rating_defense_league",112.088188,112.240635,110.416094,101.652422,1.652422,0.725531,1.839013,"hot_accelerating",106
-2026-06-01,"team","LEC","G2 Esports","snowball_index_league",106.67354,104.820957,103.246716,101.524737,1.524737,0.517766,0.732383,"hot_accelerating",106
+2026-07-20,"team","LEC","G2 Esports","aggression_ahead_league",109.973631,105.729247,102.156059,103.497774,3.497774,0.463243,1.765856,"hot_accelerating",107
+2026-07-20,"team","LEC","G2 Esports","aggression_behind_league",104.626119,102.331693,102.137221,100.190403,0.190403,-0.150677,2.049468,"balanced",107
+2026-07-20,"team","LEC","G2 Esports","combined_kills_per_minute",0.951934,0.922771,0.871941,105.829566,5.829566,1.325266,25.823551,"hot_accelerating",107
+2026-07-20,"team","LEC","G2 Esports","deaths_per_minute",0.248386,0.315319,0.328091,96.107091,-3.892909,0.094559,21.463687,"cold_recovering",107
+2026-07-20,"team","LEC","G2 Esports","game_length_minutes",34.279167,32.54773,33.070085,98.420461,-1.579539,-0.967242,9.8713,"cold_deteriorating",107
+2026-07-20,"team","LEC","G2 Esports","kills_per_minute",0.703548,0.607453,0.54385,111.694887,11.694887,2.06772,43.703262,"hot_accelerating",107
+2026-07-20,"team","LEC","G2 Esports","rating_attack_global",103.122541,104.540014,101.672825,102.820015,2.820015,0.53085,2.931676,"hot_accelerating",107
+2026-07-20,"team","LEC","G2 Esports","rating_attack_league",115.871309,116.427201,113.697358,102.400974,2.400974,0.365636,2.508593,"hot_accelerating",107
+2026-07-20,"team","LEC","G2 Esports","rating_defense_global",102.744501,112.907063,116.669448,96.775175,-3.224825,-0.276227,5.25663,"cold_deteriorating",107
+2026-07-20,"team","LEC","G2 Esports","rating_defense_league",96.642523,106.00139,108.297083,97.880189,-2.119811,0.015062,5.741938,"cold_recovering",107
+2026-07-20,"team","LEC","G2 Esports","snowball_index_league",105.272728,105.001665,103.55841,101.393663,1.393663,0.333614,1.048227,"hot_accelerating",107
 2026-06-01,"team","LEC","GiantX","aggression_ahead_league",97.073741,97.34442,98.048162,99.28225,-0.71775,-0.096828,1.514222,"cold_deteriorating",49
 2026-06-01,"team","LEC","GiantX","aggression_behind_league",102.972806,101.39057,99.635514,101.761477,1.761477,0.366566,1.792697,"hot_accelerating",49
 2026-06-01,"team","LEC","GiantX","combined_kills_per_minute",0.737562,0.816717,0.811354,100.661042,0.661042,0.850653,31.755843,"hot_accelerating",49
@@ -625,17 +625,17 @@
 2026-06-01,"team","LEC","GiantX","rating_defense_global",103.347692,106.555103,110.081989,96.796128,-3.203872,-0.529466,5.133812,"cold_deteriorating",49
 2026-06-01,"team","LEC","GiantX","rating_defense_league",96.036344,98.002683,100.394596,97.617489,-2.382511,-0.400503,4.514741,"cold_deteriorating",49
 2026-06-01,"team","LEC","GiantX","snowball_index_league",101.709673,102.629574,102.031287,100.586376,0.586376,0.172523,2.152013,"hot_accelerating",49
-2026-06-01,"team","LEC","Karmine Corp","aggression_ahead_league",99.696243,100.496815,99.146111,101.362337,1.362337,0.541704,1.962925,"hot_accelerating",50
-2026-06-01,"team","LEC","Karmine Corp","aggression_behind_league",105.520555,104.503032,102.081915,102.371739,2.371739,0.439222,1.603697,"hot_accelerating",50
-2026-06-01,"team","LEC","Karmine Corp","combined_kills_per_minute",0.790619,0.824897,0.819637,100.641752,0.641752,1.013184,12.200781,"hot_accelerating",50
-2026-06-01,"team","LEC","Karmine Corp","deaths_per_minute",0.348528,0.367133,0.353754,103.782015,3.782015,2.338558,80.98402,"hot_accelerating",50
-2026-06-01,"team","LEC","Karmine Corp","game_length_minutes",32.110606,32.036679,32.63856,98.155922,-1.844078,-0.551346,23.496902,"cold_deteriorating",50
-2026-06-01,"team","LEC","Karmine Corp","kills_per_minute",0.442091,0.457765,0.465884,98.257295,-1.742705,0.006804,38.462329,"cold_recovering",50
-2026-06-01,"team","LEC","Karmine Corp","rating_attack_global",103.484111,102.275204,99.121355,103.181805,3.181805,0.766755,3.556682,"hot_accelerating",50
-2026-06-01,"team","LEC","Karmine Corp","rating_attack_league",113.972927,113.337415,110.830972,102.261501,2.261501,0.666752,4.400675,"hot_accelerating",50
-2026-06-01,"team","LEC","Karmine Corp","rating_defense_global",113.202088,114.39393,118.730513,96.347541,-3.652459,-0.756787,4.587257,"cold_deteriorating",50
-2026-06-01,"team","LEC","Karmine Corp","rating_defense_league",107.146585,106.970287,110.092279,97.164205,-2.835795,-0.683049,4.969192,"cold_deteriorating",50
-2026-06-01,"team","LEC","Karmine Corp","snowball_index_league",108.813029,108.053548,106.922375,101.057939,1.057939,0.272631,2.262959,"hot_accelerating",50
+2026-07-20,"team","LEC","Karmine Corp","aggression_ahead_league",102.635086,101.352123,99.682876,101.674558,1.674558,0.43597,2.039281,"hot_accelerating",51
+2026-07-20,"team","LEC","Karmine Corp","aggression_behind_league",110.452192,106.882696,103.36965,103.398528,3.398528,0.53948,2.020076,"hot_accelerating",51
+2026-07-20,"team","LEC","Karmine Corp","combined_kills_per_minute",0.979928,0.886909,0.844297,105.047057,5.047057,0.428575,12.959043,"hot_accelerating",51
+2026-07-20,"team","LEC","Karmine Corp","deaths_per_minute",0.362526,0.36529,0.355103,102.868709,2.868709,1.539977,80.88417,"hot_accelerating",51
+2026-07-20,"team","LEC","Karmine Corp","game_length_minutes",33.65,32.682008,32.794166,99.657993,-0.342007,-0.252396,23.508347,"cold_deteriorating",51
+2026-07-20,"team","LEC","Karmine Corp","kills_per_minute",0.617401,0.521619,0.489194,106.628308,6.628308,-0.378186,39.530943,"hot_cooling",51
+2026-07-20,"team","LEC","Karmine Corp","rating_attack_global",103.787815,102.880248,99.839272,103.045872,3.045872,0.655099,3.472257,"hot_accelerating",51
+2026-07-20,"team","LEC","Karmine Corp","rating_attack_league",115.103038,114.043664,111.488213,102.292127,2.292127,0.492862,4.149581,"hot_accelerating",51
+2026-07-20,"team","LEC","Karmine Corp","rating_defense_global",104.48222,110.429246,116.538468,94.757764,-5.242236,-0.979454,4.871241,"cold_deteriorating",51
+2026-07-20,"team","LEC","Karmine Corp","rating_defense_league",98.238346,103.477511,108.268597,95.574815,-4.425185,-0.836932,5.39651,"cold_deteriorating",51
+2026-07-20,"team","LEC","Karmine Corp","snowball_index_league",109.150697,108.492408,107.265194,101.144093,1.144093,0.212369,2.24524,"hot_accelerating",51
 2026-02-02,"team","LEC","Karmine Corp Blue","aggression_ahead_league",100.018248,100.91741,102.169115,98.774869,-1.225131,-0.805896,1.05641,"cold_deteriorating",4
 2026-02-02,"team","LEC","Karmine Corp Blue","aggression_behind_league",111.426028,109.279192,106.733282,102.385302,2.385302,1.583807,3.286213,"hot_accelerating",4
 2026-02-02,"team","LEC","Karmine Corp Blue","combined_kills_per_minute",0.817108,0.91741,0.894614,102.548205,2.548205,2.56533,34.542885,"hot_accelerating",4
@@ -691,17 +691,17 @@
 2022-08-29,"team","LEC","Misfits Gaming","rating_defense_global",94.788926,95.799014,94.022744,101.889192,1.889192,1.242978,2.766211,"hot_accelerating",20
 2022-08-29,"team","LEC","Misfits Gaming","rating_defense_league",92.334179,93.201001,92.261213,101.018616,1.018616,0.954828,3.162641,"hot_accelerating",20
 2022-08-29,"team","LEC","Misfits Gaming","snowball_index_league",104.184514,103.535118,102.776932,100.737701,0.737701,0.17038,0.655593,"hot_accelerating",20
-2026-06-01,"team","LEC","Movistar KOI","aggression_ahead_league",101.859435,102.322683,102.448052,99.877627,-0.122373,-0.046937,1.846759,"balanced",33
-2026-06-01,"team","LEC","Movistar KOI","aggression_behind_league",108.522073,106.387271,102.85195,103.437291,3.437291,0.547064,1.639219,"hot_accelerating",33
-2026-06-01,"team","LEC","Movistar KOI","combined_kills_per_minute",0.721442,0.806819,0.811272,99.451033,-0.548967,0.19309,33.666757,"cold_recovering",33
-2026-06-01,"team","LEC","Movistar KOI","deaths_per_minute",0.512821,0.438816,0.386444,113.55233,13.55233,-0.350268,86.277542,"hot_cooling",33
-2026-06-01,"team","LEC","Movistar KOI","game_length_minutes",38.277778,34.677847,33.913841,102.252787,2.252787,-0.136609,13.545138,"hot_cooling",33
-2026-06-01,"team","LEC","Movistar KOI","kills_per_minute",0.208621,0.368002,0.424828,86.623815,-13.376185,0.687354,50.258035,"cold_recovering",33
-2026-06-01,"team","LEC","Movistar KOI","rating_attack_global",103.656978,102.032754,97.810133,104.317162,4.317162,0.673866,3.489666,"hot_accelerating",33
-2026-06-01,"team","LEC","Movistar KOI","rating_attack_league",113.934855,112.699892,108.618526,103.757523,3.757523,0.547004,3.941934,"hot_accelerating",33
-2026-06-01,"team","LEC","Movistar KOI","rating_defense_global",107.68342,109.289715,110.81232,98.625961,-1.374039,-0.260188,2.888134,"cold_deteriorating",33
-2026-06-01,"team","LEC","Movistar KOI","rating_defense_league",100.287639,101.17406,101.529023,99.650382,-0.349618,-0.077391,2.871613,"balanced",33
-2026-06-01,"team","LEC","Movistar KOI","snowball_index_league",104.406502,103.120287,101.535082,101.561239,1.561239,0.224327,1.402044,"hot_accelerating",33
+2026-07-20,"team","LEC","Movistar KOI","aggression_ahead_league",101.664959,102.059594,102.327577,99.738113,-0.261887,-0.019787,1.844637,"balanced",34
+2026-07-20,"team","LEC","Movistar KOI","aggression_behind_league",106.679902,106.504323,103.440865,102.961555,2.961555,0.489254,1.952509,"hot_accelerating",34
+2026-07-20,"team","LEC","Movistar KOI","combined_kills_per_minute",0.962402,0.869052,0.834523,104.137563,4.137563,0.361193,35.225999,"hot_accelerating",34
+2026-07-20,"team","LEC","Movistar KOI","deaths_per_minute",0.629966,0.515276,0.423909,121.553476,21.553476,1.808473,79.34943,"hot_accelerating",34
+2026-07-20,"team","LEC","Movistar KOI","game_length_minutes",34.620833,34.655042,34.022609,101.85886,1.85886,0.137272,10.664527,"hot_accelerating",34
+2026-07-20,"team","LEC","Movistar KOI","kills_per_minute",0.332436,0.353776,0.410614,86.15775,-13.84225,-1.132948,48.013094,"cold_deteriorating",34
+2026-07-20,"team","LEC","Movistar KOI","rating_attack_global",97.138976,100.075243,97.706878,102.42395,2.42395,0.637869,4.450519,"hot_accelerating",34
+2026-07-20,"team","LEC","Movistar KOI","rating_attack_league",106.348677,110.159406,108.269318,101.745728,1.745728,0.50765,4.778516,"hot_accelerating",34
+2026-07-20,"team","LEC","Movistar KOI","rating_defense_global",103.472213,106.962714,109.683072,97.519801,-2.480199,-0.290128,2.934502,"cold_deteriorating",34
+2026-07-20,"team","LEC","Movistar KOI","rating_defense_league",95.264916,98.810402,100.565314,98.254953,-1.745047,-0.082546,3.249606,"cold_deteriorating",34
+2026-07-20,"team","LEC","Movistar KOI","snowball_index_league",98.162404,101.137134,101.016208,100.119709,0.119709,0.206616,2.728172,"balanced",34
 2026-05-25,"team","LEC","Natus Vincere","aggression_ahead_league",101.612286,102.295198,101.757661,100.528253,0.528253,0.118762,1.527726,"hot_accelerating",15
 2026-05-25,"team","LEC","Natus Vincere","aggression_behind_league",99.233773,98.938329,99.571764,99.36384,-0.63616,-0.250071,1.080032,"cold_deteriorating",15
 2026-05-25,"team","LEC","Natus Vincere","combined_kills_per_minute",0.744057,0.825207,0.836036,98.704673,-1.295327,0.271044,22.855518,"cold_recovering",15
@@ -768,17 +768,17 @@
 2026-04-27,"team","LEC","Team Heretics","rating_defense_global",102.563637,106.902081,108.212644,98.788901,-1.211099,-0.10204,3.306091,"cold_deteriorating",61
 2026-04-27,"team","LEC","Team Heretics","rating_defense_league",90.999762,95.375421,97.264517,98.057774,-1.942226,-0.117546,3.491845,"cold_deteriorating",61
 2026-04-27,"team","LEC","Team Heretics","snowball_index_league",92.086691,93.140236,95.080042,97.959818,-2.040182,-0.307475,2.62452,"cold_deteriorating",61
-2026-05-25,"team","LEC","Team Vitality","aggression_ahead_league",102.692484,102.904768,102.832346,100.070427,0.070427,0.004717,2.096755,"balanced",83
-2026-05-25,"team","LEC","Team Vitality","aggression_behind_league",96.276449,97.851373,98.992727,98.847033,-1.152967,-0.157621,1.181134,"cold_deteriorating",83
-2026-05-25,"team","LEC","Team Vitality","combined_kills_per_minute",0.942123,0.845889,0.832101,101.656995,1.656995,0.546255,23.000134,"hot_accelerating",83
-2026-05-25,"team","LEC","Team Vitality","deaths_per_minute",0.521544,0.45897,0.412989,111.133886,11.133886,1.523359,33.938956,"hot_accelerating",83
-2026-05-25,"team","LEC","Team Vitality","game_length_minutes",43.155556,36.819455,35.167947,104.696062,4.696062,-0.846317,15.764027,"hot_cooling",83
-2026-05-25,"team","LEC","Team Vitality","kills_per_minute",0.42058,0.386918,0.419112,92.318569,-7.681431,-0.416573,67.728445,"cold_deteriorating",83
-2026-05-25,"team","LEC","Team Vitality","rating_attack_global",95.014634,96.001999,94.14943,101.967691,1.967691,0.6934,2.694848,"hot_accelerating",83
-2026-05-25,"team","LEC","Team Vitality","rating_attack_league",102.361296,105.235312,104.336709,100.861253,0.861253,0.540202,3.085973,"hot_accelerating",83
-2026-05-25,"team","LEC","Team Vitality","rating_defense_global",109.934056,111.808387,111.337604,100.422842,0.422842,0.320023,3.667393,"hot_accelerating",83
-2026-05-25,"team","LEC","Team Vitality","rating_defense_league",102.847708,103.383292,101.337612,102.018678,2.018678,0.673534,3.542894,"hot_accelerating",83
-2026-05-25,"team","LEC","Team Vitality","snowball_index_league",100.73309,100.942882,101.144835,99.800333,-0.199667,-0.090588,0.753661,"balanced",83
+2026-07-20,"team","LEC","Team Vitality","aggression_ahead_league",102.804585,102.864695,102.828075,100.035612,0.035612,0.043364,2.092964,"balanced",84
+2026-07-20,"team","LEC","Team Vitality","aggression_behind_league",97.684846,97.784762,98.791515,98.980932,-1.019068,-0.106985,1.360951,"cold_deteriorating",84
+2026-07-20,"team","LEC","Team Vitality","combined_kills_per_minute",0.96043,0.891705,0.851844,104.679423,4.679423,0.857954,22.989504,"hot_accelerating",84
+2026-07-20,"team","LEC","Team Vitality","deaths_per_minute",0.690983,0.551776,0.455757,121.067914,21.067914,3.281457,34.935134,"hot_accelerating",84
+2026-07-20,"team","LEC","Team Vitality","game_length_minutes",33.308333,35.415006,34.881852,101.528457,1.528457,-0.064118,18.40353,"hot_cooling",84
+2026-07-20,"team","LEC","Team Vitality","kills_per_minute",0.269446,0.33993,0.396087,85.822007,-14.177993,-1.930649,69.528525,"cold_deteriorating",84
+2026-07-20,"team","LEC","Team Vitality","rating_attack_global",92.970412,94.789364,93.968043,100.874044,0.874044,0.316079,2.749547,"hot_accelerating",84
+2026-07-20,"team","LEC","Team Vitality","rating_attack_league",101.001627,103.541838,103.82362,99.728596,-0.271404,0.145785,2.994097,"balanced",84
+2026-07-20,"team","LEC","Team Vitality","rating_defense_global",108.20728,110.367944,110.856016,99.559724,-0.440276,-0.044137,3.556836,"balanced",84
+2026-07-20,"team","LEC","Team Vitality","rating_defense_league",99.690097,101.906014,101.084149,100.813051,0.813051,0.183338,3.555056,"hot_accelerating",84
+2026-07-20,"team","LEC","Team Vitality","snowball_index_league",97.935655,99.739991,100.651115,99.094771,-0.905229,-0.082365,1.205945,"cold_deteriorating",84
 2026-07-20,"team","LES","Barça eSports","aggression_ahead_league",104.481665,104.508337,103.335231,101.135243,1.135243,0.242779,2.742283,"hot_accelerating",91
 2026-07-20,"team","LES","Barça eSports","aggression_behind_league",100.953049,101.18265,101.196575,99.98624,-0.01376,0.03755,1.936257,"balanced",91
 2026-07-20,"team","LES","Barça eSports","combined_kills_per_minute",1.10754,1.117236,1.109104,100.733244,0.733244,0.327384,27.379572,"hot_accelerating",91
@@ -867,17 +867,17 @@
 2023-07-31,"team","LES","Giants","rating_defense_global",105.503598,104.092602,102.990859,101.069748,1.069748,0.154152,1.769963,"hot_accelerating",38
 2023-07-31,"team","LES","Giants","rating_defense_league",118.382068,115.165065,111.505802,103.28168,3.28168,0.68633,1.92062,"hot_accelerating",38
 2023-07-31,"team","LES","Giants","snowball_index_league",102.132188,102.05137,102.220392,99.834649,-0.165351,-0.045916,1.451753,"balanced",38
-2026-07-20,"team","LES","GIANTX iTero","aggression_ahead_league",100.118951,99.487395,99.465766,100.021746,0.021746,0.017609,2.227745,"balanced",52
-2026-07-20,"team","LES","GIANTX iTero","aggression_behind_league",99.8919,99.390385,98.901542,100.494272,0.494272,-0.020671,1.357921,"balanced",52
-2026-07-20,"team","LES","GIANTX iTero","combined_kills_per_minute",1.215435,1.132172,1.05583,107.23048,7.23048,1.282246,28.006821,"hot_accelerating",52
-2026-07-20,"team","LES","GIANTX iTero","deaths_per_minute",0.859444,0.591191,0.513464,115.137778,15.137778,0.826263,106.450492,"hot_accelerating",52
-2026-07-20,"team","LES","GIANTX iTero","game_length_minutes",32.741667,31.635979,31.499398,100.433597,0.433597,0.228668,11.95689,"balanced",52
-2026-07-20,"team","LES","GIANTX iTero","kills_per_minute",0.355992,0.540981,0.542366,99.744547,-0.255453,1.71393,75.871541,"cold_recovering",52
-2026-07-20,"team","LES","GIANTX iTero","rating_attack_global",118.186289,114.921087,114.944462,99.979664,-0.020336,-0.071947,2.920889,"balanced",52
-2026-07-20,"team","LES","GIANTX iTero","rating_attack_league",104.569314,100.784186,102.773249,98.06461,-1.93539,-0.414306,4.417369,"cold_deteriorating",52
-2026-07-20,"team","LES","GIANTX iTero","rating_defense_global",90.981631,89.201375,92.629199,96.299414,-3.700586,-0.555103,3.761672,"cold_deteriorating",52
-2026-07-20,"team","LES","GIANTX iTero","rating_defense_league",104.65296,102.415777,105.282218,97.277374,-2.722626,-0.427978,4.712555,"cold_deteriorating",52
-2026-07-20,"team","LES","GIANTX iTero","snowball_index_league",101.702217,100.037803,99.987971,100.049837,0.049837,-0.090721,2.188953,"balanced",52
+2026-07-20,"team","LES","GIANTX iTero","aggression_ahead_league",99.652316,99.300741,99.393976,99.906197,-0.093803,0.009386,2.267166,"balanced",52
+2026-07-20,"team","LES","GIANTX iTero","aggression_behind_league",100.506347,99.636164,98.996072,100.646582,0.646582,-0.009763,1.348114,"hot_cooling",52
+2026-07-20,"team","LES","GIANTX iTero","combined_kills_per_minute",1.037197,1.060876,1.028409,103.157052,3.157052,1.012373,26.92667,"hot_accelerating",52
+2026-07-20,"team","LES","GIANTX iTero","deaths_per_minute",0.744688,0.545289,0.49581,109.979548,9.979548,0.44963,103.75762,"hot_accelerating",52
+2026-07-20,"team","LES","GIANTX iTero","game_length_minutes",33.570833,31.967645,31.626962,101.077192,1.077192,0.273741,12.184499,"hot_accelerating",52
+2026-07-20,"team","LES","GIANTX iTero","kills_per_minute",0.292508,0.515587,0.532599,96.805825,-3.194175,1.536245,78.795788,"cold_recovering",52
+2026-07-20,"team","LES","GIANTX iTero","rating_attack_global",117.450425,114.626742,114.831252,99.821904,-0.178096,-0.083261,2.813785,"balanced",52
+2026-07-20,"team","LES","GIANTX iTero","rating_attack_league",102.467132,99.943313,102.449837,97.553414,-2.446586,-0.451613,4.245177,"cold_deteriorating",52
+2026-07-20,"team","LES","GIANTX iTero","rating_defense_global",88.463552,88.194144,92.241802,95.611904,-4.388096,-0.605327,3.492518,"cold_deteriorating",52
+2026-07-20,"team","LES","GIANTX iTero","rating_defense_league",102.295896,101.472951,104.919593,96.714969,-3.285031,-0.46887,4.367689,"cold_deteriorating",52
+2026-07-20,"team","LES","GIANTX iTero","snowball_index_league",101.875036,100.106931,100.014559,100.092358,0.092358,-0.087666,2.20466,"balanced",52
 2025-09-08,"team","LES","Guasones","aggression_ahead_league",97.943542,98.226226,99.185274,99.033074,-0.966926,-0.105459,1.650134,"cold_deteriorating",52
 2025-09-08,"team","LES","Guasones","aggression_behind_league",98.724154,99.012803,100.414992,98.603606,-1.396394,-0.071173,1.120408,"cold_deteriorating",52
 2025-09-08,"team","LES","Guasones","combined_kills_per_minute",1.096151,0.974777,0.935237,104.227817,4.227817,-0.291649,21.485874,"hot_cooling",52
@@ -900,17 +900,17 @@
 2022-08-08,"team","LES","KOI","rating_defense_global",113.053073,108.576008,103.724118,104.677687,4.677687,1.22084,1.809507,"hot_accelerating",22
 2022-08-08,"team","LES","KOI","rating_defense_league",120.132763,114.815821,108.826967,105.503098,5.503098,1.817915,1.485793,"hot_accelerating",22
 2022-08-08,"team","LES","KOI","snowball_index_league",101.195816,102.158682,102.577852,99.591364,-0.408636,0.065532,1.171171,"balanced",22
-2026-07-20,"team","LES","LUA Gaming","aggression_ahead_league",98.675594,100.287253,101.017202,99.277401,-0.722599,-0.090526,1.513888,"cold_deteriorating",35
-2026-07-20,"team","LES","LUA Gaming","aggression_behind_league",98.030467,97.609011,98.696588,98.898061,-1.101939,-0.163004,2.399912,"cold_deteriorating",35
-2026-07-20,"team","LES","LUA Gaming","combined_kills_per_minute",1.161259,1.034863,1.005274,102.943329,2.943329,0.020327,46.182352,"hot_accelerating",35
-2026-07-20,"team","LES","LUA Gaming","deaths_per_minute",0.340763,0.414586,0.506828,81.800218,-18.199782,-3.670725,38.985592,"cold_deteriorating",35
-2026-07-20,"team","LES","LUA Gaming","game_length_minutes",32.283333,31.063345,30.311698,102.479727,2.479727,0.504963,14.62213,"hot_accelerating",35
-2026-07-20,"team","LES","LUA Gaming","kills_per_minute",0.820496,0.620276,0.498446,124.441964,24.441964,3.773446,123.058026,"hot_accelerating",35
-2026-07-20,"team","LES","LUA Gaming","rating_attack_global",109.239678,109.034451,108.978355,100.051474,0.051474,-0.036919,4.397133,"balanced",35
-2026-07-20,"team","LES","LUA Gaming","rating_attack_league",94.675995,93.270332,95.023709,98.1548,-1.8452,-0.350528,5.157998,"cold_deteriorating",35
-2026-07-20,"team","LES","LUA Gaming","rating_defense_global",87.474497,84.874579,85.763097,98.963986,-1.036014,-0.288492,3.783828,"cold_deteriorating",35
-2026-07-20,"team","LES","LUA Gaming","rating_defense_league",99.185778,96.150247,95.224156,100.972537,0.972537,0.05508,4.141258,"hot_accelerating",35
-2026-07-20,"team","LES","LUA Gaming","snowball_index_league",100.741807,99.896258,99.378172,100.521327,0.521327,0.099758,0.499092,"hot_accelerating",35
+2026-07-20,"team","LES","LUA Gaming","aggression_ahead_league",99.129413,100.468781,101.087021,99.388409,-0.611591,-0.082587,1.379106,"cold_deteriorating",35
+2026-07-20,"team","LES","LUA Gaming","aggression_behind_league",97.891118,97.553272,98.675149,98.863059,-1.136941,-0.165517,2.393365,"cold_deteriorating",35
+2026-07-20,"team","LES","LUA Gaming","combined_kills_per_minute",1.358241,1.113656,1.035579,107.539413,7.539413,0.353443,48.160002,"hot_accelerating",35
+2026-07-20,"team","LES","LUA Gaming","deaths_per_minute",0.701765,0.558987,0.562367,99.399087,-0.600913,-2.182006,46.558538,"cold_deteriorating",35
+2026-07-20,"team","LES","LUA Gaming","game_length_minutes",30,30.150011,29.960416,100.632821,0.632821,0.377179,15.443995,"hot_accelerating",35
+2026-07-20,"team","LES","LUA Gaming","kills_per_minute",0.656476,0.554668,0.473213,117.213393,17.213393,3.366576,122.01196,"hot_accelerating",35
+2026-07-20,"team","LES","LUA Gaming","rating_attack_global",111.784064,110.052205,109.369799,100.623944,0.623944,0.004027,4.369499,"hot_accelerating",35
+2026-07-20,"team","LES","LUA Gaming","rating_attack_league",96.882063,94.152759,95.363104,98.730803,-1.269197,-0.308696,5.234417,"cold_deteriorating",35
+2026-07-20,"team","LES","LUA Gaming","rating_defense_global",88.264639,85.190636,85.884657,99.191915,-0.808085,-0.271943,3.933787,"cold_deteriorating",35
+2026-07-20,"team","LES","LUA Gaming","rating_defense_league",100.955821,96.858264,95.496471,101.426014,1.426014,0.08744,4.389199,"hot_accelerating",35
+2026-07-20,"team","LES","LUA Gaming","snowball_index_league",101.442166,100.176402,99.48592,100.69405,0.69405,0.112,0.642642,"hot_accelerating",35
 2022-09-19,"team","LES","MAD Lions Madrid","aggression_ahead_league",100.54618,100.475523,100.055378,100.419913,0.419913,0.085823,1.145459,"balanced",20
 2022-09-19,"team","LES","MAD Lions Madrid","aggression_behind_league",100.140057,98.945854,98.76032,100.187863,0.187863,0.033829,1.141762,"balanced",20
 2022-09-19,"team","LES","MAD Lions Madrid","combined_kills_per_minute",0.563657,0.728907,0.781671,93.249859,-6.750141,0.466973,33.0402,"cold_recovering",20
@@ -933,17 +933,17 @@
 2024-07-15,"team","LES","Movistar KOI","rating_defense_global",95.026714,93.403235,90.937652,102.711289,2.711289,1.176354,1.498309,"hot_accelerating",60
 2024-07-15,"team","LES","Movistar KOI","rating_defense_league",100.419844,99.186577,98.27111,100.931573,0.931573,0.474247,2.106677,"hot_accelerating",60
 2024-07-15,"team","LES","Movistar KOI","snowball_index_league",100.834258,101.374416,101.998552,99.388093,-0.611907,0.172473,1.097765,"cold_recovering",60
-2026-07-20,"team","LES","Movistar KOI Fénix","aggression_ahead_league",104.055765,104.227038,104.003582,100.214854,0.214854,-0.148461,2.750777,"balanced",28
-2026-07-20,"team","LES","Movistar KOI Fénix","aggression_behind_league",101.462653,99.867941,99.00834,100.868211,0.868211,0.034059,1.186961,"hot_accelerating",28
-2026-07-20,"team","LES","Movistar KOI Fénix","combined_kills_per_minute",1.215435,1.161633,1.083695,107.191943,7.191943,-0.242457,26.68293,"hot_cooling",28
-2026-07-20,"team","LES","Movistar KOI Fénix","deaths_per_minute",0.355992,0.449944,0.441498,101.913125,1.913125,1.76797,50.046981,"hot_accelerating",28
-2026-07-20,"team","LES","Movistar KOI Fénix","game_length_minutes",32.741667,33.098469,31.8954,103.771921,3.771921,1.405795,11.535234,"hot_accelerating",28
-2026-07-20,"team","LES","Movistar KOI Fénix","kills_per_minute",0.859444,0.711689,0.642197,110.821029,10.821029,-1.624588,82.415098,"hot_cooling",28
-2026-07-20,"team","LES","Movistar KOI Fénix","rating_attack_global",123.352425,124.38457,122.673336,101.394952,1.394952,0.030763,4.982088,"hot_accelerating",28
-2026-07-20,"team","LES","Movistar KOI Fénix","rating_attack_league",110.850929,112.066132,111.719515,100.310257,0.310257,-0.256704,5.163646,"hot_cooling",28
-2026-07-20,"team","LES","Movistar KOI Fénix","rating_defense_global",89.693344,91.716356,93.494248,98.098395,-1.901605,-0.225441,2.204805,"cold_deteriorating",28
-2026-07-20,"team","LES","Movistar KOI Fénix","rating_defense_league",103.067418,106.311873,107.450143,98.940653,-1.059347,-0.077949,3.757949,"cold_deteriorating",28
-2026-07-20,"team","LES","Movistar KOI Fénix","snowball_index_league",100.583246,100.393978,100.995728,99.404182,-0.595818,-0.145859,1.803951,"cold_deteriorating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","aggression_ahead_league",104.508066,104.407959,104.073167,100.321688,0.321688,-0.140255,2.750489,"balanced",28
+2026-07-20,"team","LES","Movistar KOI Fénix","aggression_behind_league",101.207046,99.765698,98.969016,100.804982,0.804982,0.029255,1.159485,"hot_accelerating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","combined_kills_per_minute",1.38533,1.229591,1.109832,110.790717,10.790717,0.048793,26.595418,"hot_accelerating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","deaths_per_minute",0.424224,0.477237,0.451995,105.584578,5.584578,2.00849,47.843897,"hot_accelerating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","game_length_minutes",30.229167,32.093469,31.508861,101.855375,1.855375,1.274304,13.033262,"hot_accelerating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","kills_per_minute",0.961106,0.752354,0.657837,114.367817,14.367817,-1.297701,82.832299,"hot_cooling",28
+2026-07-20,"team","LES","Movistar KOI Fénix","rating_attack_global",125.278232,125.154893,122.969614,101.777089,1.777089,0.0599,5.088801,"hot_accelerating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","rating_attack_league",112.566461,112.752345,111.983443,100.686621,0.686621,-0.227523,5.227936,"hot_cooling",28
+2026-07-20,"team","LES","Movistar KOI Fénix","rating_defense_global",90.337809,91.974142,93.593396,98.269906,-1.730094,-0.212358,2.16837,"cold_deteriorating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","rating_defense_league",104.492062,106.88173,107.669319,99.268511,-0.731489,-0.05311,3.77997,"cold_deteriorating",28
+2026-07-20,"team","LES","Movistar KOI Fénix","snowball_index_league",100.921935,100.529454,101.047834,99.486995,-0.513005,-0.139532,1.830644,"cold_deteriorating",28
 2025-09-08,"team","LES","Nocturne Gale","aggression_ahead_league",100.282211,100.112884,100.043417,100.069437,0.069437,,0,"insufficient",2
 2025-09-08,"team","LES","Nocturne Gale","aggression_behind_league",99.320256,99.728102,99.895424,99.832503,-0.167497,,0,"insufficient",2
 2025-09-08,"team","LES","Nocturne Gale","combined_kills_per_minute",1.052044,0.961099,0.923789,104.038867,4.038867,,0,"insufficient",2
@@ -1010,17 +1010,17 @@
 2022-08-15,"team","LES","Team Heretics","rating_defense_global",108.115719,106.310963,104.12343,102.100904,2.100904,0.440113,2.180438,"hot_accelerating",20
 2022-08-15,"team","LES","Team Heretics","rating_defense_league",113.007357,111.206375,108.767298,102.242473,2.242473,0.770231,2.531403,"hot_accelerating",20
 2022-08-15,"team","LES","Team Heretics","snowball_index_league",109.852499,107.685133,104.636122,102.913917,2.913917,0.838545,1.385217,"hot_accelerating",20
-2026-07-13,"team","LES","Team Heretics Academy","aggression_ahead_league",94.659812,97.19963,97.525194,99.666175,-0.333825,0.036922,1.978628,"balanced",72
-2026-07-13,"team","LES","Team Heretics Academy","aggression_behind_league",97.913182,96.821264,97.129485,99.68267,-0.31733,-0.072879,1.064889,"balanced",72
-2026-07-13,"team","LES","Team Heretics Academy","combined_kills_per_minute",0.841637,0.912234,0.949599,96.06513,-3.93487,-0.543122,26.340903,"cold_deteriorating",72
-2026-07-13,"team","LES","Team Heretics Academy","deaths_per_minute",0.458506,0.354129,0.321571,110.12469,10.12469,1.685295,30.670897,"hot_accelerating",72
-2026-07-13,"team","LES","Team Heretics Academy","game_length_minutes",36.786667,33.292231,31.125681,106.960651,6.960651,1.133694,17.849196,"hot_accelerating",72
-2026-07-13,"team","LES","Team Heretics Academy","kills_per_minute",0.383131,0.558105,0.628028,88.86617,-11.13383,-1.684145,34.461811,"cold_deteriorating",72
-2026-07-13,"team","LES","Team Heretics Academy","rating_attack_global",124.525901,127.959806,123.248471,103.822632,3.822632,1.154595,3.955976,"hot_accelerating",72
-2026-07-13,"team","LES","Team Heretics Academy","rating_attack_league",112.894288,115.433532,112.272766,102.815257,2.815257,0.976424,3.980457,"hot_accelerating",72
-2026-07-13,"team","LES","Team Heretics Academy","rating_defense_global",105.361575,104.971302,103.590383,101.333057,1.333057,0.528159,1.711934,"hot_accelerating",72
-2026-07-13,"team","LES","Team Heretics Academy","rating_defense_league",127.256874,127.668058,122.590052,104.142266,4.142266,1.150182,2.665242,"hot_accelerating",72
-2026-07-13,"team","LES","Team Heretics Academy","snowball_index_league",102.220535,104.576151,105.490874,99.132889,-0.867111,-0.056128,2.744535,"cold_deteriorating",72
+2026-07-20,"team","LES","Team Heretics Academy","aggression_ahead_league",91.739941,95.015755,96.635155,98.324212,-1.675788,-0.1624,2.123663,"cold_deteriorating",73
+2026-07-20,"team","LES","Team Heretics Academy","aggression_behind_league",96.886082,96.847192,97.092039,99.74782,-0.25218,0.004864,1.119535,"balanced",73
+2026-07-20,"team","LES","Team Heretics Academy","combined_kills_per_minute",0.858958,0.890923,0.935655,95.219269,-4.780731,-1.215316,26.338855,"cold_deteriorating",73
+2026-07-20,"team","LES","Team Heretics Academy","deaths_per_minute",0.229025,0.304088,0.307333,98.943899,-1.056101,2.149617,40.537055,"cold_recovering",73
+2026-07-20,"team","LES","Team Heretics Academy","game_length_minutes",34.4,33.735339,31.629423,106.658092,6.658092,1.603377,18.029904,"hot_accelerating",73
+2026-07-20,"team","LES","Team Heretics Academy","kills_per_minute",0.629933,0.586836,0.628321,93.397426,-6.602574,-2.86122,39.849661,"cold_deteriorating",73
+2026-07-20,"team","LES","Team Heretics Academy","rating_attack_global",121.030361,125.188028,122.907223,101.855713,1.855713,0.616954,4.232188,"hot_accelerating",73
+2026-07-20,"team","LES","Team Heretics Academy","rating_attack_league",105.162413,111.325084,111.178865,100.131517,0.131517,0.464445,4.608351,"hot_accelerating",73
+2026-07-20,"team","LES","Team Heretics Academy","rating_defense_global",102.835937,104.117156,103.474314,100.621257,0.621257,0.376138,1.707103,"hot_accelerating",73
+2026-07-20,"team","LES","Team Heretics Academy","rating_defense_league",125.377694,126.751913,123.01892,103.034486,3.034486,0.762176,2.842966,"hot_accelerating",73
+2026-07-20,"team","LES","Team Heretics Academy","snowball_index_league",101.466615,103.332336,104.871757,98.532092,-1.467908,-0.11004,2.464319,"cold_deteriorating",73
 2026-07-20,"team","LES","UB Alma Mater","aggression_ahead_league",100.073205,100.10222,100.20279,99.899634,-0.100366,-0.030621,0.436256,"balanced",10
 2026-07-20,"team","LES","UB Alma Mater","aggression_behind_league",103.160251,102.920999,101.459294,101.440681,1.440681,0.164559,1.539252,"hot_accelerating",10
 2026-07-20,"team","LES","UB Alma Mater","combined_kills_per_minute",1.147929,1.109567,1.096309,101.209321,1.209321,0.204178,22.004162,"hot_accelerating",10
@@ -1109,17 +1109,17 @@
 2026-01-26,"team","LFL","Caldya Esport","rating_defense_global",99.684677,100.9719,101.499992,99.479713,-0.520287,,0,"insufficient",2
 2026-01-26,"team","LFL","Caldya Esport","rating_defense_league",99.419857,99.767943,99.910747,99.857068,-0.142932,,0,"insufficient",2
 2026-01-26,"team","LFL","Caldya Esport","snowball_index_league",100,100,100,100,0,,0,"insufficient",2
-2026-07-20,"team","LFL","Esprit Shōnen","aggression_ahead_league",100.338994,101.207115,102.432747,98.803476,-1.196524,-0.122474,1.37846,"cold_deteriorating",11
-2026-07-20,"team","LFL","Esprit Shōnen","aggression_behind_league",100.526314,99.564853,99.844186,99.720231,-0.279769,-0.108143,1.551485,"balanced",11
-2026-07-20,"team","LFL","Esprit Shōnen","combined_kills_per_minute",1.243526,1.074294,1.032808,104.016759,4.016759,0.112454,23.618571,"hot_accelerating",11
-2026-07-20,"team","LFL","Esprit Shōnen","deaths_per_minute",0.952273,0.733311,0.610674,120.082257,20.082257,2.064131,36.645401,"hot_accelerating",11
-2026-07-20,"team","LFL","Esprit Shōnen","game_length_minutes",29.208333,30.220926,31.426596,96.163534,-3.836466,-0.739387,14.609512,"cold_deteriorating",11
-2026-07-20,"team","LFL","Esprit Shōnen","kills_per_minute",0.291253,0.340983,0.422134,80.77587,-19.22413,-2.710907,59.458146,"cold_deteriorating",11
-2026-07-20,"team","LFL","Esprit Shōnen","rating_attack_global",105.377879,105.229575,105.711895,99.543741,-0.456259,-0.198644,2.526734,"balanced",11
-2026-07-20,"team","LFL","Esprit Shōnen","rating_attack_league",94.442163,95.604593,99.739852,95.853956,-4.146044,-0.666247,2.108146,"cold_deteriorating",11
-2026-07-20,"team","LFL","Esprit Shōnen","rating_defense_global",85.703647,87.456984,91.509439,95.571544,-4.428456,-0.601534,2.790661,"cold_deteriorating",11
-2026-07-20,"team","LFL","Esprit Shōnen","rating_defense_league",93.46299,94.711242,96.162861,98.490458,-1.509542,-0.273863,1.891854,"cold_deteriorating",11
-2026-07-20,"team","LFL","Esprit Shōnen","snowball_index_league",96.84416,97.401522,98.55227,98.832348,-1.167652,-0.185275,1.13346,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","aggression_ahead_league",100.288427,101.186888,102.424967,98.791233,-1.208767,-0.123829,1.380349,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","aggression_behind_league",100.978964,99.745913,99.913825,99.831944,-0.168056,-0.095712,1.646588,"balanced",11
+2026-07-20,"team","LFL","Esprit Shōnen","combined_kills_per_minute",1.276003,1.087285,1.037805,104.767729,4.767729,0.19726,23.813182,"hot_accelerating",11
+2026-07-20,"team","LFL","Esprit Shōnen","deaths_per_minute",0.946699,0.731081,0.609816,119.885501,19.885501,2.042105,36.601534,"hot_accelerating",11
+2026-07-20,"team","LFL","Esprit Shōnen","game_length_minutes",30.161111,30.602037,31.573178,96.924159,-3.075841,-0.653654,14.750236,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","kills_per_minute",0.329304,0.356203,0.427988,83.227276,-16.772724,-2.431356,59.285811,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","rating_attack_global",104.777768,104.989531,105.61957,99.403482,-0.596518,-0.214313,2.478318,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","rating_attack_league",93.58459,95.261564,99.607917,95.636538,-4.363462,-0.69061,2.091023,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","rating_defense_global",84.55408,86.997157,91.332582,95.253145,-4.746855,-0.637026,3.003056,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","rating_defense_league",92.145342,94.184184,95.960147,98.14927,-1.85073,-0.31189,2.166636,"cold_deteriorating",11
+2026-07-20,"team","LFL","Esprit Shōnen","snowball_index_league",96.90413,97.42551,98.561496,98.847435,-1.152565,-0.183598,1.131097,"cold_deteriorating",11
 2026-03-02,"team","LFL","French Flair","aggression_ahead_league",101.870956,102.090352,101.381092,100.699597,0.699597,0.387752,1.023457,"hot_accelerating",7
 2026-03-02,"team","LFL","French Flair","aggression_behind_league",98.964578,98.990801,99.477872,99.510373,-0.489627,-0.191122,0.700999,"balanced",7
 2026-03-02,"team","LFL","French Flair","combined_kills_per_minute",0.939215,0.942572,0.984971,95.695432,-4.304568,-2.079606,5.89224,"cold_deteriorating",7
@@ -1131,17 +1131,17 @@
 2026-03-02,"team","LFL","French Flair","rating_defense_global",106.404035,105.245387,104.27962,100.926132,0.926132,0.28415,1.737386,"hot_accelerating",7
 2026-03-02,"team","LFL","French Flair","rating_defense_league",115.066486,112.067818,106.993584,104.742559,4.742559,1.919728,1.937912,"hot_accelerating",7
 2026-03-02,"team","LFL","French Flair","snowball_index_league",103.886902,104.186117,102.771056,101.376906,1.376906,0.721072,1.342981,"hot_accelerating",7
-2026-07-20,"team","LFL","Galions","aggression_ahead_league",102.732513,102.434804,101.749141,100.673876,0.673876,0.145576,0.874622,"hot_accelerating",35
-2026-07-20,"team","LFL","Galions","aggression_behind_league",98.215802,98.816518,100.632708,98.195229,-1.804771,-0.42367,1.524875,"cold_deteriorating",35
-2026-07-20,"team","LFL","Galions","combined_kills_per_minute",1.338238,1.176053,1.091958,107.701338,7.701338,0.583288,20.551536,"hot_accelerating",35
-2026-07-20,"team","LFL","Galions","deaths_per_minute",0.501882,0.482402,0.460605,104.732243,4.732243,-0.17698,71.736938,"hot_cooling",35
-2026-07-20,"team","LFL","Galions","game_length_minutes",33.425,32.574523,31.820025,102.371144,2.371144,0.599087,19.801254,"hot_accelerating",35
-2026-07-20,"team","LFL","Galions","kills_per_minute",0.836357,0.693652,0.631353,109.867446,9.867446,1.137943,33.983422,"hot_accelerating",35
-2026-07-20,"team","LFL","Galions","rating_attack_global",119.318216,118.751718,116.76553,101.701005,1.701005,0.170238,1.794967,"hot_accelerating",35
-2026-07-20,"team","LFL","Galions","rating_attack_league",110.698823,111.219571,111.178008,100.037384,0.037384,0.06781,2.009529,"balanced",35
-2026-07-20,"team","LFL","Galions","rating_defense_global",97.097826,98.566821,99.490449,99.071641,-0.928359,0.191789,3.220274,"cold_recovering",35
-2026-07-20,"team","LFL","Galions","rating_defense_league",109.968598,110.112729,108.387709,101.591527,1.591527,0.448723,3.075331,"hot_accelerating",35
-2026-07-20,"team","LFL","Galions","snowball_index_league",101.397791,101.805852,101.513035,100.288452,0.288452,0.110865,1.81775,"balanced",35
+2026-07-20,"team","LFL","Galions","aggression_ahead_league",103.244609,102.639643,101.827925,100.797147,0.797147,0.158802,0.823697,"hot_accelerating",35
+2026-07-20,"team","LFL","Galions","aggression_behind_league",98.413738,98.895693,100.66316,98.244177,-1.755823,-0.418327,1.56994,"cold_deteriorating",35
+2026-07-20,"team","LFL","Galions","combined_kills_per_minute",1.273493,1.150156,1.081997,106.299296,6.299296,0.429947,20.22413,"hot_accelerating",35
+2026-07-20,"team","LFL","Galions","deaths_per_minute",0.605536,0.523864,0.476552,109.927964,9.927964,0.405849,71.539472,"hot_accelerating",35
+2026-07-20,"team","LFL","Galions","game_length_minutes",33.355556,32.546745,31.809341,102.318201,2.318201,0.593498,19.807653,"hot_accelerating",35
+2026-07-20,"team","LFL","Galions","kills_per_minute",0.667957,0.626292,0.605446,103.443138,3.443138,0.448915,31.942214,"hot_accelerating",35
+2026-07-20,"team","LFL","Galions","rating_attack_global",120.133232,119.077725,116.890917,101.87081,1.87081,0.188549,1.764554,"hot_accelerating",35
+2026-07-20,"team","LFL","Galions","rating_attack_league",111.669016,111.607648,111.327269,100.251852,0.251852,0.090833,1.857867,"balanced",35
+2026-07-20,"team","LFL","Galions","rating_defense_global",97.139093,98.583328,99.496798,99.08191,-0.91809,0.192877,3.209778,"cold_recovering",35
+2026-07-20,"team","LFL","Galions","rating_defense_league",109.942518,110.102297,108.383697,101.585663,1.585663,0.448101,3.080614,"hot_accelerating",35
+2026-07-20,"team","LFL","Galions","snowball_index_league",101.679764,101.918641,101.556415,100.356674,0.356674,0.118182,1.766155,"balanced",35
 2026-01-26,"team","LFL","Galions Sharks","aggression_ahead_league",100,100,100,100,0,,0,"insufficient",2
 2026-01-26,"team","LFL","Galions Sharks","aggression_behind_league",105.582356,102.232942,100.858824,101.362418,1.362418,,0,"insufficient",2
 2026-01-26,"team","LFL","Galions Sharks","combined_kills_per_minute",0.913416,1.379671,1.570955,87.823708,-12.176292,,0,"insufficient",2
@@ -1186,17 +1186,17 @@
 2025-09-08,"team","LFL","Gentle Mates","rating_defense_global",112.500111,109.928902,108.370186,101.438325,1.438325,-0.120125,2.33117,"hot_cooling",38
 2025-09-08,"team","LFL","Gentle Mates","rating_defense_league",108.500532,106.672573,106.386201,100.269182,0.269182,-0.31547,2.761599,"hot_cooling",38
 2025-09-08,"team","LFL","Gentle Mates","snowball_index_league",101.495221,100.089648,99.661364,100.429739,0.429739,0.081477,1.818722,"balanced",38
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","aggression_ahead_league",101.340245,101.483339,100.944516,100.533782,0.533782,0.125082,1.352707,"hot_accelerating",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","aggression_behind_league",99.042551,99.307118,100.18821,99.120562,-0.879438,-0.080154,0.870791,"cold_deteriorating",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","combined_kills_per_minute",1.221421,1.080097,1.001036,107.897978,7.897978,1.099266,17.913885,"hot_accelerating",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","deaths_per_minute",0.688457,0.622355,0.546875,113.802107,13.802107,2.21255,33.914747,"hot_accelerating",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","game_length_minutes",29.3,31.999019,32.11108,99.65102,-0.34898,0.223964,15.913322,"balanced",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","kills_per_minute",0.532965,0.457743,0.454161,100.788567,0.788567,-0.241287,36.443349,"hot_cooling",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_attack_global",108.986246,108.59284,105.495002,102.936479,2.936479,0.448958,2.668555,"hot_accelerating",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_attack_league",98.628306,99.205006,99.663141,99.540317,-0.459683,-0.004957,1.18734,"balanced",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_defense_global",89.392435,90.086491,93.301113,96.554572,-3.445428,-0.538632,2.891541,"cold_deteriorating",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_defense_league",98.130283,98.127618,98.191921,99.934513,-0.065487,-0.083965,1.834888,"balanced",28
-2026-07-20,"team","LFL","Ici Japon Corp. Esport","snowball_index_league",96.977406,96.996033,98.256798,98.716868,-1.283132,-0.150669,1.556264,"cold_deteriorating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","aggression_ahead_league",101.214352,101.432982,100.925148,100.50318,0.50318,0.123216,1.371824,"hot_accelerating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","aggression_behind_league",99.74704,99.588913,100.296593,99.294413,-0.705587,-0.069425,0.943412,"cold_deteriorating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","combined_kills_per_minute",1.030238,1.003624,0.971623,103.293563,3.293563,0.83441,16.282588,"hot_accelerating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","deaths_per_minute",0.626937,0.597747,0.53741,111.227376,11.227376,2.078071,33.512484,"hot_accelerating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","game_length_minutes",28.794444,31.796797,32.033303,99.261688,-0.738312,0.200596,16.164669,"cold_recovering",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","kills_per_minute",0.4033,0.405877,0.434213,93.474156,-6.525844,-0.704826,34.986914,"cold_deteriorating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_attack_global",109.261752,108.703042,105.537387,102.999558,2.999558,0.452733,2.664542,"hot_accelerating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_attack_league",98.491969,99.150472,99.642166,99.50654,-0.49346,-0.007031,1.181636,"balanced",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_defense_global",88.328196,89.660795,93.137384,96.267247,-3.732753,-0.556892,2.770131,"cold_deteriorating",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","rating_defense_league",97.154528,97.737316,98.041804,99.68943,-0.31057,-0.099173,1.715574,"balanced",28
+2026-07-20,"team","LFL","Ici Japon Corp. Esport","snowball_index_league",97.338478,97.140462,98.312347,98.807998,-1.192002,-0.145019,1.63672,"cold_deteriorating",28
 2024-09-02,"team","LFL","IziDream","aggression_ahead_league",99.840907,97.802948,98.084993,99.712448,-0.287552,-0.003098,1.931258,"balanced",21
 2024-09-02,"team","LFL","IziDream","aggression_behind_league",99.854145,100.183431,100.946355,99.244229,-0.755771,-0.047439,2.042436,"cold_deteriorating",21
 2024-09-02,"team","LFL","IziDream","combined_kills_per_minute",0.909065,0.864283,0.836731,103.292807,3.292807,0.092493,40.749781,"hot_accelerating",21
@@ -1208,17 +1208,17 @@
 2024-09-02,"team","LFL","IziDream","rating_defense_global",92.099675,91.768039,92.538685,99.167218,-0.832782,-0.018116,2.533064,"cold_deteriorating",21
 2024-09-02,"team","LFL","IziDream","rating_defense_league",99.846486,94.763034,92.117773,102.871607,2.871607,0.118236,3.758481,"hot_accelerating",21
 2024-09-02,"team","LFL","IziDream","snowball_index_league",99.927043,97.779999,96.316483,101.519486,1.519486,0.049248,0.887709,"hot_accelerating",21
-2026-07-20,"team","LFL","Joblife","aggression_ahead_league",101.271368,101.491298,101.967897,99.532598,-0.467402,-0.08119,1.676015,"balanced",27
-2026-07-20,"team","LFL","Joblife","aggression_behind_league",97.436996,96.777775,97.120773,99.646833,-0.353167,-0.105796,1.648445,"balanced",27
-2026-07-20,"team","LFL","Joblife","combined_kills_per_minute",1.064911,0.999854,0.964986,103.613246,3.613246,0.138347,19.816079,"hot_accelerating",27
-2026-07-20,"team","LFL","Joblife","deaths_per_minute",0.55989,0.556754,0.533372,104.383846,4.383846,0.618604,48.475612,"hot_accelerating",27
-2026-07-20,"team","LFL","Joblife","game_length_minutes",38.966667,35.20874,33.395003,105.431164,5.431164,0.106067,16.499283,"hot_accelerating",27
-2026-07-20,"team","LFL","Joblife","kills_per_minute",0.50502,0.4431,0.431614,102.66097,2.66097,-0.455136,51.249524,"hot_cooling",27
-2026-07-20,"team","LFL","Joblife","rating_attack_global",107.258024,104.501446,102.581477,101.871652,1.871652,-0.025297,2.868786,"hot_cooling",27
-2026-07-20,"team","LFL","Joblife","rating_attack_league",95.625619,94.679397,96.508221,98.105006,-1.894994,-0.403738,3.09851,"cold_deteriorating",27
-2026-07-20,"team","LFL","Joblife","rating_defense_global",88.223825,89.480359,93.217509,95.990935,-4.009065,-0.403916,1.339657,"cold_deteriorating",27
-2026-07-20,"team","LFL","Joblife","rating_defense_league",97.706081,97.382485,98.0345,99.334912,-0.665088,-0.118969,2.421272,"cold_deteriorating",27
-2026-07-20,"team","LFL","Joblife","snowball_index_league",97.844777,98.004919,97.908404,100.098576,0.098576,-0.010282,0.932906,"balanced",27
+2026-07-20,"team","LFL","Joblife","aggression_ahead_league",101.466353,101.569292,101.997895,99.579792,-0.420208,-0.07821,1.671347,"balanced",27
+2026-07-20,"team","LFL","Joblife","aggression_behind_league",97.187325,96.677907,97.082362,99.583389,-0.416611,-0.109814,1.621881,"balanced",27
+2026-07-20,"team","LFL","Joblife","combined_kills_per_minute",0.925897,0.944248,0.9436,100.068742,0.068742,-0.086336,18.843928,"balanced",27
+2026-07-20,"team","LFL","Joblife","deaths_per_minute",0.42125,0.501298,0.512043,97.901643,-2.098357,0.225674,48.479086,"cold_recovering",27
+2026-07-20,"team","LFL","Joblife","game_length_minutes",35.238889,33.717629,32.821499,102.730316,2.730316,-0.067715,16.938536,"hot_cooling",27
+2026-07-20,"team","LFL","Joblife","kills_per_minute",0.504647,0.44295,0.431557,102.640007,2.640007,-0.456536,51.245588,"hot_cooling",27
+2026-07-20,"team","LFL","Joblife","rating_attack_global",107.266268,104.504743,102.582745,101.873607,1.873607,-0.025172,2.870449,"hot_cooling",27
+2026-07-20,"team","LFL","Joblife","rating_attack_league",95.576966,94.659936,96.500736,98.092449,-1.907551,-0.404549,3.089054,"cold_deteriorating",27
+2026-07-20,"team","LFL","Joblife","rating_defense_global",88.21318,89.476101,93.215871,95.988054,-4.011946,-0.4041,1.338026,"cold_deteriorating",27
+2026-07-20,"team","LFL","Joblife","rating_defense_league",97.759772,97.403961,98.04276,99.348448,-0.651552,-0.118112,2.429501,"cold_deteriorating",27
+2026-07-20,"team","LFL","Joblife","snowball_index_league",97.378915,97.818574,97.836733,99.981439,-0.018561,-0.017653,0.983025,"balanced",27
 2023-08-07,"team","LFL","Karmine Corp","aggression_ahead_league",107.236655,105.95726,104.496242,101.398153,1.398153,0.450257,1.214971,"hot_accelerating",41
 2023-08-07,"team","LFL","Karmine Corp","aggression_behind_league",102.914835,100.846956,99.99104,100.855993,0.855993,0.121556,1.484474,"hot_accelerating",41
 2023-08-07,"team","LFL","Karmine Corp","combined_kills_per_minute",1.131762,1.075774,0.968005,111.133069,11.133069,3.625144,34.125585,"hot_accelerating",41
@@ -1230,17 +1230,17 @@
 2023-08-07,"team","LFL","Karmine Corp","rating_defense_global",105.979334,107.002732,105.099786,101.810609,1.810609,0.413758,1.653513,"hot_accelerating",41
 2023-08-07,"team","LFL","Karmine Corp","rating_defense_league",109.445352,109.0871,105.359411,103.538069,3.538069,1.196935,1.476611,"hot_accelerating",41
 2023-08-07,"team","LFL","Karmine Corp","snowball_index_league",104.485238,103.005811,101.890133,101.094981,1.094981,0.197645,1.625098,"hot_accelerating",41
-2026-07-20,"team","LFL","Karmine Corp Blue","aggression_ahead_league",99.299222,99.707643,99.747535,99.960007,-0.039993,0.079456,1.782436,"balanced",50
-2026-07-20,"team","LFL","Karmine Corp Blue","aggression_behind_league",101.851413,102.713408,102.416405,100.289996,0.289996,0.087088,1.865613,"balanced",50
-2026-07-20,"team","LFL","Karmine Corp Blue","combined_kills_per_minute",1.252493,1.099089,1.041414,105.538111,5.538111,0.387527,26.308786,"hot_accelerating",50
-2026-07-20,"team","LFL","Karmine Corp Blue","deaths_per_minute",0.375048,0.443385,0.435615,101.78371,1.78371,0.268246,29.922412,"hot_accelerating",50
-2026-07-20,"team","LFL","Karmine Corp Blue","game_length_minutes",31.858333,32.405044,32.799652,98.796914,-1.203086,-0.225522,7.216318,"cold_deteriorating",50
-2026-07-20,"team","LFL","Karmine Corp Blue","kills_per_minute",0.877445,0.655704,0.6058,108.237803,8.237803,0.473298,57.196693,"hot_accelerating",50
-2026-07-20,"team","LFL","Karmine Corp Blue","rating_attack_global",112.119753,112.89566,109.84604,102.776267,2.776267,0.612741,2.495291,"hot_accelerating",50
-2026-07-20,"team","LFL","Karmine Corp Blue","rating_attack_league",101.35641,103.745351,104.569191,99.212158,-0.787842,0.147519,5.83669,"cold_recovering",50
-2026-07-20,"team","LFL","Karmine Corp Blue","rating_defense_global",90.005483,91.57574,96.070578,95.321317,-4.678683,-0.605729,6.444252,"cold_deteriorating",50
-2026-07-20,"team","LFL","Karmine Corp Blue","rating_defense_league",99.693655,100.251569,101.64484,98.629275,-1.370725,-0.121193,2.86656,"cold_deteriorating",50
-2026-07-20,"team","LFL","Karmine Corp Blue","snowball_index_league",101.179489,101.568176,102.116239,99.463296,-0.536704,0.017395,1.704208,"cold_recovering",50
+2026-07-20,"team","LFL","Karmine Corp Blue","aggression_ahead_league",99.801972,99.908743,99.824881,100.084009,0.084009,0.092341,1.80392,"balanced",50
+2026-07-20,"team","LFL","Karmine Corp Blue","aggression_behind_league",101.734615,102.666689,102.398436,100.26197,0.26197,0.084171,1.883934,"balanced",50
+2026-07-20,"team","LFL","Karmine Corp Blue","combined_kills_per_minute",1.112906,1.043254,1.019939,102.285908,2.285908,0.043888,25.247963,"hot_accelerating",50
+2026-07-20,"team","LFL","Karmine Corp Blue","deaths_per_minute",0.460861,0.47771,0.448817,106.43766,6.43766,0.751837,25.925574,"hot_accelerating",50
+2026-07-20,"team","LFL","Karmine Corp Blue","game_length_minutes",32.833333,32.795044,32.949652,99.530775,-0.469225,-0.148432,7.131383,"balanced",50
+2026-07-20,"team","LFL","Karmine Corp Blue","kills_per_minute",0.652045,0.565544,0.571123,99.023254,-0.976746,-0.512453,52.018585,"cold_deteriorating",50
+2026-07-20,"team","LFL","Karmine Corp Blue","rating_attack_global",113.251683,113.348432,110.020184,103.025125,3.025125,0.638218,2.345144,"hot_accelerating",50
+2026-07-20,"team","LFL","Karmine Corp Blue","rating_attack_league",102.611081,104.247219,104.762217,99.508412,-0.491588,0.178033,5.754441,"balanced",50
+2026-07-20,"team","LFL","Karmine Corp Blue","rating_defense_global",90.509735,91.777441,96.148155,95.454188,-4.545812,-0.591759,6.443789,"cold_deteriorating",50
+2026-07-20,"team","LFL","Karmine Corp Blue","rating_defense_league",100.402754,100.535209,101.753933,98.802283,-1.197717,-0.103149,2.853546,"cold_deteriorating",50
+2026-07-20,"team","LFL","Karmine Corp Blue","snowball_index_league",101.709996,101.780379,102.197855,99.591502,-0.408498,0.030725,1.668962,"balanced",50
 2026-01-26,"team","LFL","Karmine Corp Blue Stars","aggression_ahead_league",102.917055,101.166822,100.448778,100.714836,0.714836,,0,"insufficient",2
 2026-01-26,"team","LFL","Karmine Corp Blue Stars","aggression_behind_league",100,100,100,100,0,,0,"insufficient",2
 2026-01-26,"team","LFL","Karmine Corp Blue Stars","combined_kills_per_minute",0.903132,1.100356,1.181268,93.150382,-6.849618,,0,"insufficient",2
@@ -1318,28 +1318,28 @@
 2026-01-26,"team","LFL","Project Conquerors","rating_defense_global",95.625463,98.780629,101.36758,97.44795,-2.55205,-0.192573,3.251638,"cold_deteriorating",3
 2026-01-26,"team","LFL","Project Conquerors","rating_defense_league",95.02856,97.133322,98.758875,98.354018,-1.645982,-0.12135,1.665566,"cold_deteriorating",3
 2026-01-26,"team","LFL","Project Conquerors","snowball_index_league",100.463218,100.185287,100.071264,100.113942,0.113942,0.005398,0.326788,"balanced",3
-2026-07-20,"team","LFL","Skillcamp","aggression_ahead_league",98.866734,98.486969,98.600679,99.884677,-0.115323,-0.000227,1.106431,"balanced",11
-2026-07-20,"team","LFL","Skillcamp","aggression_behind_league",98.916666,98.118046,98.237133,99.878776,-0.121224,-0.008467,1.880278,"balanced",11
-2026-07-20,"team","LFL","Skillcamp","combined_kills_per_minute",0.843728,0.898713,0.884702,101.583685,1.583685,0.69915,36.645556,"hot_accelerating",11
-2026-07-20,"team","LFL","Skillcamp","deaths_per_minute",0.481448,0.523819,0.444222,117.918288,17.918288,3.026932,41.204176,"hot_accelerating",11
-2026-07-20,"team","LFL","Skillcamp","game_length_minutes",31.658333,32.660232,31.780407,102.76845,2.76845,-0.341653,17.370251,"hot_cooling",11
-2026-07-20,"team","LFL","Skillcamp","kills_per_minute",0.36228,0.374894,0.44048,85.110345,-14.889655,-1.648403,54.175491,"cold_deteriorating",11
-2026-07-20,"team","LFL","Skillcamp","rating_attack_global",105.508074,102.973718,103.214248,99.766961,-0.233039,-0.209039,3.760368,"balanced",11
-2026-07-20,"team","LFL","Skillcamp","rating_attack_league",93.444709,93.055362,96.8917,96.040592,-3.959408,-0.584269,3.707212,"cold_deteriorating",11
-2026-07-20,"team","LFL","Skillcamp","rating_defense_global",87.325012,90.160909,96.03508,93.883307,-6.116693,-0.786282,4.252022,"cold_deteriorating",11
-2026-07-20,"team","LFL","Skillcamp","rating_defense_league",96.900878,98.333688,102.051227,96.357183,-3.642817,-0.593297,4.792224,"cold_deteriorating",11
-2026-07-20,"team","LFL","Skillcamp","snowball_index_league",99.515809,99.022333,99.59834,99.42167,-0.57833,-0.145253,1.473825,"cold_deteriorating",11
-2026-07-20,"team","LFL","Solary","aggression_ahead_league",99.41586,99.329947,100.026148,99.30398,-0.69602,-0.153801,1.416667,"cold_deteriorating",90
-2026-07-20,"team","LFL","Solary","aggression_behind_league",101.749669,100.971211,100.382465,100.586502,0.586502,0.034516,0.579805,"hot_accelerating",90
-2026-07-20,"team","LFL","Solary","combined_kills_per_minute",1.034525,1.062836,1.023559,103.837258,3.837258,0.673908,25.006547,"hot_accelerating",90
-2026-07-20,"team","LFL","Solary","deaths_per_minute",0.41716,0.445562,0.403603,110.395945,10.395945,2.194439,55.494389,"hot_accelerating",90
-2026-07-20,"team","LFL","Solary","game_length_minutes",36.975,35.270885,33.076854,106.633131,6.633131,1.572579,17.779629,"hot_accelerating",90
-2026-07-20,"team","LFL","Solary","kills_per_minute",0.617365,0.617274,0.619956,99.567424,-0.432576,-0.315987,33.150027,"cold_deteriorating",90
-2026-07-20,"team","LFL","Solary","rating_attack_global",119.876781,119.271171,116.719387,102.186255,2.186255,0.078049,1.254739,"hot_accelerating",90
-2026-07-20,"team","LFL","Solary","rating_attack_league",110.373328,111.392295,110.777935,100.554587,0.554587,-0.045453,1.447509,"hot_cooling",90
-2026-07-20,"team","LFL","Solary","rating_defense_global",96.348941,99.935953,101.433028,98.524075,-1.475925,-0.064283,2.456702,"cold_deteriorating",90
-2026-07-20,"team","LFL","Solary","rating_defense_league",109.54086,112.151608,111.179231,100.874603,0.874603,0.156218,2.233288,"hot_accelerating",90
-2026-07-20,"team","LFL","Solary","snowball_index_league",105.794794,105.567592,104.007366,101.500111,1.500111,0.161992,0.526349,"hot_accelerating",90
+2026-07-20,"team","LFL","Skillcamp","aggression_ahead_league",98.884689,98.494151,98.603441,99.889162,-0.110838,5.4e-05,1.107533,"balanced",11
+2026-07-20,"team","LFL","Skillcamp","aggression_behind_league",98.188984,97.826973,98.125182,99.696094,-0.303906,-0.019944,1.820555,"balanced",11
+2026-07-20,"team","LFL","Skillcamp","combined_kills_per_minute",1.009471,0.96501,0.910201,106.021651,6.021651,0.961154,36.857331,"hot_accelerating",11
+2026-07-20,"team","LFL","Skillcamp","deaths_per_minute",0.4561,0.51368,0.440322,116.659972,16.659972,2.96472,41.045238,"hot_accelerating",11
+2026-07-20,"team","LFL","Skillcamp","game_length_minutes",31.794444,32.714677,31.801348,102.871982,2.871982,-0.334809,17.309659,"hot_cooling",11
+2026-07-20,"team","LFL","Skillcamp","kills_per_minute",0.55337,0.451331,0.469879,96.052516,-3.947484,-0.916382,53.690888,"cold_deteriorating",11
+2026-07-20,"team","LFL","Skillcamp","rating_attack_global",104.861837,102.715224,103.114826,99.612468,-0.387532,-0.218932,3.603405,"balanced",11
+2026-07-20,"team","LFL","Skillcamp","rating_attack_league",92.942304,92.8544,96.814407,95.909692,-4.090308,-0.59276,3.574016,"cold_deteriorating",11
+2026-07-20,"team","LFL","Skillcamp","rating_defense_global",87.901528,90.391515,96.123775,94.036585,-5.963415,-0.776282,4.30458,"cold_deteriorating",11
+2026-07-20,"team","LFL","Skillcamp","rating_defense_league",97.487903,98.568498,102.141539,96.501873,-3.498127,-0.583885,4.862539,"cold_deteriorating",11
+2026-07-20,"team","LFL","Skillcamp","snowball_index_league",99.567676,99.04308,99.60632,99.434534,-0.565466,-0.144436,1.481367,"cold_deteriorating",11
+2026-07-20,"team","LFL","Solary","aggression_ahead_league",99.352469,99.30459,100.016396,99.288311,-0.711689,-0.155497,1.414675,"cold_deteriorating",90
+2026-07-20,"team","LFL","Solary","aggression_behind_league",101.708767,100.95485,100.376172,100.576509,0.576509,0.033437,0.572695,"hot_accelerating",90
+2026-07-20,"team","LFL","Solary","combined_kills_per_minute",0.985192,1.043102,1.015969,102.670649,2.670649,0.550151,25.461232,"hot_accelerating",90
+2026-07-20,"team","LFL","Solary","deaths_per_minute",0.349029,0.418309,0.393122,106.407074,6.407074,1.793278,57.280291,"hot_accelerating",90
+2026-07-20,"team","LFL","Solary","game_length_minutes",34.05,34.100885,32.626854,104.517846,4.517846,1.356487,17.757313,"hot_accelerating",90
+2026-07-20,"team","LFL","Solary","kills_per_minute",0.636163,0.624793,0.622848,100.312338,0.312338,-0.234471,33.164572,"balanced",90
+2026-07-20,"team","LFL","Solary","rating_attack_global",119.751031,119.22087,116.700041,102.160093,2.160093,0.075204,1.252911,"hot_accelerating",90
+2026-07-20,"team","LFL","Solary","rating_attack_league",110.314204,111.368646,110.768839,100.541494,0.541494,-0.046873,1.457417,"hot_cooling",90
+2026-07-20,"team","LFL","Solary","rating_defense_global",96.590548,100.032596,101.470198,98.583227,-1.416773,-0.057944,2.379377,"cold_deteriorating",90
+2026-07-20,"team","LFL","Solary","rating_defense_league",109.664194,112.200942,111.198205,100.901756,0.901756,0.159133,2.205713,"hot_accelerating",90
+2026-07-20,"team","LFL","Solary","snowball_index_league",104.731976,105.142465,103.843856,101.25054,1.25054,0.135101,0.733176,"hot_accelerating",90
 2025-09-15,"team","LFL","Team BDS Academy","aggression_ahead_league",105.140925,104.457261,103.781668,100.650976,0.650976,0.065941,1.140249,"hot_accelerating",77
 2025-09-15,"team","LFL","Team BDS Academy","aggression_behind_league",113.352931,111.061254,107.968594,102.864407,2.864407,0.339223,1.331737,"hot_accelerating",77
 2025-09-15,"team","LFL","Team BDS Academy","combined_kills_per_minute",1.172263,1.046534,1.035925,101.024155,1.024155,-0.106423,29.301009,"hot_cooling",77
@@ -1395,17 +1395,17 @@
 2022-09-19,"team","LFL","Team Oplon","rating_defense_global",95.499355,91.535453,90.993933,100.595117,0.595117,-0.071346,3.12864,"hot_cooling",20
 2022-09-19,"team","LFL","Team Oplon","rating_defense_league",97.988997,93.338229,90.400418,103.249775,3.249775,0.502982,2.396467,"hot_accelerating",20
 2022-09-19,"team","LFL","Team Oplon","snowball_index_league",96.696723,95.956121,95.12968,100.868753,0.868753,0.08436,0.988141,"hot_accelerating",20
-2026-07-20,"team","LFL","TLN Pirates","aggression_ahead_league",94.619921,94.224871,95.029282,99.153513,-0.846487,-0.023411,0.901051,"cold_deteriorating",15
-2026-07-20,"team","LFL","TLN Pirates","aggression_behind_league",96.884829,96.040244,96.939547,99.072305,-0.927695,-0.160829,1.990818,"cold_deteriorating",15
-2026-07-20,"team","LFL","TLN Pirates","combined_kills_per_minute",0.955111,0.91319,0.847362,107.76858,7.76858,0.584071,22.895466,"hot_accelerating",15
-2026-07-20,"team","LFL","TLN Pirates","deaths_per_minute",0.471778,0.463661,0.397805,116.555025,16.555025,1.398995,53.979272,"hot_accelerating",15
-2026-07-20,"team","LFL","TLN Pirates","game_length_minutes",28.841667,29.822565,31.623475,94.305147,-5.694853,-0.72762,13.30908,"cold_deteriorating",15
-2026-07-20,"team","LFL","TLN Pirates","kills_per_minute",0.483334,0.449528,0.449557,99.993617,-0.006383,-0.13704,32.493467,"balanced",15
-2026-07-20,"team","LFL","TLN Pirates","rating_attack_global",104.386289,103.932134,101.634581,102.260601,2.260601,0.494146,1.296788,"hot_accelerating",15
-2026-07-20,"team","LFL","TLN Pirates","rating_attack_league",92.518846,93.466679,93.538827,99.922868,-0.077132,0.304297,1.90234,"cold_recovering",15
-2026-07-20,"team","LFL","TLN Pirates","rating_defense_global",93.394972,96.854911,97.177075,99.668477,-0.331523,0.216242,3.837892,"balanced",15
-2026-07-20,"team","LFL","TLN Pirates","rating_defense_league",104.547443,107.704564,105.38714,102.198963,2.198963,0.523811,3.832523,"hot_accelerating",15
-2026-07-20,"team","LFL","TLN Pirates","snowball_index_league",100.692725,102.253357,101.841284,100.404623,0.404623,0.103439,1.396138,"balanced",15
+2026-07-20,"team","LFL","TLN Pirates","aggression_ahead_league",94.730522,94.269111,95.046297,99.182308,-0.817692,-0.020415,0.89038,"cold_deteriorating",15
+2026-07-20,"team","LFL","TLN Pirates","aggression_behind_league",96.690798,95.962632,96.909696,99.022735,-0.977265,-0.166025,1.942094,"cold_deteriorating",15
+2026-07-20,"team","LFL","TLN Pirates","combined_kills_per_minute",0.914652,0.897006,0.841137,106.642041,6.642041,0.464748,23.000464,"hot_accelerating",15
+2026-07-20,"team","LFL","TLN Pirates","deaths_per_minute",0.3816,0.42759,0.383931,111.371616,11.371616,0.845785,56.056042,"hot_accelerating",15
+2026-07-20,"team","LFL","TLN Pirates","game_length_minutes",30.822222,30.614787,31.928176,95.886426,-4.113574,-0.561221,13.564839,"cold_deteriorating",15
+2026-07-20,"team","LFL","TLN Pirates","kills_per_minute",0.533052,0.469415,0.457206,102.670458,2.670458,0.144778,34.136588,"hot_accelerating",15
+2026-07-20,"team","LFL","TLN Pirates","rating_attack_global",104.47896,103.969202,101.648838,102.282725,2.282725,0.49642,1.283847,"hot_accelerating",15
+2026-07-20,"team","LFL","TLN Pirates","rating_attack_league",92.674312,93.528865,93.562745,99.963789,-0.036211,0.308491,1.864856,"cold_recovering",15
+2026-07-20,"team","LFL","TLN Pirates","rating_defense_global",93.647722,96.956011,97.21596,99.732607,-0.267393,0.222839,3.772507,"balanced",15
+2026-07-20,"team","LFL","TLN Pirates","rating_defense_league",104.867641,107.832644,105.436401,102.27269,2.27269,0.531373,3.757159,"hot_accelerating",15
+2026-07-20,"team","LFL","TLN Pirates","snowball_index_league",100.761276,102.280777,101.85183,100.421148,0.421148,0.105158,1.373056,"balanced",15
 2026-01-26,"team","LFL","Vitality Rising Bees","aggression_ahead_league",100,100,100,100,0,,0,"insufficient",2
 2026-01-26,"team","LFL","Vitality Rising Bees","aggression_behind_league",102.984537,101.193815,100.45916,100.731298,0.731298,,0,"insufficient",2
 2026-01-26,"team","LFL","Vitality Rising Bees","combined_kills_per_minute",0.909091,1.157754,1.25977,91.902041,-8.097959,,0,"insufficient",2
@@ -1417,17 +1417,17 @@
 2026-01-26,"team","LFL","Vitality Rising Bees","rating_defense_global",95.229014,99.956213,101.895577,98.096715,-1.903285,,0,"insufficient",2
 2026-01-26,"team","LFL","Vitality Rising Bees","rating_defense_league",94.159306,97.663722,99.101432,98.549255,-1.450745,,0,"insufficient",2
 2026-01-26,"team","LFL","Vitality Rising Bees","snowball_index_league",100,100,100,100,0,,0,"insufficient",2
-2026-07-20,"team","LFL","Vitality.Bee","aggression_ahead_league",98.934369,99.342237,98.70003,100.650665,0.650665,0.086312,1.537287,"hot_accelerating",95
-2026-07-20,"team","LFL","Vitality.Bee","aggression_behind_league",100.058155,99.644686,99.724069,99.920397,-0.079603,-0.032599,0.486833,"balanced",95
-2026-07-20,"team","LFL","Vitality.Bee","combined_kills_per_minute",1.140743,1.030339,0.990609,104.010697,4.010697,0.163943,20.536727,"hot_accelerating",95
-2026-07-20,"team","LFL","Vitality.Bee","deaths_per_minute",0.435628,0.475825,0.493983,96.324111,-3.675889,-0.3096,49.268495,"cold_deteriorating",95
-2026-07-20,"team","LFL","Vitality.Bee","game_length_minutes",28.316667,32.395524,33.890279,95.589427,-4.410573,-0.552074,16.384826,"cold_deteriorating",95
-2026-07-20,"team","LFL","Vitality.Bee","kills_per_minute",0.705115,0.554514,0.496625,111.656394,11.656394,0.634968,52.449205,"hot_accelerating",95
-2026-07-20,"team","LFL","Vitality.Bee","rating_attack_global",110.312723,107.749091,104.460038,103.148624,3.148624,0.445815,3.15644,"hot_accelerating",95
-2026-07-20,"team","LFL","Vitality.Bee","rating_attack_league",99.293373,97.989684,97.288685,100.720535,0.720535,0.232206,2.527297,"hot_accelerating",95
-2026-07-20,"team","LFL","Vitality.Bee","rating_defense_global",90.785572,90.885068,93.420477,97.286025,-2.713975,-0.124252,1.765693,"cold_deteriorating",95
-2026-07-20,"team","LFL","Vitality.Bee","rating_defense_league",100.789776,99.473512,99.551555,99.921605,-0.078395,0.153763,2.329038,"balanced",95
-2026-07-20,"team","LFL","Vitality.Bee","snowball_index_league",101.642251,101.386416,101.535714,99.852959,-0.147041,0.015339,0.32402,"balanced",95
+2026-07-20,"team","LFL","Vitality.Bee","aggression_ahead_league",99.058743,99.391986,98.719165,100.681552,0.681552,0.089731,1.527225,"hot_accelerating",95
+2026-07-20,"team","LFL","Vitality.Bee","aggression_behind_league",99.999087,99.621059,99.714982,99.905809,-0.094191,-0.034217,0.47822,"balanced",95
+2026-07-20,"team","LFL","Vitality.Bee","combined_kills_per_minute",1.14183,1.030774,0.990776,104.037026,4.037026,0.166908,20.55102,"hot_accelerating",95
+2026-07-20,"team","LFL","Vitality.Bee","deaths_per_minute",0.400805,0.461896,0.488626,94.529538,-5.470462,-0.50736,49.454473,"cold_deteriorating",95
+2026-07-20,"team","LFL","Vitality.Bee","game_length_minutes",29.95,33.048857,34.141561,96.79949,-3.20051,-0.417538,15.341621,"cold_deteriorating",95
+2026-07-20,"team","LFL","Vitality.Bee","kills_per_minute",0.741025,0.568878,0.50215,113.288462,13.288462,0.823016,53.036433,"hot_accelerating",95
+2026-07-20,"team","LFL","Vitality.Bee","rating_attack_global",110.520276,107.832112,104.491969,103.196555,3.196555,0.451096,3.177703,"hot_accelerating",95
+2026-07-20,"team","LFL","Vitality.Bee","rating_attack_league",99.529557,98.084158,97.325021,100.780001,0.780001,0.238737,2.540459,"hot_accelerating",95
+2026-07-20,"team","LFL","Vitality.Bee","rating_defense_global",90.892036,90.927654,93.436856,97.314548,-2.685452,-0.121122,1.762409,"cold_deteriorating",95
+2026-07-20,"team","LFL","Vitality.Bee","rating_defense_league",100.931051,99.530022,99.57329,99.956546,-0.043454,0.157599,2.342119,"balanced",95
+2026-07-20,"team","LFL","Vitality.Bee","snowball_index_league",102.018697,101.536994,101.593629,99.944253,-0.055747,0.025436,0.347416,"balanced",95
 2026-01-26,"team","LFL","Yumeea","aggression_ahead_league",100,100,100,100,0,,0,"insufficient",2
 2026-01-26,"team","LFL","Yumeea","aggression_behind_league",101.641309,100.656524,100.252509,100.402997,0.402997,,0,"insufficient",2
 2026-01-26,"team","LFL","Yumeea","combined_kills_per_minute",1.11444,1.12932,1.135425,99.462334,-0.537666,,0,"insufficient",2
@@ -1450,17 +1450,17 @@
 2026-01-26,"team","LFL","Zephyr Esport","rating_defense_global",100.586634,102.375912,103.109975,99.288078,-0.711922,,0,"insufficient",2
 2026-01-26,"team","LFL","Zephyr Esport","rating_defense_league",101.114031,100.445612,100.171389,100.273754,0.273754,,0,"insufficient",2
 2026-01-26,"team","LFL","Zephyr Esport","snowball_index_league",100,100,100,100,0,,0,"insufficient",2
-2026-07-20,"team","LFL","ZYB Esport","aggression_ahead_league",101.705082,103.044818,103.257148,99.794367,-0.205633,-0.07045,1.47912,"balanced",12
-2026-07-20,"team","LFL","ZYB Esport","aggression_behind_league",106.6448,109.455598,107.60499,101.719816,1.719816,0.210116,2.391371,"hot_accelerating",12
-2026-07-20,"team","LFL","ZYB Esport","combined_kills_per_minute",0.951895,1.028501,1.20817,85.128826,-14.871174,-0.856625,16.258695,"cold_deteriorating",12
-2026-07-20,"team","LFL","ZYB Esport","deaths_per_minute",0.639732,0.664725,0.693813,95.807483,-4.192517,0.696897,29.757651,"cold_recovering",12
-2026-07-20,"team","LFL","ZYB Esport","game_length_minutes",31.65,31.344177,32.013106,97.910453,-2.089547,-0.496466,19.237262,"cold_deteriorating",12
-2026-07-20,"team","LFL","ZYB Esport","kills_per_minute",0.312162,0.363776,0.514357,70.72446,-29.27554,-2.952159,54.147929,"cold_deteriorating",12
-2026-07-20,"team","LFL","ZYB Esport","rating_attack_global",110.833016,112.736809,110.677781,101.860381,1.860381,0.245287,2.966718,"hot_accelerating",12
-2026-07-20,"team","LFL","ZYB Esport","rating_attack_league",99.655278,103.113996,104.359078,98.806925,-1.193075,-0.079895,3.144632,"cold_deteriorating",12
-2026-07-20,"team","LFL","ZYB Esport","rating_defense_global",81.437368,80.639292,85.667489,94.130566,-5.869434,-0.526743,3.104711,"cold_deteriorating",12
-2026-07-20,"team","LFL","ZYB Esport","rating_defense_league",88.276804,86.369026,89.456367,96.548774,-3.451226,-0.264137,4.199091,"cold_deteriorating",12
-2026-07-20,"team","LFL","ZYB Esport","snowball_index_league",98.994661,99.992707,100.029026,99.963691,-0.036309,0.069427,1.50014,"balanced",12
+2026-07-20,"team","LFL","ZYB Esport","aggression_ahead_league",100.610983,102.607178,103.088825,99.532784,-0.467216,-0.090146,1.669396,"balanced",12
+2026-07-20,"team","LFL","ZYB Esport","aggression_behind_league",106.802589,109.518714,107.629265,101.755515,1.755515,0.212774,2.349257,"hot_accelerating",12
+2026-07-20,"team","LFL","ZYB Esport","combined_kills_per_minute",0.930105,1.019785,1.204818,84.642263,-15.357737,-0.892376,16.142191,"cold_deteriorating",12
+2026-07-20,"team","LFL","ZYB Esport","deaths_per_minute",0.651075,0.669262,0.695558,96.219392,-3.780608,0.725234,29.986172,"cold_recovering",12
+2026-07-20,"team","LFL","ZYB Esport","game_length_minutes",30.5,30.884177,31.836183,97.009674,-2.990326,-0.56587,19.660178,"cold_deteriorating",12
+2026-07-20,"team","LFL","ZYB Esport","kills_per_minute",0.27903,0.350524,0.50926,68.829982,-31.170018,-3.101741,54.98646,"cold_deteriorating",12
+2026-07-20,"team","LFL","ZYB Esport","rating_attack_global",109.836813,112.338328,110.524519,101.641092,1.641092,0.228998,3.019472,"hot_accelerating",12
+2026-07-20,"team","LFL","ZYB Esport","rating_attack_league",98.592288,102.6888,104.195541,98.553929,-1.446071,-0.098843,3.260111,"cold_deteriorating",12
+2026-07-20,"team","LFL","ZYB Esport","rating_defense_global",81.568948,80.691924,85.687732,94.169752,-5.830248,-0.523785,3.143634,"cold_deteriorating",12
+2026-07-20,"team","LFL","ZYB Esport","rating_defense_league",88.508438,86.46168,89.492003,96.613861,-3.386139,-0.259257,4.259793,"cold_deteriorating",12
+2026-07-20,"team","LFL","ZYB Esport","snowball_index_league",97.991427,99.591413,99.874683,99.716375,-0.283625,0.051001,1.7061,"balanced",12
 2026-06-08,"team","LPL","Anyone's Legend","aggression_ahead_league",99.737579,99.692064,99.645775,100.046453,0.046453,0.023004,0.028305,"balanced",98
 2026-06-08,"team","LPL","Anyone's Legend","aggression_behind_league",100.05293,100.047167,100.069681,99.977502,-0.022498,-0.014759,0.03128,"balanced",98
 2026-06-08,"team","LPL","Anyone's Legend","combined_kills_per_minute",0.875625,0.888452,0.874008,101.652597,1.652597,1.477267,18.745074,"hot_accelerating",98

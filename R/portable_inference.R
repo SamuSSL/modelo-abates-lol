@@ -60,7 +60,6 @@
 
 .portable_derive_features <- function(request, bundle) {
   teams <- list()
-  players <- list()
   champions <- character()
   warnings <- character()
   positions <- c("top", "jng", "mid", "bot", "sup")
@@ -92,7 +91,7 @@
     }
     teams[[side]] <- team
     side_positions <- vapply(
-      side_request$players,
+      side_request$champions,
       `[[`,
       character(1L),
       "position"
@@ -103,26 +102,15 @@
         call. = FALSE
       )
     }
-    for (player_request in side_request$players) {
-      player_key <- .portable_entity_key(
-        player_request$player_id,
-        player_request$player_name,
-        player_request$position
+    champions <- c(
+      champions,
+      vapply(
+        side_request$champions,
+        `[[`,
+        character(1L),
+        "champion"
       )
-      player <- .portable_lookup(bundle$players, player_key)
-      if (is.null(player) ||
-          as.numeric(player$effective_player_games) <
-            as.numeric(bundle$sample_limits$player_effective_games)) {
-        stop(
-          "Pouca amostra para ",
-          player_request$player_name,
-          ". N\u00e3o apostar.",
-          call. = FALSE
-        )
-      }
-      players[[length(players) + 1L]] <- player
-      champions <- c(champions, player_request$champion)
-    }
+    )
   }
   if (anyDuplicated(champions)) {
     stop(
@@ -151,22 +139,11 @@
     champions[6:10],
     bundle$taxonomy
   )
-  player_field_mean <- function(field) {
-    mean(vapply(players, function(player) {
-      as.numeric(player[[field]])
-    }, numeric(1L)))
-  }
   list(
     features = list(
       pace = mean(vapply(teams, function(team) {
         as.numeric(team$hist_pace)
       }, numeric(1L))),
-      player_conflict = player_field_mean(
-        "hist_conflict_involvement_per_minute"
-      ),
-      player_mortality = player_field_mean(
-        "hist_deaths_per_minute"
-      ),
       draft_frontline = mean(c(
         blue_scores$frontline_score,
         red_scores$frontline_score

@@ -15,19 +15,6 @@ test_that("portable inference returns a normalized half-line prediction", {
   })
   names(taxonomy) <- paste0("C", 0:9)
   positions <- c("top", "jng", "mid", "bot", "sup")
-  players <- unlist(lapply(c("blue", "red"), function(side) {
-    lapply(positions, function(position) {
-      name <- paste(side, position, sep = "-")
-      list(
-        key = paste0("name:", name, "|", position),
-        player_name = name,
-        position = position,
-        effective_player_games = 5,
-        hist_conflict_involvement_per_minute = 0.5,
-        hist_deaths_per_minute = 0.1
-      )
-    })
-  }), recursive = FALSE)
   bundle <- list(
     metadata = list(model_version = "test", data_cutoff = "2026-01-01"),
     model = list(
@@ -51,21 +38,18 @@ test_that("portable inference returns a normalized half-line prediction", {
         hist_pace = 0.8
       )
     ),
-    players = players,
     taxonomy = taxonomy,
     champion_samples = as.list(stats::setNames(rep(10, 10), paste0("C", 0:9))),
     sample_limits = list(
       team_effective_games = 1,
-      player_effective_games = 1,
       champion_effective_games = 1
     )
   )
   make_side <- function(side, offset) {
     list(
       team_name = tools::toTitleCase(side),
-      players = lapply(seq_along(positions), function(index) {
+      champions = lapply(seq_along(positions), function(index) {
         list(
-          player_name = paste(side, positions[[index]], sep = "-"),
           position = positions[[index]],
           champion = paste0("C", offset + index - 1L)
         )

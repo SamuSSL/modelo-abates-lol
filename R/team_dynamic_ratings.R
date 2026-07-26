@@ -39,7 +39,6 @@ dynamic_team_model_features <- function() {
     "draft_protect",
     "draft_skirmish",
     "draft_scaling",
-    "player_champion_conflict_delta",
     "matchup_attack_league",
     "matchup_attack_global",
     "matchup_defense_league",

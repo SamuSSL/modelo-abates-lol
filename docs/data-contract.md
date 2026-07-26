@@ -152,17 +152,17 @@ Exige:
 - duração válida para auditoria;
 - não ser remake, forfeit ou mapa interrompido.
 
-### Histórico de jogador
+### Linhas de jogador para auditoria
 
-Além do target, exige:
+Essas linhas não geram features de jogador. Elas são usadas somente para:
 
-- dez jogadores identificáveis;
-- cinco posições válidas por equipe;
-- IDs ou aliases resolvidos.
+- validar kills e deaths contra as linhas de equipe;
+- identificar os dez campeões e suas posições;
+- auditar a estrutura de cinco participantes por equipe.
 
 ### Draft e taxonomia
 
-Além do histórico de jogador, exige:
+Além do target validado, exige:
 
 - dez campeões válidos e únicos;
 - versão de taxonomia aplicável à data;
@@ -221,7 +221,8 @@ Duas linhas por mapa com equipe, side, target da equipe e contexto.
 
 ### `game_players`
 
-Dez linhas por mapa com jogador, posição, campeão e apenas estatísticas históricas permitidas para construção posterior de features.
+Dez linhas de origem por mapa. Identidade e estatísticas de jogador ficam
+restritas à auditoria; posição e campeão alimentam as features de draft.
 
 ### `series`
 
@@ -263,4 +264,3 @@ Cada dataset processado recebe:
 - Nenhum registro com série ambígua gera features.
 - A auditoria explica toda exclusão.
 - Um teste artificial com dado futuro falha antes do treino.
-

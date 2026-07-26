@@ -62,8 +62,7 @@ raw_features <- c(
   "draft_dive",
   "draft_protect",
   "draft_skirmish",
-  "draft_scaling",
-  "player_champion_conflict_delta"
+  "draft_scaling"
 )
 qcut_features <- c(
   "team_opponent_intensity",
@@ -74,8 +73,7 @@ qcut_features <- c(
   "draft_dive",
   "draft_protect",
   "draft_skirmish",
-  "draft_scaling",
-  "player_champion_conflict_delta"
+  "draft_scaling"
 )
 required <- unique(c(
   "gameid",

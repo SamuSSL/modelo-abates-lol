@@ -25,6 +25,10 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
     }
     assert set(app.selectbox[1].options) == expected
     assert len(expected) > 2
+    assert not any(
+        selectbox.label.startswith("Jogador")
+        for selectbox in app.selectbox
+    )
 
 
 def test_low_sample_team_remains_selectable_with_warning():

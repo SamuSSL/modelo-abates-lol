@@ -317,6 +317,116 @@ build_player_rolling_features <- function(
   features
 }
 
+#' Build leakage-safe rolling champion coverage
+#'
+#' @param draft_rows Champion-pick rows with series cutoffs.
+#' @param half_life_days Exponential-decay half-life.
+#' @return Target draft rows with frozen champion sample coverage.
+#' @export
+build_champion_rolling_features <- function(
+  draft_rows,
+  half_life_days = 60
+) {
+  required <- c(
+    "gameid",
+    "game_datetime",
+    "series_cutoff",
+    "competition_role",
+    "side",
+    "position",
+    "champion"
+  )
+  missing <- setdiff(required, names(draft_rows))
+  if (length(missing) > 0L) {
+    stop(
+      "Missing rolling champion columns: ",
+      paste(missing, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  rows <- draft_rows[
+    draft_rows$competition_role %in% c("target", "auxiliary") &
+      !is.na(draft_rows$game_datetime) &
+      !is.na(draft_rows$series_cutoff) &
+      !is.na(draft_rows$champion) &
+      nzchar(as.character(draft_rows$champion)),
+    ,
+    drop = FALSE
+  ]
+  rows$.original_index <- seq_len(nrow(rows))
+  outcome_order <- order(
+    rows$game_datetime,
+    rows$gameid,
+    rows$side,
+    rows$position
+  )
+  target_index <- which(rows$competition_role == "target")
+  query_order <- target_index[order(
+    rows$series_cutoff[target_index],
+    rows$gameid[target_index],
+    rows$side[target_index],
+    rows$position[target_index]
+  )]
+  champion_state <- new.env(hash = TRUE, parent = emptyenv())
+  raw_champion_state <- new.env(hash = TRUE, parent = emptyenv())
+  features <- rows[query_order, c(
+    "gameid",
+    "game_datetime",
+    "series_cutoff",
+    "side",
+    "position",
+    "champion"
+  ), drop = FALSE]
+  features$.original_index <- rows$.original_index[query_order]
+  features$raw_champion_games <- integer(nrow(features))
+  features$effective_champion_games <- numeric(nrow(features))
+  pointer <- 1L
+  for (query_position in seq_along(query_order)) {
+    row_index <- query_order[[query_position]]
+    cutoff <- as.numeric(rows$series_cutoff[[row_index]])
+    while (
+      pointer <= length(outcome_order) &&
+        as.numeric(rows$game_datetime[[outcome_order[[pointer]]]]) < cutoff
+    ) {
+      outcome_index <- outcome_order[[pointer]]
+      outcome_time <- as.numeric(rows$game_datetime[[outcome_index]])
+      champion_key <- as.character(rows$champion[[outcome_index]])
+      .update_state(
+        champion_state,
+        champion_key,
+        outcome_time,
+        1,
+        half_life_days
+      )
+      .update_raw_team_state(
+        raw_champion_state,
+        champion_key,
+        outcome_time
+      )
+      pointer <- pointer + 1L
+    }
+    champion_key <- as.character(rows$champion[[row_index]])
+    raw <- .raw_team_state(raw_champion_state, champion_key)
+    history <- .query_state(
+      champion_state,
+      champion_key,
+      cutoff,
+      half_life_days
+    )
+    features$raw_champion_games[[query_position]] <- raw$games
+    features$effective_champion_games[[query_position]] <-
+      history[["weight"]]
+  }
+  features <- features[
+    order(features$.original_index),
+    ,
+    drop = FALSE
+  ]
+  features$.original_index <- NULL
+  rownames(features) <- NULL
+  features
+}
+
 #' Assemble player and draft signals for each map
 #'
 #' @param player_features Frozen player histories with final champions.
@@ -433,6 +543,116 @@ assemble_player_draft_features <- function(player_features, taxonomy) {
         )
       }
     }
+    functional_scores <- intersect(
+      c(
+        "engage_score", "pick_score", "poke_siege_score",
+        "dive_score", "protect_score", "front_to_back_score",
+        "split_map_score", "skirmish_score", "scaling_score"
+      ),
+      names(side_scores$blue)
+    )
+    for (score in functional_scores) {
+      name <- sub("_score$", "", score)
+      result_row[[paste0("draft_", name)]] <-
+        average_score(score)
+      result_row[[paste0("draft_", name, "_imbalance")]] <-
+        imbalance(score)
+    }
+    if ("primary_archetype" %in% names(side_scores$blue)) {
+      result_row$blue_primary_archetype <-
+        side_scores$blue$primary_archetype
+      result_row$red_primary_archetype <-
+        side_scores$red$primary_archetype
+      result_row$blue_secondary_archetype <-
+        side_scores$blue$secondary_archetype
+      result_row$red_secondary_archetype <-
+        side_scores$red$secondary_archetype
+      result_row$draft_archetype_confidence <- average_score(
+        "archetype_confidence"
+      )
+      result_row$draft_functional_coverage <- average_score(
+        "functional_coverage"
+      )
+    }
+    result_row
+  })
+  result <- do.call(rbind, rows)
+  rownames(result) <- NULL
+  result
+}
+
+#' Assemble draft-only signals for each map
+#'
+#' Player identities and player histories are intentionally ignored. Player
+#' rows are used only as the source format for champion picks and positions.
+#'
+#' @param draft_rows Frozen map rows with final champions.
+#' @param taxonomy Static champion taxonomy.
+#' @return One row per map with champion coverage and composition signals.
+#' @export
+assemble_draft_features <- function(draft_rows, taxonomy) {
+  required <- c(
+    "gameid",
+    "side",
+    "position",
+    "champion",
+    "raw_champion_games",
+    "effective_champion_games"
+  )
+  missing <- setdiff(required, names(draft_rows))
+  if (length(missing) > 0L) {
+    stop(
+      "Missing draft columns: ",
+      paste(missing, collapse = ", "),
+      call. = FALSE
+    )
+  }
+  validate_champion_taxonomy(
+    taxonomy,
+    unique(as.character(draft_rows$champion))
+  )
+  groups <- split(draft_rows, draft_rows$gameid)
+  rows <- lapply(groups, function(map) {
+    if (
+      nrow(map) != 10L ||
+        !setequal(map$side, c("Blue", "Red")) ||
+        any(table(map$side) != 5L)
+    ) {
+      stop("Each draft requires five champions per side.", call. = FALSE)
+    }
+    side_scores <- lapply(c("Blue", "Red"), function(side) {
+      side_rows <- map[map$side == side, , drop = FALSE]
+      score_composition_archetypes(side_rows$champion, taxonomy)
+    })
+    names(side_scores) <- c("blue", "red")
+    average_score <- function(column) {
+      mean(c(
+        side_scores$blue[[column]],
+        side_scores$red[[column]]
+      ))
+    }
+    imbalance <- function(column) {
+      abs(
+        side_scores$blue[[column]] -
+          side_scores$red[[column]]
+      )
+    }
+    result_row <- data.frame(
+      gameid = as.character(map$gameid[[1L]]),
+      minimum_raw_champion_games = min(map$raw_champion_games),
+      minimum_effective_champion_games = min(
+        map$effective_champion_games
+      ),
+      draft_frontline = average_score("frontline_score"),
+      draft_damage = average_score("damage_score"),
+      draft_magic = average_score("magic_score"),
+      draft_burst = average_score("burst_score"),
+      draft_utility = average_score("utility_score"),
+      draft_difficulty = average_score("execution_difficulty"),
+      draft_frontline_imbalance = imbalance("frontline_score"),
+      draft_damage_imbalance = imbalance("damage_score"),
+      stringsAsFactors = FALSE
+    )
     functional_scores <- intersect(
       c(
         "engage_score", "pick_score", "poke_siege_score",

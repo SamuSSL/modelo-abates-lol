@@ -63,6 +63,11 @@ A interface salva primeiro a previsão. Somente depois de mostrar as
 probabilidades ela oferece as decisões Over, Under ou Não apostar. A decisão
 é gravada separadamente em `lol_kills.bet_decisions`.
 
+Desde a reconstrução de 2026-07-25, a interface recebe apenas equipes e os
+cinco campeões por posição de cada lado. Jogadores não entram no payload, no
+bundle, nos limites de amostra nem no modelo. As linhas de jogador do Oracle's
+Elixir continuam restritas à auditoria do target e à leitura do draft.
+
 Referências oficiais:
 
 - https://docs.streamlit.io/deploy/streamlit-community-cloud/deploy-your-app/deploy

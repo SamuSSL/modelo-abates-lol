@@ -68,9 +68,6 @@ archetype_features <- c(
   "draft_skirmish",
   "draft_scaling"
 )
-interaction_features <- c(
-  "player_champion_conflict_delta"
-)
 candidate_features <- list(
   nb_v1_rebuilt = v1_features,
   nb_team_opponent = c(
@@ -81,12 +78,6 @@ candidate_features <- list(
     v1_draft_features,
     team_opponent_features,
     archetype_features
-  ),
-  nb_player_champion = c(
-    v1_draft_features,
-    team_opponent_features,
-    archetype_features,
-    interaction_features
   )
 )
 candidates <- data.frame(
@@ -121,8 +112,7 @@ intensity_features <- c(
   "matchup_intensity_imbalance",
   "draft_engage",
   "draft_dive",
-  "draft_skirmish",
-  "player_champion_conflict_delta"
+  "draft_skirmish"
 )
 required <- unique(c(
   "gameid",

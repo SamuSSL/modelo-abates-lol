@@ -7,7 +7,6 @@
 build_portable_model_bundle(
   fit,
   team_snapshot,
-  player_snapshot,
   taxonomy,
   champion_samples,
   metadata,
@@ -18,8 +17,6 @@ build_portable_model_bundle(
 \item{fit}{Fitted count regression.}
 
 \item{team_snapshot}{Current team histories.}
-
-\item{player_snapshot}{Current player histories.}
 
 \item{taxonomy}{Static champion taxonomy.}
 

@@ -9,7 +9,7 @@ attach_tracking_features_to_maps(maps, tracking)
 \arguments{
 \item{maps}{Map rows with league, series cutoff and both team names.}
 
-\item{tracking}{Output from \code{\link[=build_tracking_time_series]{build_tracking_time_series()}}.}
+\item{tracking}{Output table from \code{build_tracking_time_series()}.}
 }
 \value{
 Maps with league and matchup temporal features.

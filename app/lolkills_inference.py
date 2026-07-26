@@ -101,12 +101,11 @@ def _composition_scores(
 def _lookup_entities(
     request: dict[str, Any],
     bundle: dict[str, Any],
-) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[str]]:
+) -> tuple[list[dict[str, Any]], list[str], list[str]]:
     warnings: list[str] = []
     team_lookup = {row["key"]: row for row in bundle["teams"]}
-    player_lookup = {row["key"]: row for row in bundle["players"]}
     teams: list[dict[str, Any]] = []
-    players: list[dict[str, Any]] = []
+    champions: list[str] = []
     if request["blue"]["team_name"] == request["red"]["team_name"]:
         raise PredictionBlocked("As equipes azul e vermelha devem ser diferentes.")
     for side in ("blue", "red"):
@@ -117,49 +116,24 @@ def _lookup_entities(
                 f"Pouca amostra para {team['team_name']}. Não apostar."
             )
         teams.append(team_lookup[key])
-        side_players = team["players"]
-        if [row["position"] for row in side_players] != list(POSITIONS):
+        side_champions = team["champions"]
+        if [row["position"] for row in side_champions] != list(POSITIONS):
             raise PredictionBlocked("As posições devem ser top, jng, mid, bot e sup.")
-        for player in side_players:
-            player_key = _entity_key(
-                player.get("player_id"),
-                player["player_name"],
-                player["position"],
-            )
-            if player_key not in player_lookup:
-                raise PredictionBlocked(
-                    f"Pouca amostra para {player['player_name']}. Não apostar."
-                )
-            history = player_lookup[player_key]
-            if not player.get("player_id"):
-                warnings.append(
-                    f"{player['player_name']} foi localizado por nome e posição."
-                )
-            players.append(history)
-    return teams, players, warnings
+        champions.extend(row["champion"] for row in side_champions)
+    return teams, champions, warnings
 
 
 def derive_features(
     request: dict[str, Any],
     bundle: dict[str, Any],
 ) -> tuple[dict[str, float], list[str]]:
-    teams, players, warnings = _lookup_entities(request, bundle)
+    teams, all_champions, warnings = _lookup_entities(request, bundle)
     limits = bundle["sample_limits"]
     for team in teams:
         if team["effective_team_games"] < limits["team_effective_games"]:
             raise PredictionBlocked(
                 f"Pouca amostra para {team['team_name']}. Não apostar."
             )
-    for player in players:
-        if player["effective_player_games"] < limits["player_effective_games"]:
-            raise PredictionBlocked(
-                f"Pouca amostra para {player['player_name']}. Não apostar."
-            )
-    all_champions = [
-        player["champion"]
-        for side in ("blue", "red")
-        for player in request[side]["players"]
-    ]
     if len(set(all_champions)) != 10:
         raise PredictionBlocked("O draft não pode repetir campeões.")
     champion_samples = bundle["champion_samples"]
@@ -170,22 +144,16 @@ def derive_features(
             )
     taxonomy = bundle["taxonomy"]
     blue_scores = _composition_scores(
-        [row["champion"] for row in request["blue"]["players"]],
+        [row["champion"] for row in request["blue"]["champions"]],
         taxonomy,
     )
     red_scores = _composition_scores(
-        [row["champion"] for row in request["red"]["players"]],
+        [row["champion"] for row in request["red"]["champions"]],
         taxonomy,
     )
     average = lambda values: sum(values) / len(values)
     features = {
         "pace": average([row["hist_pace"] for row in teams]),
-        "player_conflict": average(
-            [row["hist_conflict_involvement_per_minute"] for row in players]
-        ),
-        "player_mortality": average(
-            [row["hist_deaths_per_minute"] for row in players]
-        ),
         "draft_frontline": average(
             [blue_scores["frontline_score"], red_scores["frontline_score"]]
         ),

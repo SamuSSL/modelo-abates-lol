@@ -32,7 +32,9 @@ Referências operacionais:
 
 ## Problema
 
-Depois que os dez campeões e jogadores de um mapa profissional são conhecidos, o usuário precisa estimar a distribuição do total de kills e comparar as probabilidades do modelo com uma linha e odds decimais de mercado.
+Depois que as duas equipes e os dez campeões de um mapa profissional são
+conhecidos, o usuário precisa estimar a distribuição do total de kills e
+comparar as probabilidades do modelo com uma linha e odds decimais de mercado.
 
 O produto deve precificar incerteza. Uma estimativa pontual isolada não atende ao problema.
 
@@ -48,7 +50,8 @@ A previsão ocorre depois do draft e antes do início do mapa. Para evitar qualq
 
 ### PRD-001 — Criar previsão por mapa
 
-O sistema deve aceitar exatamente duas equipes, sides opostos, cinco jogadores, cinco posições e cinco campeões por equipe.
+O sistema deve aceitar exatamente duas equipes, sides opostos e cinco campeões
+por equipe, associados às posições top, jng, mid, bot e sup.
 
 ### PRD-002 — Aceitar apenas linha `.5`
 
@@ -85,7 +88,9 @@ no_vig_under = raw_implied_under / overround
 
 ### PRD-005 — Bloquear pouca amostra
 
-Se equipe, jogador ou campeão não alcançar o mínimo aprovado, a resposta deve ter `status = "blocked"`, não deve expor EV acionável e deve listar as entidades com a mensagem `Pouca amostra para X. Não apostar`.
+Se equipe ou campeão não alcançar o mínimo aprovado, a resposta deve ter
+`status = "blocked"`, não deve expor EV acionável e deve listar as entidades
+com a mensagem `Pouca amostra para X. Não apostar`.
 
 ### PRD-006 — Alertar outras incertezas
 
@@ -116,7 +121,8 @@ O mesmo modelo, input e seed devem produzir a mesma distribuição dentro da tol
 
 ### PRD-012 — Disponibilizar metadados
 
-O sistema deve expor ligas, equipes, jogadores, campeões, posições, versões e cutoffs válidos para que clientes não dependam de texto livre.
+O sistema deve expor ligas, equipes, campeões, posições, versões e cutoffs
+válidos para que clientes não dependam de texto livre.
 
 ## Inputs públicos
 
@@ -128,8 +134,8 @@ team_a
 team_b
 side_a
 side_b
-lineup_a[5]: player, position, champion
-lineup_b[5]: player, position, champion
+draft_a[5]: position, champion
+draft_b[5]: position, champion
 line
 market_odds_over?
 market_odds_under?
@@ -186,9 +192,9 @@ Campos probabilísticos e de EV poderão ser `null` quando `status = "blocked"`.
 - `match_datetime` deve usar ISO 8601 e ser posterior ao cutoff do modelo em produção.
 - `map_number` deve ser inteiro positivo.
 - Equipes devem ser diferentes e sides devem ser `Blue` e `Red`.
-- Cada lineup deve conter exatamente uma posição canônica: `top`, `jng`, `mid`, `bot`, `sup`.
-- Não pode haver jogador ou campeão duplicado no mapa.
-- Jogador, equipe e campeão devem ser resolvidos no catálogo versionado.
+- Cada draft deve conter exatamente uma posição canônica: `top`, `jng`, `mid`, `bot`, `sup`.
+- Não pode haver campeão duplicado no mapa.
+- Equipe e campeão devem ser resolvidos no catálogo versionado.
 - Linha deve ser finita, não negativa e terminar em `.5`.
 - Odds, quando informadas, devem ser finitas e maiores que 1.
 - Uma decisão Over ou Under deve referenciar uma previsão existente e ter a

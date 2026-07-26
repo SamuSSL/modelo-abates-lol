@@ -152,7 +152,7 @@ player_draft_research:
     - id: nb_pace_player_draft
       distribution: negative_binomial
       feature_block: pace_player_draft
-  status: pre_registered
+  status: archived_player_features_not_operational
   pre_registered_at: "2026-07-24"
 
 dynamic_team_round:
@@ -203,7 +203,7 @@ player_champion_sample_threshold:
   bootstrap_replicates: 2000
   bootstrap_seed: 20260724
   selection_rule: smallest_reliable_separation
-  status: pre_registered
+  status: archived_player_thresholds_not_operational
   pre_registered_at: "2026-07-24"
 
 recency_sensitivity:
@@ -251,8 +251,6 @@ structural_bayesian_round:
   secondary_comparison_start: "2026-01-01 00:00:00"
   observation_half_life_days: 60
   team_prior_games: 10
-  player_prior_games: 10
-  player_champion_interaction_prior_games: 30
   duration_distributions:
     - gamma
     - lognormal

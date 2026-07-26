@@ -88,3 +88,14 @@ test_that("rolling team histories expose a separate global prior", {
     ][[1L]]
   ))
 })
+
+test_that("dynamic challenger excludes player identity features", {
+  features <- dynamic_team_model_features()
+
+  expect_false(any(grepl("^player", features)))
+  expect_true(all(c(
+    "pace",
+    "team_opponent_intensity",
+    "draft_frontline"
+  ) %in% features))
+})

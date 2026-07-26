@@ -1,12 +1,12 @@
-model_version: ridge-behavior-d91d23e9d1b1
+model_version: ridge-behavior-33a731f23fa6
 status: prospective_challenger_not_promoted
-result_cutoff: 2026-07-22 20:02:30 UTC
+result_cutoff: 2026-07-25 17:35:44 UTC
 clean_maps_must_be_after_cutoff: yes
-training_maps: 11866
+training_maps: 11883
 observation_half_life_days: 60
 alpha: 0.0
-lambda: 23.1862619
-theta: 18.8213059
+lambda: 15.4092948
+theta: 19.3282849
 feature_names:
 - pace
 - team_opponent_intensity
@@ -22,7 +22,6 @@ feature_names:
 - draft_protect
 - draft_skirmish
 - draft_scaling
-- player_champion_conflict_delta
 - matchup_attack_league
 - matchup_attack_global
 - matchup_defense_league
@@ -35,4 +34,4 @@ feature_names:
 - matchup_snowball_imbalance
 excluded_feature_blocks:
 - momentum
-model_sha256: d91d23e9d1b1c6decf56f8d0a97e3d23258562053276e87cfa898dd0067f341d
+model_sha256: 33a731f23fa62ac4906e69b84b1f6878a7ba6fae1ff13293779c2a5c6755a448

@@ -58,8 +58,7 @@ intensity_features <- c(
   "matchup_intensity_imbalance",
   "draft_engage",
   "draft_dive",
-  "draft_skirmish",
-  "player_champion_conflict_delta"
+  "draft_skirmish"
 )
 duration_features <- c(
   "duration_history",

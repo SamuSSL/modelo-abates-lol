@@ -1,21 +1,21 @@
 #' Build current champion sample coverage
 #'
-#' @param player_metrics Historical player-map metrics.
+#' @param draft_rows Historical champion-pick rows.
 #' @param snapshot_cutoff Timestamp after the latest allowed result.
 #' @param half_life_days Exponential-decay half-life.
 #' @return One row per champion with raw and effective picks.
 #' @export
 build_champion_sample_snapshot <- function(
-  player_metrics,
+  draft_rows,
   snapshot_cutoff,
   half_life_days = 60
 ) {
   cutoff <- as.POSIXct(snapshot_cutoff, tz = "UTC")
-  rows <- player_metrics[
-    player_metrics$competition_role %in% c("target", "auxiliary") &
-      !is.na(player_metrics$champion) &
-      nzchar(as.character(player_metrics$champion)) &
-      player_metrics$game_datetime < cutoff,
+  rows <- draft_rows[
+    draft_rows$competition_role %in% c("target", "auxiliary") &
+      !is.na(draft_rows$champion) &
+      nzchar(as.character(draft_rows$champion)) &
+      draft_rows$game_datetime < cutoff,
     ,
     drop = FALSE
   ]
@@ -42,7 +42,6 @@ build_champion_sample_snapshot <- function(
 #'
 #' @param fit Fitted count regression.
 #' @param team_snapshot Current team histories.
-#' @param player_snapshot Current player histories.
 #' @param taxonomy Static champion taxonomy.
 #' @param champion_samples Current champion sample coverage.
 #' @param metadata Model metadata.
@@ -52,7 +51,6 @@ build_champion_sample_snapshot <- function(
 build_portable_model_bundle <- function(
   fit,
   team_snapshot,
-  player_snapshot,
   taxonomy,
   champion_samples,
   metadata,
@@ -93,35 +91,6 @@ build_portable_model_bundle <- function(
       )
     )
   })
-  player_rows <- lapply(seq_len(nrow(player_snapshot)), function(index) {
-    row <- player_snapshot[index, , drop = FALSE]
-    list(
-      key = .rolling_player_key(
-        row$player_id,
-        row$player_name,
-        row$position
-      ),
-      player_id = if (is.na(row$player_id)) NULL else row$player_id,
-      player_name = as.character(row$player_name),
-      position = as.character(row$position),
-      team_id = if ("team_id" %in% names(row) &&
-          !is.na(row$team_id)) row$team_id else NULL,
-      team_name = if ("team_name" %in% names(row)) {
-        as.character(row$team_name)
-      } else {
-        NULL
-      },
-      effective_player_games = as.numeric(
-        row$effective_conflict_involvement_per_minute_games
-      ),
-      hist_conflict_involvement_per_minute = as.numeric(
-        row$hist_conflict_involvement_per_minute
-      ),
-      hist_deaths_per_minute = as.numeric(
-        row$hist_deaths_per_minute
-      )
-    )
-  })
   taxonomy_rows <- lapply(seq_len(nrow(taxonomy)), function(index) {
     row <- taxonomy[index, , drop = FALSE]
     as.list(row[setdiff(names(row), "champion")])
@@ -142,7 +111,6 @@ build_portable_model_bundle <- function(
       scaling = fit$scaling
     ),
     teams = team_rows,
-    players = player_rows,
     taxonomy = taxonomy_rows,
     champion_samples = champion_sample_values,
     sample_limits = sample_limits

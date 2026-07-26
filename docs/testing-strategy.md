@@ -237,8 +237,8 @@ Os comandos definitivos serão registrados após o ambiente R existir. A verific
 
 - todas as equipes permanecem selecionáveis na interface;
 - pouca amostra é sinalizada sem esconder a entidade;
-- jogadores de pouca amostra permanecem visíveis e elencos ausentes usam
-  fallback global explicitamente identificado;
+- a interface e o payload não exigem jogadores;
+- o bundle operacional não contém catálogo nem limite de jogador;
 - ratings locais e globais excluem a própria equipe da referência;
 - momentum, snowball e agressividade permanecem congelados antes da série;
 - Ridge, Lasso e Elastic Net aprendem imputação e `lambda` somente no treino;

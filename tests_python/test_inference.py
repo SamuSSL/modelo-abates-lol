@@ -28,20 +28,6 @@ def make_bundle():
             "difficulty": 0.5,
         }
         champion_samples[name] = 10
-    players = []
-    positions = ("top", "jng", "mid", "bot", "sup")
-    for side in ("blue", "red"):
-        for index, position in enumerate(positions):
-            name = f"{side}-{position}"
-            players.append(
-                {
-                    "key": f"name:{name}|{position}",
-                    "player_name": name,
-                    "effective_player_games": 5,
-                    "hist_conflict_involvement_per_minute": 0.5,
-                    "hist_deaths_per_minute": 0.1,
-                }
-            )
     return {
         "metadata": {"model_version": "test", "data_cutoff": "2026-01-01"},
         "model": {
@@ -65,12 +51,10 @@ def make_bundle():
                 "hist_pace": 0.8,
             },
         ],
-        "players": players,
         "taxonomy": taxonomy,
         "champion_samples": champion_samples,
         "sample_limits": {
             "team_effective_games": 1,
-            "player_effective_games": 1,
             "champion_effective_games": 1,
         },
     }
@@ -85,9 +69,8 @@ def make_request():
         "line": 24.5,
         "blue": {
             "team_name": "Blue",
-            "players": [
+            "champions": [
                 {
-                    "player_name": f"blue-{position}",
                     "position": position,
                     "champion": f"C{index}",
                 }
@@ -96,9 +79,8 @@ def make_request():
         },
         "red": {
             "team_name": "Red",
-            "players": [
+            "champions": [
                 {
-                    "player_name": f"red-{position}",
                     "position": position,
                     "champion": f"C{index + 5}",
                 }

@@ -41,18 +41,13 @@ Médias brutas sem shrinkage não podem ser a única medida de força.
 
 ### Jogadores
 
-- histórico anterior por função;
-- kills, deaths, assists e participação por minuto;
-- volatilidade;
-- tamanho efetivo de amostra;
-- interação regularizada jogador–equipe somente se passar na ablação.
-
-Mudança de função usa o histórico da nova função; histórico de outra função pode entrar apenas por prior encolhido.
+Identidades, ratings, estabilidade de elenco e interações de jogadores não
+entram no modelo nem no contrato de inferência. As linhas de jogador da fonte
+permanecem apenas para validar o target e identificar os campeões escolhidos.
 
 ### Campeões e composição
 
-- experiência anterior do jogador no campeão;
-- experiência anterior da equipe no campeão;
+- frequência histórica do campeão para proteção de cobertura;
 - atributos funcionais versionados;
 - scores agregados da composição;
 - arquétipos primário e secundário;
@@ -230,7 +225,8 @@ Para a V1, a regra de rework abaixo está substituída pela taxonomia estática 
 2026. Não haverá reinício de cobertura por versão histórica de campeão.
 
 - Efeitos de baixa amostra usam shrinkage durante o treinamento.
-- Apesar do shrinkage, a inferência operacional bloqueia equipe, jogador ou campeão abaixo dos mínimos aprovados.
+- Apesar do shrinkage, a inferência operacional bloqueia equipe ou campeão
+  abaixo dos mínimos aprovados.
 - Rebranding mantém continuidade apenas quando o mapeamento de ID for confiável.
 - Rework material cria versão nova do campeão e reinicia sua contagem de cobertura operacional.
 
@@ -292,7 +288,7 @@ promotion status
 
 ## Rodada estrutural pós-V1
 
-Esta rodada investiga quatro mecanismos antes de aumentar a complexidade do
+Esta rodada investiga três mecanismos antes de aumentar a complexidade do
 algoritmo:
 
 1. `intensidade × duração prevista`: o total esperado é a taxa prevista de
@@ -300,9 +296,7 @@ algoritmo:
 2. ataque da equipe e exposição do adversário: cada equipe contribui com uma
    propensão ofensiva e cada adversário com uma propensão a conceder kills;
 3. composição funcional: os dez campeões são descritos por funções de jogo,
-   não apenas pelas tags gerais do Data Dragon;
-4. familiaridade jogador–campeão: a experiência específica recebe shrinkage
-   forte para não transformar poucas partidas em uma falsa vantagem.
+   não apenas pelas tags gerais do Data Dragon.
 
 O submodelo de duração compara Gamma e log-normal. O submodelo de intensidade
 usa uma distribuição Negative Binomial com `log(duração)` como offset. A PMF
@@ -313,10 +307,8 @@ Os efeitos de equipe e adversário são estimados separadamente no modelo
 hierárquico. Ambos usam pooling parcial por liga. Equipes novas ou com pouca
 amostra permanecem próximas da média da liga.
 
-As interações jogador–campeão são desvios em relação ao histórico do jogador na
-função. O prior dessas interações deve ser mais forte que o prior do jogador.
-Uma interação sem histórico recebe desvio zero; uma interação com poucas
-partidas permanece próxima de zero.
+Interações jogador–campeão foram retiradas da pesquisa operacional por decisão
+de produto. Trocas de elenco e substituições não alteram o contrato do modelo.
 
 ## Arquétipos funcionais completos
 

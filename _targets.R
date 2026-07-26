@@ -697,6 +697,7 @@ list(
     rolling_team_metric_names,
     c(
       "combined_kills_per_minute",
+      "game_length_minutes",
       "damage_per_minute",
       "damage_taken_per_minute",
       "kills_per_minute",
@@ -792,10 +793,25 @@ list(
     )
   ),
   tar_target(
+    rolling_champion_features,
+    build_champion_rolling_features(
+      player_map_metrics,
+      half_life_days =
+        evaluation_config$player_draft_research$half_life_days
+    )
+  ),
+  tar_target(
+    draft_map_features,
+    assemble_draft_features(
+      rolling_champion_features,
+      champion_taxonomy
+    )
+  ),
+  tar_target(
     extended_map_signal_table,
     merge(
       map_signal_table,
-      player_draft_map_features,
+      draft_map_features,
       by = "gameid",
       all.x = TRUE,
       sort = FALSE
@@ -1446,8 +1462,6 @@ list(
       result$operationally_eligible <-
         result$minimum_effective_team_games >=
           limits$team_effective_games &
-        result$minimum_effective_player_games >=
-          limits$player_effective_games &
         result$minimum_effective_champion_games >=
           limits$champion_effective_games
       result
@@ -1782,7 +1796,6 @@ list(
       build_portable_model_bundle(
         final_model_fit,
         deployment_team_snapshot_enriched,
-        deployment_player_snapshot_enriched,
         champion_taxonomy,
         deployment_champion_snapshot,
         metadata = list(

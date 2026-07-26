@@ -5,13 +5,13 @@
 \title{Build current champion sample coverage}
 \usage{
 build_champion_sample_snapshot(
-  player_metrics,
+  draft_rows,
   snapshot_cutoff,
   half_life_days = 60
 )
 }
 \arguments{
-\item{player_metrics}{Historical player-map metrics.}
+\item{draft_rows}{Historical champion-pick rows.}
 
 \item{snapshot_cutoff}{Timestamp after the latest allowed result.}
 

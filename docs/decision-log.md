@@ -527,3 +527,24 @@ Cada decisão possui contexto, alternativas, decisão, consequência, data e sta
   append-only.
 - Over e Under exigem a odd correspondente e registram stake fixa de 1 unidade.
 - Status: aprovado e implementado.
+
+## D-034 — Retirada de jogadores do modelo operacional
+
+- O CSV de 2026 foi atualizado no manifesto com hash SHA-256
+  `44841992EE25535FD89AA6065FB6A506C59896E2A09C695B13FA4FC666655B6E`.
+- Identidade, histórico, estabilidade de elenco e interações jogador–campeão
+  foram retirados do modelo, da inferência, dos bloqueios e do bundle público.
+- As linhas de jogador da fonte permanecem somente para auditar kills e
+  identificar os campeões e posições do draft.
+- A interface solicita apenas equipes, sides e cinco campeões por posição.
+- O V1 reconstruído continua sendo `nb_pace_draft`, com sinais de ritmo das
+  equipes e atributos funcionais das composições.
+- No holdout atualizado de 2026, com 1.645 mapas, o V1 obteve CRPS 4,4440,
+  Log Score 3,4720 e cobertura de 90% igual a 90,82%.
+- Na linha 24,5, o Brier foi 0,2085, o Log Loss foi 0,6046 e o erro de
+  calibração foi 0,0243.
+- Nos folds de 2022–2025, o V1 obteve CRPS 4,5622, contra 4,5718 do modelo
+  com arquétipos funcionais ampliados e 4,5823 do modelo com efeitos explícitos
+  de equipe e adversário.
+- Cutoff do bundle reconstruído: 2026-07-25 17:35:45 UTC.
+- Status: aprovado, implementado e reconstruído.

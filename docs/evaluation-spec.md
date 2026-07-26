@@ -241,6 +241,10 @@ Além de CRPS, Log Score, Brier e calibração, a decomposição deve reportar:
 - contribuição da incerteza de duração para a largura da PMF;
 - ablação dos efeitos de equipe, adversário, arquétipo e jogador–campeão.
 
+> Decisão posterior: avaliações e ablações de jogador são históricas e ficaram
+> arquivadas. A avaliação operacional usa somente equipe e draft; identidade,
+> amostra e interação de jogador não são elegíveis para promoção.
+
 O Bayes só é elegível quando todas as chains apresentam R-hat aceitável, ESS
 suficiente, zero divergências materiais, tree depth controlado e posterior
 predictive checks coerentes. Se os diagnósticos falharem, aumentar iterações

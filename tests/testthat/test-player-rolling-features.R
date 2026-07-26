@@ -87,6 +87,72 @@ test_that("map player and draft features are symmetric", {
   expect_equal(result$draft_frontline_imbalance, 0)
 })
 
+test_that("draft-only features do not require player identities", {
+  positions <- c("top", "jng", "mid", "bot", "sup")
+  draft <- expand.grid(
+    side = c("Blue", "Red"),
+    position = positions,
+    stringsAsFactors = FALSE
+  )
+  draft$gameid <- "GAME"
+  draft$champion <- paste0("C", seq_len(10L))
+  draft$raw_champion_games <- 20L
+  draft$effective_champion_games <- 8
+  taxonomy <- data.frame(
+    champion = draft$champion,
+    tank = rep(c(TRUE, FALSE), 5L),
+    fighter = rep(c(FALSE, TRUE), 5L),
+    assassin = rep(FALSE, 10L),
+    mage = rep(c(TRUE, FALSE), 5L),
+    marksman = rep(c(FALSE, TRUE), 5L),
+    support = rep(FALSE, 10L),
+    attack = rep(0.5, 10L),
+    defense = rep(0.5, 10L),
+    magic = rep(0.5, 10L),
+    difficulty = rep(0.5, 10L),
+    stringsAsFactors = FALSE
+  )
+
+  result <- assemble_draft_features(draft, taxonomy)
+
+  expect_false(any(grepl("^player", names(result))))
+  expect_equal(result$minimum_effective_champion_games, 8)
+  expect_true(is.finite(result$draft_frontline))
+})
+
+test_that("champion coverage uses only picks before the series cutoff", {
+  rows <- data.frame(
+    gameid = c("OLD", "NEW", "FUTURE"),
+    game_datetime = as.POSIXct(
+      c(
+        "2025-01-01 12:00:00",
+        "2025-02-01 12:00:00",
+        "2025-02-02 12:00:00"
+      ),
+      tz = "UTC"
+    ),
+    series_cutoff = as.POSIXct(
+      c(
+        "2025-01-01 12:00:00",
+        "2025-02-01 00:00:00",
+        "2025-02-01 00:00:00"
+      ),
+      tz = "UTC"
+    ),
+    competition_role = "target",
+    side = "Blue",
+    position = "top",
+    champion = "A",
+    stringsAsFactors = FALSE
+  )
+
+  result <- build_champion_rolling_features(rows, half_life_days = 60)
+  future <- result[result$gameid %in% c("NEW", "FUTURE"), ]
+
+  expect_equal(future$raw_champion_games, c(1L, 1L))
+  expect_true(all(future$effective_champion_games > 0))
+})
+
 test_that("player champion interaction uses strong shrinkage and no future maps", {
   metrics <- data.frame(
     gameid = c("A1", "B1", "A2", "NEXT"),

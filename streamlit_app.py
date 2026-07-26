@@ -11,12 +11,7 @@ from streamlit.errors import StreamlitSecretNotFoundError
 from app.lolkills_inference import POSITIONS, load_bundle, predict
 from app.persistence import save_bet_decision, save_prediction
 from app.tracking import load_tracking_data, render_tracking_page
-from app.ui_options import (
-    player_label,
-    player_options,
-    team_label,
-    team_options,
-)
+from app.ui_options import team_label, team_options
 
 
 st.set_page_config(
@@ -86,26 +81,12 @@ def get_bundle(bundle_mtime_ns):
 
 
 bundle = get_bundle(BUNDLE_PATH.stat().st_mtime_ns)
-player_rows = bundle["players"]
 champions = sorted(
     champion
     for champion in bundle["taxonomy"]
     if bundle["champion_samples"].get(champion, 0)
     >= bundle["sample_limits"]["champion_effective_games"]
 )
-
-
-def resolve_player_record(player_name, position, team_name):
-    position_matches = [
-        row
-        for row in player_rows
-        if row["player_name"] == player_name and row["position"] == position
-    ]
-    team_matches = [
-        row for row in position_matches if row.get("team_name") == team_name
-    ]
-    return (team_matches or position_matches)[0]
-
 
 def get_database_url():
     database_url = os.getenv("DATABASE_URL")
@@ -120,7 +101,7 @@ def get_database_url():
 st.title("Total de kills por mapa")
 st.markdown(
     "Previsão pós-draft. O modelo pode bloquear a análise quando a amostra "
-    "de equipe, jogador ou campeão for insuficiente.",
+    "de equipe ou campeão for insuficiente.",
     help="Bloqueio significa que não há base histórica suficiente para apostar.",
 )
 
@@ -168,8 +149,6 @@ with st.container(border=True):
     team_columns = st.columns(2)
     selected_teams = {}
     selected_team_records = {}
-    selected_players = {}
-    selected_player_records = {}
     selected_champions = {}
     for side, label, column in (
         ("blue", "Equipe azul", team_columns[0]),
@@ -197,42 +176,11 @@ with st.container(border=True):
                     "Equipe disponível para consulta, mas atualmente abaixo "
                     "do limite mínimo de amostra. A previsão será bloqueada."
                 )
-            selected_players[side] = []
-            selected_player_records[side] = []
             selected_champions[side] = []
-            with st.expander("Jogadores e campeões", expanded=True):
+            with st.expander("Campeões por posição", expanded=True):
                 for position_index, position in enumerate(POSITIONS):
-                    roster_rows, using_global_fallback = player_options(
-                        bundle,
-                        position,
-                        selected_teams[side],
-                    )
-                    player_by_key = {
-                        row["key"]: row for row in roster_rows
-                    }
-                    choices = list(player_by_key)
-                    player_limit = float(
-                        bundle["sample_limits"]["player_effective_games"]
-                    )
-                    field_columns = st.columns(2)
-                    selected_player_key = field_columns[0].selectbox(
-                        f"Jogador {position}",
-                        choices,
-                        format_func=lambda key, lookup=player_by_key,
-                        fallback=using_global_fallback: player_label(
-                            lookup[key],
-                            player_limit,
-                            show_team=fallback,
-                        ),
-                        key=f"{side}_{position}_player",
-                    )
-                    selected_player = player_by_key[selected_player_key]
-                    selected_player_records[side].append(selected_player)
-                    selected_players[side].append(
-                        selected_player["player_name"]
-                    )
                     selected_champions[side].append(
-                        field_columns[1].selectbox(
+                        st.selectbox(
                             f"Campeão {position}",
                             champions,
                             index=(
@@ -291,12 +239,8 @@ if submitted:
         request[side] = {
             "team_name": selected_teams[side],
             "team_id": team_record.get("team_id"),
-            "players": [
+            "champions": [
                 {
-                    "player_name": selected_players[side][index],
-                    "player_id": selected_player_records[side][index].get(
-                        "player_id"
-                    ),
                     "position": position,
                     "champion": selected_champions[side][index],
                 }

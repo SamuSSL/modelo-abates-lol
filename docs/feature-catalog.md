@@ -68,6 +68,11 @@
 | equipe | estabilidade de escalação | pendente |
 | jogador | histórico por função e por minuto | implementada |
 | campeão | experiência jogador–campeão e equipe–campeão | interação jogador–campeão implementada |
+
+> Estado operacional atual: as entradas de jogador desta tabela representam
+> pesquisa histórica arquivada. O V1 e seus challengers ativos não consomem
+> identidade, histórico ou interação de jogador. O draft usa campeão, posição
+> e taxonomia funcional, além dos efeitos de equipe.
 | composição | atributos e arquétipos versionados | taxonomia automática completa, aguardando revisão |
 
 ## Ratings dinâmicos e comportamento

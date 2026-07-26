@@ -45,15 +45,6 @@ test_that("portable bundle contains model and lookup contracts", {
     effective_combined_kills_per_minute_games = 5,
     stringsAsFactors = FALSE
   )
-  player_snapshot <- data.frame(
-    player_id = "player",
-    player_name = "Player",
-    position = "top",
-    hist_conflict_involvement_per_minute = 0.5,
-    hist_deaths_per_minute = 0.1,
-    effective_conflict_involvement_per_minute_games = 4,
-    stringsAsFactors = FALSE
-  )
   taxonomy <- data.frame(
     champion = "A",
     tank = TRUE,
@@ -77,7 +68,6 @@ test_that("portable bundle contains model and lookup contracts", {
   bundle <- build_portable_model_bundle(
     fit,
     team_snapshot,
-    player_snapshot,
     taxonomy,
     champion_samples,
     metadata = list(
@@ -86,7 +76,6 @@ test_that("portable bundle contains model and lookup contracts", {
     ),
     sample_limits = list(
       team_effective_games = 1,
-      player_effective_games = 1,
       champion_effective_games = 1
     )
   )
@@ -98,6 +87,6 @@ test_that("portable bundle contains model and lookup contracts", {
     bundle$teams[[1L]]$last_game_datetime,
     "^2026-02-01"
   )
-  expect_equal(bundle$players[[1L]]$key, "id:player|top")
+  expect_false("players" %in% names(bundle))
   expect_equal(bundle$champion_samples$A, 3)
 })
