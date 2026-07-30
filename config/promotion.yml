@@ -5,9 +5,9 @@ holdout:
   end: "2027-01-01 00:00:00"
   status: sealed_until_threshold_selection
 
-primary_candidate: nb_pace_draft
-primary_reference: nb_pace
-fallback_candidate: nb_pace
+primary_candidate: nb_pace
+primary_reference: nb_league
+fallback_candidate: nb_league
 fallback_reference: nb_league
 
 criteria:

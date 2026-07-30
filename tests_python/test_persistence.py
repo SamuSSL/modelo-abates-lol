@@ -4,7 +4,11 @@ import types
 
 import pytest
 
-from app.persistence import save_bet_decision, save_prediction
+from app.persistence import (
+    load_bet_history,
+    save_bet_decision,
+    save_prediction,
+)
 
 
 def test_prediction_is_appended_without_bet_decision(monkeypatch, tmp_path):
@@ -62,6 +66,52 @@ def test_bet_decision_is_saved_after_prediction(monkeypatch, tmp_path):
             """
         ).fetchone()
     assert row == (event_id, "prediction", "over", 1.0, 1.91)
+
+
+def test_bet_history_contains_complete_prediction_snapshot(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    request = {
+        "league": "LCK",
+        "planned_at": "2026-08-01T12:00:00+00:00",
+        "map_number": 2,
+        "line": 24.5,
+        "odds_over": 1.91,
+        "odds_under": 1.95,
+        "blue": {"team_name": "Blue"},
+        "red": {"team_name": "Red"},
+    }
+    result = {
+        "status": "ok",
+        "prediction_id": "prediction",
+        "mean": 26.1,
+        "median": 25,
+        "prediction_interval_90": [12, 42],
+        "probability_over": 0.58,
+        "probability_under": 0.42,
+        "fair_odds_over": 1 / 0.58,
+        "fair_odds_under": 1 / 0.42,
+        "features": {"pace": 0.91},
+        "model_version": "pace-test",
+        "data_cutoff": "2026-07-25",
+    }
+    event_id = save_prediction(request, result)
+    save_bet_decision(event_id, "prediction", "over", 1.91)
+
+    history = load_bet_history()
+
+    assert len(history) == 1
+    row = history.iloc[0]
+    assert row["event_id"] == event_id
+    assert row["map_number"] == 2
+    assert row["market_odds_under"] == 1.95
+    assert row["model_probability_over"] == 0.58
+    assert row["predicted_mean"] == 26.1
+    assert row["pace"] == 0.91
+    assert row["model_version"] == "pace-test"
+    assert row["expected_value"] == pytest.approx(0.58 * 1.91 - 1)
 
 
 def test_no_bet_decision_has_no_stake_or_odds(monkeypatch, tmp_path):

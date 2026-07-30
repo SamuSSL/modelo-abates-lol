@@ -8,6 +8,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+import pandas as pd
+
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS prediction_events (
@@ -152,6 +154,7 @@ def save_bet_decision(
                         stake,
                         offered_odds
                     ) VALUES (%s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (event_id) DO NOTHING
                     """,
                     values,
                 )
@@ -165,7 +168,7 @@ def save_bet_decision(
         connection.execute(BET_DECISION_SCHEMA)
         connection.execute(
             """
-            INSERT INTO bet_decisions (
+            INSERT OR IGNORE INTO bet_decisions (
                 event_id,
                 prediction_id,
                 created_at,
@@ -177,3 +180,125 @@ def save_bet_decision(
             values,
         )
     return event_id
+
+
+def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
+    (
+        event_id,
+        prediction_id,
+        bet_created_at,
+        decision,
+        stake,
+        offered_odds,
+        prediction_created_at,
+        league,
+        planned_at,
+        blue_team,
+        red_team,
+        map_number,
+        line,
+        request_json,
+        result_json,
+    ) = row
+    request = json.loads(request_json)
+    result = json.loads(result_json)
+    interval = result.get("prediction_interval_90") or [None, None]
+    chosen_probability = result.get(
+        "probability_over" if decision == "over" else "probability_under"
+    )
+    chosen_fair_odds = result.get(
+        "fair_odds_over" if decision == "over" else "fair_odds_under"
+    )
+    expected_value = (
+        float(chosen_probability) * float(offered_odds) - 1
+        if chosen_probability is not None and offered_odds is not None
+        else None
+    )
+    return {
+        "event_id": event_id,
+        "prediction_id": prediction_id,
+        "bet_created_at": bet_created_at,
+        "prediction_created_at": prediction_created_at,
+        "planned_at": planned_at,
+        "league": league,
+        "blue_team": blue_team,
+        "red_team": red_team,
+        "map_number": map_number,
+        "decision": decision,
+        "line": line,
+        "offered_odds": offered_odds,
+        "stake": stake,
+        "market_odds_over": request.get("odds_over"),
+        "market_odds_under": request.get("odds_under"),
+        "model_probability_over": result.get("probability_over"),
+        "model_probability_under": result.get("probability_under"),
+        "chosen_probability": chosen_probability,
+        "fair_odds_over": result.get("fair_odds_over"),
+        "fair_odds_under": result.get("fair_odds_under"),
+        "chosen_fair_odds": chosen_fair_odds,
+        "expected_value": expected_value,
+        "predicted_mean": result.get("mean"),
+        "predicted_median": result.get("median"),
+        "prediction_interval_90_low": interval[0],
+        "prediction_interval_90_high": interval[1],
+        "pace": (result.get("features") or {}).get("pace"),
+        "model_version": result.get("model_version"),
+        "data_cutoff": result.get("data_cutoff"),
+    }
+
+
+def load_bet_history(
+    database_url: str | None = None,
+) -> pd.DataFrame:
+    database_url = database_url or os.getenv("DATABASE_URL")
+    query = """
+        SELECT
+            decision.event_id,
+            decision.prediction_id,
+            decision.created_at,
+            decision.decision,
+            decision.stake,
+            decision.offered_odds,
+            prediction.created_at,
+            prediction.league,
+            prediction.planned_at,
+            prediction.blue_team,
+            prediction.red_team,
+            prediction.map_number,
+            prediction.line,
+            prediction.request_json,
+            prediction.result_json
+        FROM {prediction_table} AS prediction
+        INNER JOIN {decision_table} AS decision
+            ON decision.event_id = prediction.event_id
+        WHERE decision.decision IN ('over', 'under')
+        ORDER BY decision.created_at DESC
+    """
+    if database_url and database_url.startswith(
+        ("postgres://", "postgresql://")
+    ):
+        import psycopg
+
+        with psycopg.connect(database_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    query.format(
+                        prediction_table="lol_kills.prediction_events",
+                        decision_table="lol_kills.bet_decisions",
+                    )
+                )
+                rows = cursor.fetchall()
+    else:
+        local_path = Path(".local") / "predictions.sqlite"
+        if not local_path.exists():
+            return pd.DataFrame()
+        with sqlite3.connect(local_path) as connection:
+            connection.execute(SCHEMA)
+            connection.execute(BET_DECISION_SCHEMA)
+            rows = connection.execute(
+                query.format(
+                    prediction_table="prediction_events",
+                    decision_table="bet_decisions",
+                )
+            ).fetchall()
+    return pd.DataFrame([_flatten_bet_row(row) for row in rows])

@@ -1,4 +1,4 @@
-# Deploy público da V1
+# Deploy público Vault Corp
 
 ## Arquitetura
 
@@ -61,12 +61,14 @@ configuração gravou um evento `ok` em
 
 A interface salva primeiro a previsão. Somente depois de mostrar as
 probabilidades ela oferece as decisões Over, Under ou Não apostar. A decisão
-é gravada separadamente em `lol_kills.bet_decisions`.
+é gravada separadamente em `lol_kills.bet_decisions`. A página
+`Apostas registradas` combina as duas tabelas e expõe partida, linha, preços,
+probabilidades, odds justas, projeção, pace, versão, cutoff e identificadores
+para exportação em CSV.
 
-Desde a reconstrução de 2026-07-25, a interface recebe apenas equipes e os
-cinco campeões por posição de cada lado. Jogadores não entram no payload, no
-bundle, nos limites de amostra nem no modelo. As linhas de jogador do Oracle's
-Elixir continuam restritas à auditoria do target e à leitura do draft.
+O modelo ativo é `nb_pace`: efeitos de liga e pace histórico das duas equipes,
+com distribuição Binomial Negativa. Draft, campeões e jogadores não entram no
+formulário, no payload nem no bundle operacional.
 
 Referências oficiais:
 

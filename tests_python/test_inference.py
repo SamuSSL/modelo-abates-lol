@@ -107,6 +107,17 @@ def test_prediction_contract_and_half_line():
     assert math.isclose(result["mean"], 25)
 
 
+def test_pace_model_does_not_require_draft():
+    request = make_request()
+    request["blue"].pop("champions")
+    request["red"].pop("champions")
+
+    result = predict(request, make_bundle())
+
+    assert result["status"] == "ok"
+    assert result["features"] == {"pace": 0.8}
+
+
 def test_non_half_line_is_blocked():
     request = make_request()
     request["line"] = 25

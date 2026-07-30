@@ -106,7 +106,7 @@ build_portable_model_bundle <- function(
       distribution = fit$distribution,
       theta = as.numeric(fit$theta),
       league_levels = as.character(fit$league_levels),
-      feature_names = as.character(fit$feature_names),
+      feature_names = as.list(as.character(fit$feature_names)),
       coefficients = as.list(stats::coef(fit$model)),
       scaling = fit$scaling
     ),

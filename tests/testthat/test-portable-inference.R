@@ -76,3 +76,49 @@ test_that("portable inference returns a normalized half-line prediction", {
   )
   expect_equal(result$probability_push, 0)
 })
+
+test_that("pace-only portable inference does not require a draft", {
+  bundle <- list(
+    metadata = list(model_version = "test", data_cutoff = "2026-01-01"),
+    model = list(
+      theta = 10,
+      league_levels = "LCK",
+      feature_names = "pace",
+      coefficients = list("(Intercept)" = log(25), pace = 0),
+      scaling = list(pace = list(center = 0.8, scale = 0.1))
+    ),
+    teams = list(
+      list(
+        key = "name:blue",
+        team_name = "Blue",
+        effective_team_games = 5,
+        hist_pace = 0.8
+      ),
+      list(
+        key = "name:red",
+        team_name = "Red",
+        effective_team_games = 5,
+        hist_pace = 0.8
+      )
+    ),
+    taxonomy = list(),
+    champion_samples = list(),
+    sample_limits = list(
+      team_effective_games = 1,
+      champion_effective_games = 1
+    )
+  )
+  request <- list(
+    league = "LCK",
+    planned_at = "2026-08-01T12:00:00+00:00",
+    map_number = 1,
+    line = 24.5,
+    blue = list(team_name = "Blue"),
+    red = list(team_name = "Red")
+  )
+
+  result <- predict_portable_request(request, bundle)
+
+  expect_equal(result$status, "ok")
+  expect_equal(result$features$pace, 0.8)
+})

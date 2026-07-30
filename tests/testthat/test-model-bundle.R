@@ -80,7 +80,7 @@ test_that("portable bundle contains model and lookup contracts", {
     )
   )
 
-  expect_equal(bundle$model$feature_names, "pace")
+  expect_equal(unlist(bundle$model$feature_names), "pace")
   expect_equal(bundle$teams[[1L]]$key, "id:team")
   expect_equal(bundle$teams[[1L]]$latest_team_name, "Team")
   expect_match(

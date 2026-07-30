@@ -12,6 +12,11 @@ from app.lolkills_inference import POSITIONS, load_bundle, predict
 from app.persistence import save_bet_decision, save_prediction
 from app.tracking import load_tracking_data, render_tracking_page
 from app.ui_options import team_label, team_options
+from app.vault_streamlit import run_vault_app
+
+
+run_vault_app()
+st.stop()
 
 
 st.set_page_config(

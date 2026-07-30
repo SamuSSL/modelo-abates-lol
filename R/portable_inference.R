@@ -60,9 +60,7 @@
 
 .portable_derive_features <- function(request, bundle) {
   teams <- list()
-  champions <- character()
   warnings <- character()
-  positions <- c("top", "jng", "mid", "bot", "sup")
   if (identical(
     as.character(request$blue$team_name),
     as.character(request$red$team_name)
@@ -90,73 +88,89 @@
       )
     }
     teams[[side]] <- team
-    side_positions <- vapply(
-      side_request$champions,
-      `[[`,
-      character(1L),
-      "position"
-    )
-    if (!identical(side_positions, positions)) {
-      stop(
-        "As posi\u00e7\u00f5es devem ser top, jng, mid, bot e sup.",
-        call. = FALSE
-      )
-    }
-    champions <- c(
-      champions,
-      vapply(
-        side_request$champions,
+  }
+  features <- list(
+    pace = mean(vapply(teams, function(team) {
+      as.numeric(team$hist_pace)
+    }, numeric(1L)))
+  )
+  draft_features <- c(
+    "draft_frontline",
+    "draft_burst",
+    "draft_frontline_imbalance"
+  )
+  requires_draft <- any(
+    unlist(bundle$model$feature_names) %in% draft_features
+  )
+  if (requires_draft) {
+    champions <- character()
+    positions <- c("top", "jng", "mid", "bot", "sup")
+    for (side in c("blue", "red")) {
+      side_champions <- request[[side]]$champions
+      side_positions <- vapply(
+        side_champions,
         `[[`,
         character(1L),
-        "champion"
+        "position"
       )
-    )
-  }
-  if (anyDuplicated(champions)) {
-    stop(
-      "O draft n\u00e3o pode repetir campe\u00f5es.",
-      call. = FALSE
-    )
-  }
-  for (champion in champions) {
-    sample <- bundle$champion_samples[[champion]]
-    if (is.null(sample) ||
-        as.numeric(sample) <
-          as.numeric(bundle$sample_limits$champion_effective_games)) {
+      if (!identical(side_positions, positions)) {
+        stop(
+          "As posi\u00e7\u00f5es devem ser top, jng, mid, bot e sup.",
+          call. = FALSE
+        )
+      }
+      champions <- c(
+        champions,
+        vapply(
+          side_champions,
+          `[[`,
+          character(1L),
+          "champion"
+        )
+      )
+    }
+    if (anyDuplicated(champions)) {
       stop(
-        "Pouca amostra para ",
-        champion,
-        ". N\u00e3o apostar.",
+        "O draft n\u00e3o pode repetir campe\u00f5es.",
         call. = FALSE
       )
     }
-  }
-  blue_scores <- .portable_composition_scores(
-    champions[seq_len(5L)],
-    bundle$taxonomy
-  )
-  red_scores <- .portable_composition_scores(
-    champions[6:10],
-    bundle$taxonomy
-  )
-  list(
-    features = list(
-      pace = mean(vapply(teams, function(team) {
-        as.numeric(team$hist_pace)
-      }, numeric(1L))),
-      draft_frontline = mean(c(
-        blue_scores$frontline_score,
+    for (champion in champions) {
+      sample <- bundle$champion_samples[[champion]]
+      if (is.null(sample) ||
+          as.numeric(sample) <
+            as.numeric(bundle$sample_limits$champion_effective_games)) {
+        stop(
+          "Pouca amostra para ",
+          champion,
+          ". N\u00e3o apostar.",
+          call. = FALSE
+        )
+      }
+    }
+    blue_scores <- .portable_composition_scores(
+      champions[seq_len(5L)],
+      bundle$taxonomy
+    )
+    red_scores <- .portable_composition_scores(
+      champions[6:10],
+      bundle$taxonomy
+    )
+    features$draft_frontline <- mean(c(
+      blue_scores$frontline_score,
+      red_scores$frontline_score
+    ))
+    features$draft_burst <- mean(c(
+      blue_scores$burst_score,
+      red_scores$burst_score
+    ))
+    features$draft_frontline_imbalance <- abs(
+      blue_scores$frontline_score -
         red_scores$frontline_score
-      )),
-      draft_burst = mean(c(
-        blue_scores$burst_score,
-        red_scores$burst_score
-      )),
-      draft_frontline_imbalance = abs(
-        blue_scores$frontline_score -
-          red_scores$frontline_score
-      )
-    ),
+    )
+  }
+  list(
+    features = features,
     warnings = warnings
   )
 }

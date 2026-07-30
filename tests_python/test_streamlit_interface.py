@@ -29,6 +29,10 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
         selectbox.label.startswith("Jogador")
         for selectbox in app.selectbox
     )
+    assert not any(
+        selectbox.label.startswith("Campeão")
+        for selectbox in app.selectbox
+    )
 
 
 def test_low_sample_team_remains_selectable_with_warning():
@@ -111,6 +115,25 @@ def test_tracking_page_loads_without_ui_error():
     assert any(
         title.value == "Tracking temporal"
         for title in app.title
+    )
+
+
+def test_bet_history_page_loads_without_ui_error():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+
+    app.radio[0].set_value("Apostas registradas").run(timeout=30)
+
+    assert len(app.exception) == 0
+    assert any(
+        title.value == "Apostas registradas"
+        for title in app.title
+    )
+    assert any(
+        "Vault Corp" in markdown.value
+        for markdown in app.markdown
     )
 
 

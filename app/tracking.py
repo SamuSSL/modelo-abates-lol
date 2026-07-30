@@ -104,7 +104,11 @@ def _normalized_chart(frame: pd.DataFrame) -> alt.LayerChart:
             alt.Tooltip("regime:N", title="Regime"),
         ],
     )
-    line = base.mark_line(point=False).encode(
+    line = base.mark_line(
+        point=False,
+        color="#A78BFA",
+        strokeWidth=2.5,
+    ).encode(
         y=alt.Y(
             "normalized_index:Q",
             title="Índice normalizado (100 = padrão recente)",
@@ -127,7 +131,7 @@ def _indicator_chart(
 ) -> alt.LayerChart:
     line = (
         alt.Chart(frame)
-        .mark_line()
+        .mark_line(color="#A78BFA", strokeWidth=2.5)
         .encode(
             x=alt.X("period:T", title="Semana"),
             y=alt.Y(

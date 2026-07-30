@@ -16,6 +16,11 @@ class PredictionBlocked(ValueError):
     pass
 
 
+def _feature_names(model: dict[str, Any]) -> list[str]:
+    names = model.get("feature_names", [])
+    return [names] if isinstance(names, str) else list(names)
+
+
 def load_bundle(path: str | Path) -> dict[str, Any]:
     with Path(path).open("r", encoding="utf-8") as handle:
         return json.load(handle)
@@ -101,11 +106,10 @@ def _composition_scores(
 def _lookup_entities(
     request: dict[str, Any],
     bundle: dict[str, Any],
-) -> tuple[list[dict[str, Any]], list[str], list[str]]:
+) -> tuple[list[dict[str, Any]], list[str]]:
     warnings: list[str] = []
     team_lookup = {row["key"]: row for row in bundle["teams"]}
     teams: list[dict[str, Any]] = []
-    champions: list[str] = []
     if request["blue"]["team_name"] == request["red"]["team_name"]:
         raise PredictionBlocked("As equipes azul e vermelha devem ser diferentes.")
     for side in ("blue", "red"):
@@ -116,54 +120,80 @@ def _lookup_entities(
                 f"Pouca amostra para {team['team_name']}. Não apostar."
             )
         teams.append(team_lookup[key])
-        side_champions = team["champions"]
-        if [row["position"] for row in side_champions] != list(POSITIONS):
-            raise PredictionBlocked("As posições devem ser top, jng, mid, bot e sup.")
-        champions.extend(row["champion"] for row in side_champions)
-    return teams, champions, warnings
+    return teams, warnings
 
 
 def derive_features(
     request: dict[str, Any],
     bundle: dict[str, Any],
 ) -> tuple[dict[str, float], list[str]]:
-    teams, all_champions, warnings = _lookup_entities(request, bundle)
+    teams, warnings = _lookup_entities(request, bundle)
     limits = bundle["sample_limits"]
     for team in teams:
         if team["effective_team_games"] < limits["team_effective_games"]:
             raise PredictionBlocked(
                 f"Pouca amostra para {team['team_name']}. Não apostar."
             )
-    if len(set(all_champions)) != 10:
-        raise PredictionBlocked("O draft não pode repetir campeões.")
-    champion_samples = bundle["champion_samples"]
-    for champion in all_champions:
-        if champion_samples.get(champion, 0) < limits["champion_effective_games"]:
-            raise PredictionBlocked(
-                f"Pouca amostra para {champion}. Não apostar."
-            )
-    taxonomy = bundle["taxonomy"]
-    blue_scores = _composition_scores(
-        [row["champion"] for row in request["blue"]["champions"]],
-        taxonomy,
-    )
-    red_scores = _composition_scores(
-        [row["champion"] for row in request["red"]["champions"]],
-        taxonomy,
-    )
     average = lambda values: sum(values) / len(values)
     features = {
         "pace": average([row["hist_pace"] for row in teams]),
-        "draft_frontline": average(
-            [blue_scores["frontline_score"], red_scores["frontline_score"]]
-        ),
-        "draft_burst": average(
-            [blue_scores["burst_score"], red_scores["burst_score"]]
-        ),
-        "draft_frontline_imbalance": abs(
-            blue_scores["frontline_score"] - red_scores["frontline_score"]
-        ),
     }
+    draft_features = {
+        "draft_frontline",
+        "draft_burst",
+        "draft_frontline_imbalance",
+    }
+    if draft_features.intersection(_feature_names(bundle["model"])):
+        all_champions: list[str] = []
+        for side in ("blue", "red"):
+            side_champions = request[side].get("champions", [])
+            if [row["position"] for row in side_champions] != list(POSITIONS):
+                raise PredictionBlocked(
+                    "As posições devem ser top, jng, mid, bot e sup."
+                )
+            all_champions.extend(
+                row["champion"] for row in side_champions
+            )
+        if len(set(all_champions)) != 10:
+            raise PredictionBlocked("O draft não pode repetir campeões.")
+        champion_samples = bundle["champion_samples"]
+        for champion in all_champions:
+            if (
+                champion_samples.get(champion, 0)
+                < limits["champion_effective_games"]
+            ):
+                raise PredictionBlocked(
+                    f"Pouca amostra para {champion}. Não apostar."
+                )
+        taxonomy = bundle["taxonomy"]
+        blue_scores = _composition_scores(
+            all_champions[:5],
+            taxonomy,
+        )
+        red_scores = _composition_scores(
+            all_champions[5:],
+            taxonomy,
+        )
+        features.update(
+            {
+                "draft_frontline": average(
+                    [
+                        blue_scores["frontline_score"],
+                        red_scores["frontline_score"],
+                    ]
+                ),
+                "draft_burst": average(
+                    [
+                        blue_scores["burst_score"],
+                        red_scores["burst_score"],
+                    ]
+                ),
+                "draft_frontline_imbalance": abs(
+                    blue_scores["frontline_score"]
+                    - red_scores["frontline_score"]
+                ),
+            }
+        )
     return features, warnings
 
 
@@ -177,7 +207,7 @@ def _model_mean(
     linear = float(model["coefficients"]["(Intercept)"])
     league_term = f"league_canonical{league}"
     linear += float(model["coefficients"].get(league_term, 0.0))
-    for feature in model["feature_names"]:
+    for feature in _feature_names(model):
         scaling = model["scaling"][feature]
         standardized = (
             float(features[feature]) - float(scaling["center"])
