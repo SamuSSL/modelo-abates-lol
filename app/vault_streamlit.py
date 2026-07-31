@@ -202,10 +202,10 @@ def _apply_theme() -> None:
 
 
 def _render_hero(bundle: dict | None = None) -> None:
-    model_label = "Vault Corp · Modelo liga + pace"
+    model_label = "Vault Corp · Modelo dirigido + moneyline"
     if bundle:
         model_label = (
-            f"Vault Corp · Modelo liga + pace · "
+            f"Vault Corp · Modelo dirigido + moneyline · "
             f"{bundle['metadata']['model_version']}"
         )
     st.markdown(
@@ -272,10 +272,13 @@ def _render_bet_history(database_url: str | None) -> None:
             "lado",
             "line",
             "offered_odds",
+            "moneyline_blue_odds",
+            "moneyline_red_odds",
             "probabilidade_modelo",
             "chosen_fair_odds",
             "ev_registro",
             "predicted_mean",
+            "predicted_duration_mean",
             "pace",
             "model_version",
             "event_id",
@@ -290,10 +293,13 @@ def _render_bet_history(database_url: str | None) -> None:
             "lado": "Aposta",
             "line": "Linha",
             "offered_odds": "Odd",
+            "moneyline_blue_odds": "ML azul",
+            "moneyline_red_odds": "ML vermelha",
             "probabilidade_modelo": "Prob. modelo",
             "chosen_fair_odds": "Odd justa",
             "ev_registro": "EV",
             "predicted_mean": "Média prevista",
+            "predicted_duration_mean": "Duração prevista",
             "pace": "Pace",
             "model_version": "Modelo",
             "event_id": "Evento",
@@ -313,15 +319,17 @@ def _render_bet_history(database_url: str | None) -> None:
     )
     st.caption(
         "O arquivo inclui odds dos dois lados, probabilidades, odds justas, "
-        "intervalo preditivo, pace, cutoff e identificadores."
+        "moneyline, ratings derivados, duração, intervalo preditivo, pace, "
+        "cutoff e identificadores."
     )
 
 
 def _render_prediction(bundle: dict, database_url: str | None) -> None:
     st.title("Total de kills por mapa")
     st.write(
-        "Modelo pré-mapa baseado na liga e no ritmo histórico recente das "
-        "duas equipes. Draft e campeões não entram nesta versão."
+        "Modelo experimental dirigido por equipe. Ele combina ratings de "
+        "ataque e concessão, ritmo, duração esperada e a moneyline sem vig "
+        "do mapa. Draft e campeões não entram nesta versão."
     )
 
     with st.container(border=True):
@@ -392,7 +400,29 @@ def _render_prediction(bundle: dict, database_url: str | None) -> None:
                         "A previsão será bloqueada."
                     )
 
-        st.subheader("Linha e odds")
+        st.subheader("Moneyline Pinnacle do mapa")
+        moneyline_columns = st.columns(2)
+        moneyline_blue_odds = moneyline_columns[0].number_input(
+            "Odd ML equipe azul",
+            min_value=0.0,
+            value=0.0,
+            step=0.01,
+            help=(
+                "Use a última odd Pinnacle disponível entre 15 e "
+                "30 minutos antes do mapa."
+            ),
+        )
+        moneyline_red_odds = moneyline_columns[1].number_input(
+            "Odd ML equipe vermelha",
+            min_value=0.0,
+            value=0.0,
+            step=0.01,
+            help=(
+                "Informe a odd do mesmo snapshot usado para a equipe azul."
+            ),
+        )
+
+        st.subheader("Linha e odds de total de kills")
         market_columns = st.columns(3)
         line = market_columns[0].number_input(
             "Linha de kills",
@@ -432,6 +462,16 @@ def _render_prediction(bundle: dict, database_url: str | None) -> None:
             "line": float(line),
             "odds_over": float(odds_over) if odds_over > 0 else None,
             "odds_under": float(odds_under) if odds_under > 0 else None,
+            "moneyline_blue_odds": (
+                float(moneyline_blue_odds)
+                if moneyline_blue_odds > 0
+                else None
+            ),
+            "moneyline_red_odds": (
+                float(moneyline_red_odds)
+                if moneyline_red_odds > 0
+                else None
+            ),
             "blue": {
                 "team_name": selected_team_records["blue"]["team_name"],
                 "team_id": selected_team_records["blue"].get("team_id"),
@@ -477,6 +517,27 @@ def _render_prediction(bundle: dict, database_url: str | None) -> None:
         st.write(
             f"Intervalo preditivo de 90%: {interval[0]} a "
             f"{interval[1]} kills."
+        )
+        directed_features = result.get("features") or {}
+        detail_columns = st.columns(3)
+        detail_columns[0].metric(
+            "Duração esperada",
+            f"{directed_features['duration_mean']:.1f} min",
+        )
+        detail_columns[1].metric(
+            request["blue"]["team_name"],
+            f"{directed_features['blue_mean']:.1f} kills",
+        )
+        detail_columns[2].metric(
+            request["red"]["team_name"],
+            f"{directed_features['red_mean']:.1f} kills",
+        )
+        st.caption(
+            "Probabilidades sem vig da moneyline: "
+            f"{request['blue']['team_name']} "
+            f"{directed_features['p_blue_no_vig']:.1%} e "
+            f"{request['red']['team_name']} "
+            f"{directed_features['p_red_no_vig']:.1%}."
         )
         odds_columns = st.columns(2)
         odds_columns[0].metric(

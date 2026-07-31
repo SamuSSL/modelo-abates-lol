@@ -230,6 +230,14 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
         "stake": stake,
         "market_odds_over": request.get("odds_over"),
         "market_odds_under": request.get("odds_under"),
+        "moneyline_blue_odds": request.get("moneyline_blue_odds"),
+        "moneyline_red_odds": request.get("moneyline_red_odds"),
+        "moneyline_blue_probability": (
+            result.get("features") or {}
+        ).get("p_blue_no_vig"),
+        "moneyline_red_probability": (
+            result.get("features") or {}
+        ).get("p_red_no_vig"),
         "model_probability_over": result.get("probability_over"),
         "model_probability_under": result.get("probability_under"),
         "chosen_probability": chosen_probability,
@@ -239,10 +247,21 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
         "expected_value": expected_value,
         "predicted_mean": result.get("mean"),
         "predicted_median": result.get("median"),
+        "predicted_duration_mean": (
+            result.get("features") or {}
+        ).get("duration_mean"),
+        "predicted_blue_mean": (
+            result.get("features") or {}
+        ).get("blue_mean"),
+        "predicted_red_mean": (
+            result.get("features") or {}
+        ).get("red_mean"),
         "prediction_interval_90_low": interval[0],
         "prediction_interval_90_high": interval[1],
         "pace": (result.get("features") or {}).get("pace"),
         "model_version": result.get("model_version"),
+        "model_candidate": result.get("model_candidate"),
+        "model_status": result.get("model_status"),
         "data_cutoff": result.get("data_cutoff"),
     }
 

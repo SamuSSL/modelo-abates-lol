@@ -80,6 +80,8 @@ def test_bet_history_contains_complete_prediction_snapshot(
         "line": 24.5,
         "odds_over": 1.91,
         "odds_under": 1.95,
+        "moneyline_blue_odds": 1.55,
+        "moneyline_red_odds": 2.50,
         "blue": {"team_name": "Blue"},
         "red": {"team_name": "Red"},
     }
@@ -93,8 +95,17 @@ def test_bet_history_contains_complete_prediction_snapshot(
         "probability_under": 0.42,
         "fair_odds_over": 1 / 0.58,
         "fair_odds_under": 1 / 0.42,
-        "features": {"pace": 0.91},
-        "model_version": "pace-test",
+        "features": {
+            "pace": 0.91,
+            "p_blue_no_vig": 0.6172839506,
+            "p_red_no_vig": 0.3827160494,
+            "duration_mean": 31.2,
+            "blue_mean": 15.4,
+            "red_mean": 10.7,
+        },
+        "model_version": "directed-test",
+        "model_candidate": "joint_ml_quadratic_global",
+        "model_status": "experimental_prospective_test",
         "data_cutoff": "2026-07-25",
     }
     event_id = save_prediction(request, result)
@@ -107,10 +118,20 @@ def test_bet_history_contains_complete_prediction_snapshot(
     assert row["event_id"] == event_id
     assert row["map_number"] == 2
     assert row["market_odds_under"] == 1.95
+    assert row["moneyline_blue_odds"] == 1.55
+    assert row["moneyline_red_odds"] == 2.50
+    assert row["moneyline_blue_probability"] == pytest.approx(
+        0.6172839506
+    )
     assert row["model_probability_over"] == 0.58
     assert row["predicted_mean"] == 26.1
+    assert row["predicted_duration_mean"] == 31.2
+    assert row["predicted_blue_mean"] == 15.4
+    assert row["predicted_red_mean"] == 10.7
     assert row["pace"] == 0.91
-    assert row["model_version"] == "pace-test"
+    assert row["model_version"] == "directed-test"
+    assert row["model_candidate"] == "joint_ml_quadratic_global"
+    assert row["model_status"] == "experimental_prospective_test"
     assert row["expected_value"] == pytest.approx(0.58 * 1.91 - 1)
 
 

@@ -133,6 +133,42 @@ def test_exported_r_python_model_parity():
         return
     bundle = load_bundle(bundle_path)
     fixture = json.loads(fixture_path.read_text(encoding="utf-8"))
+    if bundle["model"].get("type") == "directed_moneyline":
+        result = predict(fixture["request"], bundle)
+        assert result["status"] == "ok"
+        expected = fixture["expected"]
+        tolerance = fixture["tolerance"]
+        assert math.isclose(
+            result["mean"],
+            expected["mean"],
+            abs_tol=tolerance["mean"],
+        )
+        assert math.isclose(
+            result["features"]["duration_mean"],
+            expected["duration_mean"],
+            abs_tol=tolerance["duration_mean"],
+        )
+        assert math.isclose(
+            result["features"]["blue_mean"],
+            expected["blue_mean"],
+            abs_tol=tolerance["team_mean"],
+        )
+        assert math.isclose(
+            result["features"]["red_mean"],
+            expected["red_mean"],
+            abs_tol=tolerance["team_mean"],
+        )
+        assert math.isclose(
+            result["probability_under"],
+            expected["probability_under"],
+            abs_tol=tolerance["probability"],
+        )
+        assert math.isclose(
+            result["probability_over"],
+            expected["probability_over"],
+            abs_tol=tolerance["probability"],
+        )
+        return
     mean = _model_mean(
         fixture["league"],
         fixture["features"],
@@ -150,3 +186,43 @@ def test_exported_r_python_model_parity():
         abs(left - right)
         for left, right in zip(pmf, fixture["expected_pmf"])
     ) < fixture["tolerance"]
+
+
+def test_directed_model_requires_both_moneyline_prices():
+    bundle = load_bundle("app_data/model_bundle.json")
+    if bundle["model"].get("type") != "directed_moneyline":
+        return
+    fixture = json.loads(
+        Path("app_data/parity_fixture.json").read_text(encoding="utf-8")
+    )
+    request = fixture["request"]
+    request["moneyline_red_odds"] = None
+
+    result = predict(request, bundle)
+
+    assert result["status"] == "blocked"
+    assert "duas odds de moneyline" in result["reason"]
+
+
+def test_directed_model_derives_no_vig_moneyline_probabilities():
+    bundle = load_bundle("app_data/model_bundle.json")
+    if bundle["model"].get("type") != "directed_moneyline":
+        return
+    fixture = json.loads(
+        Path("app_data/parity_fixture.json").read_text(encoding="utf-8")
+    )
+
+    result = predict(fixture["request"], bundle)
+
+    assert result["status"] == "ok"
+    assert math.isclose(
+        result["features"]["p_blue_no_vig"],
+        0.65,
+        abs_tol=1e-12,
+    )
+    assert math.isclose(
+        result["features"]["p_red_no_vig"],
+        0.35,
+        abs_tol=1e-12,
+    )
+    assert math.isclose(sum(result["pmf"]), 1, abs_tol=1e-12)

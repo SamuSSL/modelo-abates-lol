@@ -5,6 +5,20 @@ from streamlit.testing.v1 import AppTest
 from app.ui_options import team_label
 
 
+def _fill_moneyline(app):
+    next(
+        item
+        for item in app.number_input
+        if item.label == "Odd ML equipe azul"
+    ).set_value(1.90)
+    next(
+        item
+        for item in app.number_input
+        if item.label == "Odd ML equipe vermelha"
+    ).set_value(1.90)
+    return app.run()
+
+
 def test_streamlit_loads_and_exposes_every_team_in_default_league():
     bundle = json.loads(
         Path("app_data/model_bundle.json").read_text(encoding="utf-8")
@@ -68,6 +82,7 @@ def test_default_draft_produces_a_prediction_without_ui_error():
         default_timeout=20,
     ).run()
 
+    app = _fill_moneyline(app)
     app.button[0].click().run(timeout=30)
 
     assert len(app.exception) == 0
@@ -90,6 +105,7 @@ def test_no_bet_is_confirmed_after_prediction():
         default_timeout=20,
     ).run()
 
+    app = _fill_moneyline(app)
     app.button[0].click().run(timeout=30)
     no_bet_button = next(
         button for button in app.button if button.label == "Não apostar"
