@@ -16,12 +16,12 @@
     }
   },
   "expected": {
-    "mean": 25.3947312242848,
-    "duration_mean": 32.4711969268143,
-    "blue_mean": 14.3293403081417,
-    "red_mean": 11.0653909161431,
-    "probability_under": 0.502100480741821,
-    "probability_over": 0.497899519258179
+    "mean": 25.2308224997157,
+    "duration_mean": 32.4940674715996,
+    "blue_mean": 14.2457300569616,
+    "red_mean": 10.9850924427542,
+    "probability_under": 0.509614514831217,
+    "probability_over": 0.490385485168783
   },
   "tolerance": {
     "mean": 0.08,
