@@ -217,7 +217,7 @@ def _render_hero(bundle: dict | None = None) -> None:
     if bundle:
         model_label = (
             f"Vault Corp · Modelo dirigido + moneyline · "
-            f"{bundle['metadata']['model_version']}"
+            f"{bundle['metadata']['model_version']} · Interface {UI_RELEASE}"
         )
     st.markdown(
         f"""

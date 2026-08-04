@@ -12,9 +12,12 @@ from app.lolkills_inference import POSITIONS, load_bundle, predict
 from app.persistence import save_bet_decision, save_prediction
 from app.tracking import load_tracking_data, render_tracking_page
 from app.ui_options import team_label, team_options
-from app.vault_streamlit import run_vault_app
+from app.vault_streamlit import UI_RELEASE, run_vault_app
 
 
+DEPLOY_RELEASE = "predraft-ev-v2-2026-08-04"
+if UI_RELEASE != DEPLOY_RELEASE:
+    raise RuntimeError("A versão da interface não corresponde ao deploy.")
 run_vault_app()
 st.stop()
 

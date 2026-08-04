@@ -49,6 +49,10 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
     ).run()
 
     assert len(app.exception) == 0
+    assert any(
+        "Interface predraft-ev-v2-2026-08-04" in markdown.value
+        for markdown in app.markdown
+    )
     default_league = app.selectbox[0].value
     limit = float(bundle["sample_limits"]["team_effective_games"])
     expected = {
