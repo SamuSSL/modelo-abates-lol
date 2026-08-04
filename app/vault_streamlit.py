@@ -25,6 +25,7 @@ from app.ui_options import team_label, team_options
 BUNDLE_PATH = Path("app_data/model_bundle.json")
 ROSTER_CATALOG_PATH = Path("app_data/roster_catalog.json")
 TRACKING_PATH = Path("app_data/time_series_tracking.csv.gz")
+UI_RELEASE = "predraft-ev-v2-2026-08-04"
 
 
 @st.cache_resource
@@ -654,6 +655,7 @@ def _render_predraft_prediction(
     database_url: str | None,
 ) -> None:
     st.title("Total de kills pré-draft por mapa")
+    st.caption(f"Versão da interface: {UI_RELEASE}")
     st.info(
         "Paper betting prospectivo. O directed é o melhor candidato testado, "
         "mas a vantagem econômica ainda não foi confirmada a 95%."
@@ -884,9 +886,55 @@ def _render_predraft_prediction(
         details[0].metric("Duração esperada", f"{features['duration_mean']:.1f} min")
         details[1].metric(request["team_a"]["team_name"], f"{features['team_a_mean']:.1f} kills")
         details[2].metric(request["team_b"]["team_name"], f"{features['team_b_mean']:.1f} kills")
+        st.subheader("Valor na cotação soft")
+        value_columns = st.columns(4)
+        value_columns[0].metric(
+            "Odd justa Over",
+            f"{result['fair_odds_over']:.2f}",
+        )
+        value_columns[1].metric(
+            "Odd soft Over",
+            f"{request['soft_odds_over']:.2f}",
+        )
+        value_columns[2].metric(
+            "Odd justa Under",
+            f"{result['fair_odds_under']:.2f}",
+        )
+        value_columns[3].metric(
+            "Odd soft Under",
+            f"{request['soft_odds_under']:.2f}",
+        )
         ev_columns = st.columns(2)
-        ev_columns[0].metric("EV Over na soft", f"{result['ev_over']:.1%}")
-        ev_columns[1].metric("EV Under na soft", f"{result['ev_under']:.1%}")
+        ev_columns[0].metric("EV Over", f"{result['ev_over']:+.1%}")
+        ev_columns[1].metric("EV Under", f"{result['ev_under']:+.1%}")
+        bet_blocked = result.get("bet_status") == "blocked"
+        best_side = "Over" if result["ev_over"] >= result["ev_under"] else "Under"
+        best_ev = max(result["ev_over"], result["ev_under"])
+        best_fair_odds = (
+            result["fair_odds_over"]
+            if best_side == "Over"
+            else result["fair_odds_under"]
+        )
+        best_soft_odds = (
+            request["soft_odds_over"]
+            if best_side == "Over"
+            else request["soft_odds_under"]
+        )
+        if bet_blocked:
+            st.warning(
+                "Não apostar agora. O cálculo de valor está visível apenas "
+                "para auditoria porque a aposta foi bloqueada."
+            )
+        elif best_ev > 0:
+            st.success(
+                f"Paper bet indicada: {best_side} {line:.1f} a "
+                f"{best_soft_odds:.2f}. Odd justa {best_fair_odds:.2f} e "
+                f"EV {best_ev:+.1%}."
+            )
+        else:
+            st.info(
+                "Sem valor positivo nas odds informadas. Não fazer paper bet."
+            )
         st.caption(
             "Backtest semanal corrigido: 495 apostas, yield de 4,26%, "
             "drawdown máximo de 15,44u e intervalo bootstrap de 95% "
@@ -901,7 +949,6 @@ def _render_predraft_prediction(
                 width="stretch",
             )
         st.subheader("Decisão da aposta")
-        bet_blocked = result.get("bet_status") == "blocked"
         if bet_blocked:
             for reason in result.get("bet_block_reasons") or []:
                 st.error(reason)

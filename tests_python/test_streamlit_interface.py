@@ -106,8 +106,21 @@ def test_default_draft_produces_a_prediction_without_ui_error():
     app.button[0].click().run(timeout=30)
 
     assert len(app.exception) == 0
-    assert [message.value for message in app.success] == [
-        "Previsão calculada."
+    metric_labels = {metric.label for metric in app.metric}
+    assert {
+        "Odd justa Over",
+        "Odd soft Over",
+        "Odd justa Under",
+        "Odd soft Under",
+        "EV Over",
+        "EV Under",
+    }.issubset(metric_labels)
+    assert any(
+        "Versão da interface: predraft-ev-v2-2026-08-04" in caption.value
+        for caption in app.caption
+    )
+    assert "Previsão calculada." in [
+        message.value for message in app.success
     ]
     assert "Aposta confirmada" not in [
         selectbox.label for selectbox in app.selectbox
