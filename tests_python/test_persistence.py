@@ -8,7 +8,48 @@ from app.persistence import (
     load_bet_history,
     save_bet_decision,
     save_prediction,
+    save_shadow_predictions,
 )
+
+
+def test_shadow_predictions_and_paper_rules_are_append_only(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+    request = {
+        "league": "LCK",
+        "planned_at": "2026-08-01T12:00:00+00:00",
+        "map_number": 1,
+        "soft_line": 24.5,
+        "team_a": {"team_name": "A"},
+        "team_b": {"team_name": "B"},
+    }
+    result = {"status": "ok", "prediction_id": "prediction"}
+    event_id = save_prediction(request, result)
+    row = {
+        "model_id": "challenger",
+        "mode": "market_available",
+        "pmf": [0.5, 0.5],
+        "paper_rules": [
+            {
+                "minimum_ev": 0.03,
+                "decision": "bet",
+                "side": "over",
+                "probability": 0.55,
+                "odds": 2.0,
+                "expected_value": 0.10,
+                "stake": 1.0,
+            }
+        ],
+    }
+    save_shadow_predictions(event_id, "prediction", [row], bet_blocked=True)
+    with sqlite3.connect(".local/predictions.sqlite") as connection:
+        shadow_count = connection.execute(
+            "SELECT count(*) FROM shadow_predictions"
+        ).fetchone()[0]
+        paper = connection.execute(
+            "SELECT decision, side, stake FROM paper_bet_decisions"
+        ).fetchone()
+    assert shadow_count == 1
+    assert paper == ("blocked", None, 0.0)
 
 
 def test_prediction_is_appended_without_bet_decision(monkeypatch, tmp_path):

@@ -9,13 +9,33 @@ def _fill_moneyline(app):
     next(
         item
         for item in app.number_input
-        if item.label == "Odd ML equipe azul"
+        if item.label == "Moneyline equipe A"
     ).set_value(1.90)
     next(
         item
         for item in app.number_input
-        if item.label == "Odd ML equipe vermelha"
+        if item.label == "Moneyline equipe B"
     ).set_value(1.90)
+    next(
+        item
+        for item in app.number_input
+        if item.label == "Odd Over Pinnacle"
+    ).set_value(1.90)
+    next(
+        item
+        for item in app.number_input
+        if item.label == "Odd Under Pinnacle"
+    ).set_value(1.90)
+    next(
+        item
+        for item in app.number_input
+        if item.label == "Odd Over soft"
+    ).set_value(1.95)
+    next(
+        item
+        for item in app.number_input
+        if item.label == "Odd Under soft"
+    ).set_value(1.95)
     return app.run()
 
 

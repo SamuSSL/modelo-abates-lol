@@ -10,6 +10,14 @@ from typing import Any
 
 import numpy as np
 
+from app.predraft_contract import (
+    PredraftContractError,
+    evaluate_roster_gate,
+    legacy_request_from_predraft,
+    normalize_predraft_request,
+    prediction_lead_minutes,
+)
+
 
 POSITIONS = ("top", "jng", "mid", "bot", "sup")
 
@@ -584,8 +592,147 @@ def _prediction_id(request: dict[str, Any]) -> str:
     return hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
 
 
+def _predraft_prediction_id(request: dict[str, Any]) -> str:
+    teams = sorted(
+        [request["team_a"]["team_name"], request["team_b"]["team_name"]]
+    )
+    identity = "|".join(
+        [
+            request["league"],
+            request["planned_at"],
+            teams[0],
+            teams[1],
+            str(request["map_number"]),
+        ]
+    )
+    return hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+
+
+def _average_pmfs(first: list[float], second: list[float]) -> list[float]:
+    size = max(len(first), len(second))
+    averaged = [
+        0.5
+        * (
+            (first[index] if index < len(first) else 0.0)
+            + (second[index] if index < len(second) else 0.0)
+        )
+        for index in range(size)
+    ]
+    total = sum(averaged)
+    return [mass / total for mass in averaged]
+
+
+def _predict_predraft(
+    request: dict[str, Any],
+    bundle: dict[str, Any],
+) -> dict[str, Any]:
+    normalized = normalize_predraft_request(request)
+    first = predict(legacy_request_from_predraft(normalized), bundle)
+    swapped = predict(
+        legacy_request_from_predraft(normalized, swap=True),
+        bundle,
+    )
+    if first.get("status") != "ok" or swapped.get("status") != "ok":
+        reasons = [
+            row.get("reason", "Previsao fundamental bloqueada.")
+            for row in (first, swapped)
+            if row.get("status") != "ok"
+        ]
+        raise PredictionBlocked(" ".join(dict.fromkeys(reasons)))
+
+    pmf = _average_pmfs(first["pmf"], swapped["pmf"])
+    line = float(normalized["soft_line"])
+    probability_under = sum(pmf[: math.floor(line) + 1])
+    probability_over = 1 - probability_under
+    first_features = first.get("features") or {}
+    swapped_features = swapped.get("features") or {}
+    features = dict(first_features)
+    average_feature_names = (
+        "duration_mean",
+        "duration_median",
+        "duration_sd",
+        "favorite_probability",
+        "favorite_imbalance",
+    )
+    for name in average_feature_names:
+        if name in first_features and name in swapped_features:
+            features[name] = 0.5 * (
+                float(first_features[name]) + float(swapped_features[name])
+            )
+    features["team_a_mean"] = 0.5 * (
+        float(first_features.get("blue_mean", 0.0))
+        + float(swapped_features.get("red_mean", 0.0))
+    )
+    features["team_b_mean"] = 0.5 * (
+        float(first_features.get("red_mean", 0.0))
+        + float(swapped_features.get("blue_mean", 0.0))
+    )
+    features["p_team_a_no_vig"] = 0.5 * (
+        float(first_features.get("p_blue_no_vig", 0.0))
+        + float(swapped_features.get("p_red_no_vig", 0.0))
+    )
+    features["p_team_b_no_vig"] = 1 - features["p_team_a_no_vig"]
+    features["order_symmetrized"] = True
+    roster_gate = evaluate_roster_gate(
+        normalized,
+        bundle.get("roster_catalog"),
+    )
+    warnings = list(dict.fromkeys(
+        list(first.get("warnings") or [])
+        + list(swapped.get("warnings") or [])
+    ))
+    lead_minutes = prediction_lead_minutes(normalized)
+    if lead_minutes < 30 or lead_minutes > 45:
+        warnings.append(
+            "Snapshot fora da janela operacional T-45/T-30; registrado para auditoria."
+        )
+    mean = sum(index * mass for index, mass in enumerate(pmf))
+    result: dict[str, Any] = {
+        "status": "ok",
+        "bet_status": "blocked" if roster_gate["blocked"] else "allowed",
+        "bet_block_reasons": roster_gate["reasons"],
+        "prediction_id": _predraft_prediction_id(normalized),
+        "contract": "predraft_v1",
+        "mode": (
+            "market_available"
+            if normalized.get("pinnacle_total_line") is not None
+            else "fundamental_fallback"
+        ),
+        "mean": mean,
+        "median": _quantile(pmf, 0.5),
+        "prediction_interval_90": [
+            _quantile(pmf, 0.05),
+            _quantile(pmf, 0.95),
+        ],
+        "pmf": pmf,
+        "probability_over": probability_over,
+        "probability_under": probability_under,
+        "probability_push": 0.0,
+        "fair_odds_over": 1 / probability_over,
+        "fair_odds_under": 1 / probability_under,
+        "ev_over": probability_over * normalized["soft_odds_over"] - 1,
+        "ev_under": probability_under * normalized["soft_odds_under"] - 1,
+        "features": features,
+        "roster_gate": roster_gate,
+        "prediction_lead_minutes": lead_minutes,
+        "warnings": warnings,
+        "model_version": bundle["metadata"]["model_version"],
+        "model_candidate": bundle["metadata"].get("selected_candidate_id"),
+        "model_status": bundle["metadata"].get("model_status"),
+        "data_cutoff": bundle["metadata"]["data_cutoff"],
+    }
+    no_vig_over = 1 / normalized["soft_odds_over"]
+    no_vig_under = 1 / normalized["soft_odds_under"]
+    no_vig_total = no_vig_over + no_vig_under
+    result["no_vig_probability_over"] = no_vig_over / no_vig_total
+    result["no_vig_probability_under"] = no_vig_under / no_vig_total
+    return result
+
+
 def predict(request: dict[str, Any], bundle: dict[str, Any]) -> dict[str, Any]:
     try:
+        if "team_a" in request or "team_b" in request:
+            return _predict_predraft(request, bundle)
         line = float(request["line"])
         if not math.isclose(line % 1, 0.5):
             raise PredictionBlocked("A linha precisa terminar em .5.")
@@ -635,7 +782,7 @@ def predict(request: dict[str, Any], bundle: dict[str, Any]) -> dict[str, Any]:
             result["no_vig_probability_over"] = raw_over / total
             result["no_vig_probability_under"] = raw_under / total
         return result
-    except PredictionBlocked as error:
+    except (PredictionBlocked, PredraftContractError, KeyError, TypeError) as error:
         return {
             "status": "blocked",
             "reason": str(error),

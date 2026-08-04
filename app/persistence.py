@@ -44,12 +44,48 @@ CREATE TABLE IF NOT EXISTS bet_decisions (
 )
 """
 
+SHADOW_PREDICTION_SCHEMA = """
+CREATE TABLE IF NOT EXISTS shadow_predictions (
+    shadow_id TEXT PRIMARY KEY,
+    event_id TEXT NOT NULL,
+    prediction_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    model_id TEXT NOT NULL,
+    mode TEXT NOT NULL,
+    shadow_json TEXT NOT NULL,
+    FOREIGN KEY (event_id) REFERENCES prediction_events(event_id)
+)
+"""
+
+PAPER_DECISION_SCHEMA = """
+CREATE TABLE IF NOT EXISTS paper_bet_decisions (
+    paper_id TEXT PRIMARY KEY,
+    shadow_id TEXT NOT NULL,
+    event_id TEXT NOT NULL,
+    prediction_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    model_id TEXT NOT NULL,
+    minimum_ev REAL NOT NULL,
+    decision TEXT NOT NULL CHECK (decision IN ('bet', 'pass', 'blocked')),
+    side TEXT,
+    probability REAL,
+    odds REAL,
+    expected_value REAL NOT NULL,
+    stake REAL NOT NULL,
+    FOREIGN KEY (shadow_id) REFERENCES shadow_predictions(shadow_id),
+    FOREIGN KEY (event_id) REFERENCES prediction_events(event_id)
+)
+"""
+
 
 def _event_values(
     request: dict[str, Any],
     result: dict[str, Any],
 ) -> tuple[Any, ...]:
     bet_side = None
+    team_a = request.get("team_a") or request.get("blue") or {}
+    team_b = request.get("team_b") or request.get("red") or {}
+    line = request.get("soft_line", request.get("line"))
     return (
         str(uuid.uuid4()),
         result.get("prediction_id", "blocked"),
@@ -57,10 +93,10 @@ def _event_values(
         result["status"],
         request["league"],
         request["planned_at"],
-        request["blue"]["team_name"],
-        request["red"]["team_name"],
+        team_a["team_name"],
+        team_b["team_name"],
         int(request["map_number"]),
-        float(request["line"]),
+        float(line),
         bet_side,
         1.0 if bet_side else None,
         json.dumps(request, ensure_ascii=False, sort_keys=True),
@@ -106,6 +142,95 @@ def save_prediction(
             values,
         )
     return values[0]
+
+
+def save_shadow_predictions(
+    event_id: str,
+    prediction_id: str,
+    shadow_rows: list[dict[str, Any]],
+    bet_blocked: bool = False,
+    database_url: str | None = None,
+) -> list[str]:
+    created_at = datetime.now(timezone.utc).isoformat()
+    shadow_values: list[tuple[Any, ...]] = []
+    paper_values: list[tuple[Any, ...]] = []
+    for row in shadow_rows:
+        shadow_id = str(uuid.uuid4())
+        shadow_values.append(
+            (
+                shadow_id,
+                event_id,
+                prediction_id,
+                created_at,
+                row["model_id"],
+                row["mode"],
+                json.dumps(row, ensure_ascii=False, sort_keys=True),
+            )
+        )
+        for rule in row.get("paper_rules") or []:
+            decision = "blocked" if bet_blocked else rule["decision"]
+            paper_values.append(
+                (
+                    str(uuid.uuid4()),
+                    shadow_id,
+                    event_id,
+                    prediction_id,
+                    created_at,
+                    row["model_id"],
+                    float(rule["minimum_ev"]),
+                    decision,
+                    None if bet_blocked else rule.get("side"),
+                    None if bet_blocked else rule.get("probability"),
+                    None if bet_blocked else rule.get("odds"),
+                    float(rule["expected_value"]),
+                    0.0 if bet_blocked else float(rule.get("stake", 0.0)),
+                )
+            )
+    database_url = database_url or os.getenv("DATABASE_URL")
+    if database_url and database_url.startswith(("postgres://", "postgresql://")):
+        import psycopg
+
+        with psycopg.connect(database_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.executemany(
+                    """
+                    INSERT INTO lol_kills.shadow_predictions VALUES (
+                        %s, %s, %s, %s, %s, %s, %s
+                    )
+                    """,
+                    shadow_values,
+                )
+                cursor.executemany(
+                    """
+                    INSERT INTO lol_kills.paper_bet_decisions VALUES (
+                        %s, %s, %s, %s, %s, %s, %s,
+                        %s, %s, %s, %s, %s, %s
+                    )
+                    """,
+                    paper_values,
+                )
+        return [row[0] for row in shadow_values]
+
+    local_path = Path(".local") / "predictions.sqlite"
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(local_path) as connection:
+        connection.execute("PRAGMA foreign_keys = ON")
+        connection.execute(SCHEMA)
+        connection.execute(SHADOW_PREDICTION_SCHEMA)
+        connection.execute(PAPER_DECISION_SCHEMA)
+        connection.executemany(
+            "INSERT INTO shadow_predictions VALUES (?, ?, ?, ?, ?, ?, ?)",
+            shadow_values,
+        )
+        connection.executemany(
+            """
+            INSERT INTO paper_bet_decisions VALUES (
+                ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+            )
+            """,
+            paper_values,
+        )
+    return [row[0] for row in shadow_values]
 
 
 def save_bet_decision(

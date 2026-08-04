@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import os
+import json
 from datetime import datetime, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -14,18 +15,27 @@ from app.persistence import (
     load_bet_history,
     save_bet_decision,
     save_prediction,
+    save_shadow_predictions,
 )
+from app.shadow_models import build_shadow_predictions
 from app.tracking import load_tracking_data, render_tracking_page
 from app.ui_options import team_label, team_options
 
 
 BUNDLE_PATH = Path("app_data/model_bundle.json")
+ROSTER_CATALOG_PATH = Path("app_data/roster_catalog.json")
 TRACKING_PATH = Path("app_data/time_series_tracking.csv.gz")
 
 
 @st.cache_resource
 def _load_active_bundle(bundle_mtime_ns: int):
     return load_bundle(BUNDLE_PATH)
+
+
+@st.cache_resource
+def _load_roster_catalog(catalog_mtime_ns: int):
+    with ROSTER_CATALOG_PATH.open("r", encoding="utf-8") as handle:
+        return json.load(handle)
 
 
 def _database_url() -> str | None:
@@ -630,6 +640,294 @@ def _render_prediction(bundle: dict, database_url: str | None) -> None:
     )
 
 
+def _player_pool(roster_catalog: dict, league: str) -> dict[str, dict]:
+    pool: dict[str, dict] = {}
+    for team in (roster_catalog.get("teams") or {}).values():
+        for player in team.get("players") or []:
+            pool[player["player_id"]] = player
+    return pool
+
+
+def _render_predraft_prediction(
+    bundle: dict,
+    roster_catalog: dict,
+    database_url: str | None,
+) -> None:
+    st.title("Total de kills pré-draft por mapa")
+    st.write(
+        "O directed semanal continua sendo o único modelo exibido. "
+        "Os challengers são calculados e registrados sem aparecer na interface."
+    )
+    with st.container(border=True):
+        league = st.selectbox("Liga", bundle["model"]["league_levels"])
+        match_columns = st.columns(3)
+        planned_date = match_columns[0].date_input("Data prevista")
+        planned_time = match_columns[1].time_input("Horário de Brasília")
+        map_number = match_columns[2].number_input(
+            "Número do mapa", min_value=1, max_value=7, value=1, step=1
+        )
+        available_teams = team_options(bundle, league)
+        team_keys = [row["key"] for row in available_teams]
+        team_by_key = {row["key"]: row for row in available_teams}
+        if len(team_keys) < 2:
+            st.error("A liga não possui duas equipes no snapshot atual.")
+            st.stop()
+        team_columns = st.columns(2)
+        selected_teams: dict[str, dict] = {}
+        for label, title, column, index in (
+            ("team_a", "Equipe A", team_columns[0], 0),
+            ("team_b", "Equipe B", team_columns[1], 1),
+        ):
+            selected_key = column.selectbox(
+                title,
+                team_keys,
+                index=index,
+                format_func=lambda key: team_label(
+                    team_by_key[key],
+                    float(bundle["sample_limits"]["team_effective_games"]),
+                ),
+                key=f"predraft_{label}",
+            )
+            selected_teams[label] = team_by_key[selected_key]
+            if float(selected_teams[label]["effective_team_games"]) < float(
+                bundle["sample_limits"]["team_effective_games"]
+            ):
+                column.warning(
+                    "Equipe abaixo do limite mínimo de amostra. "
+                    "A previsão fundamental poderá ser bloqueada."
+                )
+
+        player_pool = _player_pool(roster_catalog, league)
+        player_ids = sorted(
+            player_pool,
+            key=lambda player_id: (
+                player_pool[player_id].get("position", ""),
+                player_pool[player_id].get("player_name", "").casefold(),
+            ),
+        )
+        if len(player_ids) < 10:
+            st.error("Catálogo de titulares insuficiente para esta liga.")
+            st.stop()
+        selected_starters: dict[str, list[str]] = {}
+        starter_columns = st.columns(2)
+        teams_catalog = roster_catalog.get("teams") or {}
+        for label, title, column in (
+            ("team_a", "Cinco titulares da equipe A", starter_columns[0]),
+            ("team_b", "Cinco titulares da equipe B", starter_columns[1]),
+        ):
+            team_id = selected_teams[label].get("team_id")
+            defaults = list(
+                (teams_catalog.get(str(team_id)) or {}).get("latest_roster")
+                or []
+            )
+            defaults = [value for value in defaults if value in player_pool]
+            selected_starters[label] = column.multiselect(
+                title,
+                player_ids,
+                default=defaults[:5],
+                max_selections=5,
+                format_func=lambda player_id: (
+                    f"{player_pool[player_id]['player_name']} "
+                    f"({player_pool[player_id].get('position', '?')})"
+                ),
+                key=f"predraft_starters_{label}_{team_id}",
+            )
+
+        st.subheader("Pinnacle")
+        moneyline_columns = st.columns(2)
+        moneyline_team_a = moneyline_columns[0].number_input(
+            "Moneyline equipe A", min_value=0.0, value=0.0, step=0.01
+        )
+        moneyline_team_b = moneyline_columns[1].number_input(
+            "Moneyline equipe B", min_value=0.0, value=0.0, step=0.01
+        )
+        pinnacle_available = st.checkbox(
+            "Total Pinnacle disponível no snapshot T-45/T-30", value=True
+        )
+        pinnacle_line = pinnacle_over = pinnacle_under = None
+        if pinnacle_available:
+            pinnacle_columns = st.columns(3)
+            pinnacle_line = pinnacle_columns[0].number_input(
+                "Linha total Pinnacle", min_value=0.5, value=24.5, step=1.0
+            )
+            pinnacle_over = pinnacle_columns[1].number_input(
+                "Odd Over Pinnacle", min_value=0.0, value=0.0, step=0.01
+            )
+            pinnacle_under = pinnacle_columns[2].number_input(
+                "Odd Under Pinnacle", min_value=0.0, value=0.0, step=0.01
+            )
+        include_team_totals = st.checkbox("Informar team totals Pinnacle")
+        team_total_values: dict[str, float | None] = {}
+        if include_team_totals:
+            for label, title in (("team_a", "Equipe A"), ("team_b", "Equipe B")):
+                columns = st.columns(3)
+                team_total_values[f"{label}_total_line"] = columns[0].number_input(
+                    f"Linha team total {title}", min_value=0.5, value=12.5, step=1.0
+                )
+                team_total_values[f"{label}_total_odds_over"] = columns[1].number_input(
+                    f"Odd Over team total {title}", min_value=0.0, value=0.0, step=0.01
+                )
+                team_total_values[f"{label}_total_odds_under"] = columns[2].number_input(
+                    f"Odd Under team total {title}", min_value=0.0, value=0.0, step=0.01
+                )
+
+        st.subheader("Melhor cotação soft")
+        soft_columns = st.columns(3)
+        soft_line = soft_columns[0].number_input(
+            "Linha soft", min_value=0.5, value=24.5, step=1.0
+        )
+        soft_over = soft_columns[1].number_input(
+            "Odd Over soft", min_value=0.0, value=0.0, step=0.01
+        )
+        soft_under = soft_columns[2].number_input(
+            "Odd Under soft", min_value=0.0, value=0.0, step=0.01
+        )
+        submitted = st.button("Calcular previsão", type="primary", width="stretch")
+
+    if submitted:
+        if len(selected_starters["team_a"]) != 5 or len(selected_starters["team_b"]) != 5:
+            st.error("Selecione exatamente cinco titulares para cada equipe.")
+            return
+        planned_local = datetime.combine(
+            planned_date, planned_time, tzinfo=ZoneInfo("America/Sao_Paulo")
+        )
+        request = {
+            "league": league,
+            "planned_at": planned_local.astimezone(timezone.utc).isoformat(),
+            "quoted_at": datetime.now(timezone.utc).isoformat(),
+            "map_number": int(map_number),
+            "team_a": {
+                "team_name": selected_teams["team_a"]["team_name"],
+                "team_id": selected_teams["team_a"].get("team_id"),
+                "starters": [player_pool[value] for value in selected_starters["team_a"]],
+            },
+            "team_b": {
+                "team_name": selected_teams["team_b"]["team_name"],
+                "team_id": selected_teams["team_b"].get("team_id"),
+                "starters": [player_pool[value] for value in selected_starters["team_b"]],
+            },
+            "moneyline_team_a_odds": moneyline_team_a or None,
+            "moneyline_team_b_odds": moneyline_team_b or None,
+            "pinnacle_total_line": pinnacle_line if pinnacle_available else None,
+            "pinnacle_total_odds_over": pinnacle_over if pinnacle_available else None,
+            "pinnacle_total_odds_under": pinnacle_under if pinnacle_available else None,
+            "soft_line": soft_line,
+            "soft_odds_over": soft_over or None,
+            "soft_odds_under": soft_under or None,
+            **team_total_values,
+        }
+        inference_bundle = dict(bundle)
+        inference_bundle["roster_catalog"] = roster_catalog
+        with st.spinner("Calculando distribuição de kills..."):
+            result = predict(request, inference_bundle)
+            shadow_rows = build_shadow_predictions(request, result, inference_bundle)
+            persisted_result = dict(result)
+            persisted_result["shadow_predictions"] = shadow_rows
+            event_id = save_prediction(request, persisted_result, database_url)
+            shadow_persistence_error = None
+            try:
+                save_shadow_predictions(
+                    event_id,
+                    result.get("prediction_id", "blocked"),
+                    shadow_rows,
+                    result.get("bet_status") == "blocked",
+                    database_url,
+                )
+            except Exception as error:
+                shadow_persistence_error = type(error).__name__
+        st.session_state["last_predraft_prediction"] = {
+            "request": request,
+            "result": result,
+            "event_id": event_id,
+            "decision": None,
+            "shadow_persistence_error": shadow_persistence_error,
+        }
+
+    prediction_state = st.session_state.get("last_predraft_prediction")
+    if not prediction_state:
+        return
+    request = prediction_state["request"]
+    result = prediction_state["result"]
+    event_id = prediction_state["event_id"]
+    if prediction_state.get("shadow_persistence_error"):
+        st.warning(
+            "A previsão e os challengers foram preservados no evento, mas as "
+            "tabelas analíticas de paper bets ainda não estão disponíveis."
+        )
+    if result["status"] == "blocked":
+        st.error(result["reason"])
+    else:
+        st.success("Previsão calculada.")
+        line = float(request["soft_line"])
+        metrics = st.columns(4)
+        metrics[0].metric("Média", f"{result['mean']:.1f}")
+        metrics[1].metric("Mediana", result["median"])
+        metrics[2].metric(f"Over {line:.1f}", f"{result['probability_over']:.1%}")
+        metrics[3].metric(f"Under {line:.1f}", f"{result['probability_under']:.1%}")
+        interval = result["prediction_interval_90"]
+        st.write(f"Intervalo preditivo de 90%: {interval[0]} a {interval[1]} kills.")
+        features = result.get("features") or {}
+        details = st.columns(3)
+        details[0].metric("Duração esperada", f"{features['duration_mean']:.1f} min")
+        details[1].metric(request["team_a"]["team_name"], f"{features['team_a_mean']:.1f} kills")
+        details[2].metric(request["team_b"]["team_name"], f"{features['team_b_mean']:.1f} kills")
+        for warning in result.get("warnings") or []:
+            st.warning(warning)
+        with st.expander("Distribuição completa"):
+            st.dataframe(
+                {"kills": list(range(len(result["pmf"]))), "probabilidade": result["pmf"]},
+                hide_index=True,
+                width="stretch",
+            )
+        st.subheader("Decisão da aposta")
+        bet_blocked = result.get("bet_status") == "blocked"
+        if bet_blocked:
+            for reason in result.get("bet_block_reasons") or []:
+                st.error(reason)
+            st.caption(
+                "A previsão permanece visível, mas o EV acionável e a confirmação ficam bloqueados."
+            )
+        elif prediction_state["decision"]:
+            decision_label = {
+                "over": "Over, stake de 1 unidade",
+                "under": "Under, stake de 1 unidade",
+                "no_bet": "não apostar",
+            }[prediction_state["decision"]]
+            st.success(f"Decisão salva: {decision_label}.")
+        else:
+            decision_columns = st.columns(3)
+            confirm_over = decision_columns[0].button(
+                "Confirmar Over", width="stretch", key=f"predraft_over_{event_id}"
+            )
+            confirm_under = decision_columns[1].button(
+                "Confirmar Under", width="stretch", key=f"predraft_under_{event_id}"
+            )
+            confirm_no_bet = decision_columns[2].button(
+                "Não apostar", width="stretch", key=f"predraft_no_bet_{event_id}"
+            )
+            decision = (
+                "over" if confirm_over else
+                "under" if confirm_under else
+                "no_bet" if confirm_no_bet else None
+            )
+            if decision:
+                offered_odds = None
+                if decision == "over":
+                    offered_odds = request["soft_odds_over"]
+                elif decision == "under":
+                    offered_odds = request["soft_odds_under"]
+                save_bet_decision(
+                    event_id, result["prediction_id"], decision, offered_odds, database_url
+                )
+                prediction_state["decision"] = decision
+                st.session_state["last_predraft_prediction"] = prediction_state
+                st.rerun()
+    st.caption(
+        f"Evento {event_id}. Modelo {result['model_version']}. "
+        f"Dados até {result['data_cutoff']}."
+    )
+
+
 def run_vault_app() -> None:
     st.set_page_config(
         page_title="Vault Corp | LoL Kills",
@@ -639,8 +937,13 @@ def run_vault_app() -> None:
     )
     _apply_theme()
     bundle = None
+    roster_catalog = None
     if BUNDLE_PATH.exists():
         bundle = _load_active_bundle(BUNDLE_PATH.stat().st_mtime_ns)
+    if ROSTER_CATALOG_PATH.exists():
+        roster_catalog = _load_roster_catalog(
+            ROSTER_CATALOG_PATH.stat().st_mtime_ns
+        )
     _render_hero(bundle)
     view = st.radio(
         "Área",
@@ -660,13 +963,13 @@ def run_vault_app() -> None:
             return
         render_tracking_page(load_tracking_data(TRACKING_PATH))
     else:
-        if bundle is None:
+        if bundle is None or roster_catalog is None:
             st.error(
-                "O bundle do modelo não está disponível. "
+                "O bundle ou o catálogo de titulares não está disponível. "
                 "O deploy está incompleto."
             )
             return
-        _render_prediction(bundle, database_url)
+        _render_predraft_prediction(bundle, roster_catalog, database_url)
     st.markdown(
         '<p class="model-note">Uso informativo. Probabilidade não garante '
         "resultado. Quando houver pouca amostra, o sistema bloqueia a "
