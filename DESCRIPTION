@@ -19,10 +19,13 @@ Imports:
     duckdb,
     jsonlite,
     MASS,
-    yaml
+    yaml,
+    curl
 Suggests:
     cmdstanr,
     glmnet,
+    isodistrreg,
+    mgcv,
     pkgload,
     plumber,
     roxygen2,

@@ -63,6 +63,16 @@ fit_duration_regression <- function(
     weights <- rep(1, nrow(train))
   }
   weights <- weights[complete]
+  if (
+    length(weights) != nrow(data) ||
+      any(!is.finite(weights)) ||
+      any(weights < 0) ||
+      sum(weights) <= 0
+  ) {
+    stop("Duration weights must be finite and non-negative.", call. = FALSE)
+  }
+  positive_weight_mean <- mean(weights[weights > 0])
+  weights <- weights / positive_weight_mean
   standardized <- .prepare_duration_data(data, feature_names)
   data <- standardized$data
   league_levels <- sort(unique(as.character(data$league_canonical)))
@@ -302,4 +312,88 @@ predict_intensity_duration_model <- function(
       intensity_per_minute = rates[[index]]
     )
   })
+}
+
+.sample_crps <- function(samples, observed) {
+  samples <- sort(as.numeric(samples))
+  count <- length(samples)
+  if (
+    count == 0L ||
+      any(!is.finite(samples)) ||
+      !is.finite(observed)
+  ) {
+    return(NA_real_)
+  }
+  first_term <- mean(abs(samples - observed))
+  indices <- seq_len(count)
+  pair_term <- sum((2 * indices - count - 1) * samples) / count^2
+  first_term - pair_term
+}
+
+#' Score full predictive duration distributions
+#'
+#' @param predictions Output from a duration prediction function.
+#' @param observed Positive observed map durations.
+#' @return Per-map scores and aggregate CRPS, Log Score, MAE, bias, and coverage.
+#' @export
+score_duration_distributions <- function(predictions, observed) {
+  if (length(predictions) != length(observed)) {
+    stop("Duration predictions and observations are misaligned.", call. = FALSE)
+  }
+  rows <- lapply(seq_along(predictions), function(index) {
+    samples <- as.numeric(predictions[[index]]$draws)
+    value <- as.numeric(observed[[index]])
+    if (
+      length(samples) < 50L ||
+        any(!is.finite(samples)) ||
+        any(samples <= 0) ||
+        !is.finite(value) ||
+        value <= 0
+    ) {
+      stop("Duration scoring requires positive draws and outcomes.", call. = FALSE)
+    }
+    bandwidth <- stats::bw.nrd0(samples)
+    if (!is.finite(bandwidth) || bandwidth <= 0) {
+      bandwidth <- max(stats::sd(samples), 0.1)
+    }
+    density <- mean(stats::dnorm(
+      value,
+      mean = samples,
+      sd = bandwidth
+    ))
+    intervals <- stats::quantile(
+      samples,
+      probs = c(0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95),
+      names = FALSE
+    )
+    data.frame(
+      observed = value,
+      prediction_mean = mean(samples),
+      prediction_median = intervals[[4L]],
+      crps = .sample_crps(samples, value),
+      log_score = -log(max(density, 1e-12)),
+      absolute_error = abs(mean(samples) - value),
+      error = mean(samples) - value,
+      coverage_50 = value >= intervals[[3L]] && value <= intervals[[5L]],
+      coverage_80 = value >= intervals[[2L]] && value <= intervals[[6L]],
+      coverage_90 = value >= intervals[[1L]] && value <= intervals[[7L]],
+      stringsAsFactors = FALSE
+    )
+  })
+  map_scores <- do.call(rbind, rows)
+  rownames(map_scores) <- NULL
+  list(
+    map_scores = map_scores,
+    summary = data.frame(
+      maps = nrow(map_scores),
+      mean_crps = mean(map_scores$crps),
+      mean_log_score = mean(map_scores$log_score),
+      mae = mean(map_scores$absolute_error),
+      bias = mean(map_scores$error),
+      coverage_50 = mean(map_scores$coverage_50),
+      coverage_80 = mean(map_scores$coverage_80),
+      coverage_90 = mean(map_scores$coverage_90),
+      stringsAsFactors = FALSE
+    )
+  )
 }

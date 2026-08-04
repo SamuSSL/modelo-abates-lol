@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import hashlib
 import math
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Any
+from zoneinfo import ZoneInfo
 
 
 EV_THRESHOLDS = (0.0, 0.03, 0.05, 0.08, 0.10)
 ROSTER_UNLOCK_MAPS = 5
+SNAPSHOT_MIN_LEAD_MINUTES = 30
+SNAPSHOT_MAX_LEAD_MINUTES = 45
 
 
 class PredraftContractError(ValueError):
@@ -229,3 +232,72 @@ def prediction_lead_minutes(request: dict[str, Any]) -> float:
             str(quoted).replace("Z", "+00:00")
         ).astimezone(timezone.utc)
     return (planned - quoted_at).total_seconds() / 60
+
+
+def evaluate_operational_gate(
+    request: dict[str, Any],
+    bundle_metadata: dict[str, Any],
+) -> dict[str, Any]:
+    """Block actionable bets when the prospective protocol is not respected."""
+    lead_minutes = prediction_lead_minutes(request)
+    reasons: list[str] = []
+    if not (
+        SNAPSHOT_MIN_LEAD_MINUTES
+        <= lead_minutes
+        <= SNAPSHOT_MAX_LEAD_MINUTES
+    ):
+        reasons.append(
+            "Cotacao registrada fora da janela operacional T-45/T-30."
+        )
+
+    refreshed_at_raw = bundle_metadata.get("bundle_refreshed_at")
+    refreshed_at = None
+    valid_through = None
+    if refreshed_at_raw:
+        operation_timezone = ZoneInfo("America/Sao_Paulo")
+        refreshed_at = datetime.fromisoformat(
+            str(refreshed_at_raw).replace("Z", "+00:00")
+        ).astimezone(operation_timezone)
+        quoted_raw = request.get("quoted_at")
+        quoted_at = (
+            datetime.fromisoformat(str(quoted_raw).replace("Z", "+00:00"))
+            if quoted_raw
+            else datetime.now(timezone.utc)
+        ).astimezone(operation_timezone)
+        days_until_saturday = (5 - refreshed_at.weekday()) % 7
+        if days_until_saturday == 0:
+            days_until_saturday = 7
+        valid_through = (
+            refreshed_at.replace(
+                hour=23,
+                minute=59,
+                second=59,
+                microsecond=999999,
+            )
+            + timedelta(days=days_until_saturday)
+        )
+        if quoted_at > valid_through:
+            reasons.append(
+                "Bundle semanal vencido. Atualize o modelo antes de apostar."
+            )
+    else:
+        reasons.append(
+            "Data de atualizacao do bundle ausente. Nao apostar."
+        )
+
+    return {
+        "blocked": bool(reasons),
+        "reasons": reasons,
+        "prediction_anchor": "scheduled_map_start",
+        "snapshot_window_minutes": [
+            SNAPSHOT_MIN_LEAD_MINUTES,
+            SNAPSHOT_MAX_LEAD_MINUTES,
+        ],
+        "prediction_lead_minutes": lead_minutes,
+        "bundle_refreshed_at": (
+            refreshed_at.isoformat() if refreshed_at is not None else None
+        ),
+        "bundle_valid_through": (
+            valid_through.isoformat() if valid_through is not None else None
+        ),
+    }

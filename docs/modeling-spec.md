@@ -356,6 +356,52 @@ O primeiro Bayes é uma Negative Binomial hierárquica com:
 - coeficientes regularizados dos scores de composição;
 - desvios jogador–campeão com shrinkage mais forte que os efeitos de jogador.
 
+## Rodada de fenômeno: duração × intensidade
+
+A próxima rodada é exclusiva para total de kills. Componentes de moneyline,
+odds e handicap não entram como target nem como input.
+
+O mecanismo será:
+
+`total_kills = duração do mapa × intensidade de kills por minuto`
+
+O bloco de duração poderá usar somente informações conhecidas no cutoff:
+
+- duração recente, intermediária e longa de cada equipe;
+- velocidade de encerramento quando está à frente;
+- capacidade de prolongamento quando está atrás;
+- ritmo de objetivos, torres, dano e atividade inicial;
+- força e incerteza histórica das equipes;
+- atributos funcionais do draft ligados a scaling, proteção, siege e engage.
+
+O bloco de intensidade poderá usar:
+
+- kills feitas e concedidas por minuto;
+- dano causado e recebido por minuto;
+- atividade aos 10 e 15 minutos;
+- conversão de dano em kills;
+- comportamento quando à frente e atrás;
+- objetivos e pressão de mapa;
+- efeitos ofensivos e defensivos das duas equipes;
+- atributos funcionais do draft.
+
+Janelas de 30, 60 e 120 dias representarão curto, médio e longo prazo.
+Diferenças e razões curto–longo serão tratadas como indicadores de mudança,
+sempre com shrinkage e cutoff pré-série.
+
+A intensidade condicionará a duração simulada para preservar a dependência
+observada entre mapas longos e menor ritmo de kills por minuto. A distribuição
+final será obtida por integração Monte Carlo, não pela multiplicação de duas
+médias pontuais.
+
+Patch poderá participar somente de challenger e ablação explícita. Nenhum
+efeito de patch será promovido silenciosamente.
+
+Resultados de mapas anteriores da mesma série formarão uma extensão separada
+para mapas 2 ou posteriores. Essa extensão deverá usar apenas mapas já
+concluídos no instante real da previsão e não substituirá a previsão congelada
+pré-série sem nova decisão de produto.
+
 Todos os priors, features, transformações, número de chains, iterações, warmup,
 seed e critérios de diagnóstico são congelados usando somente os folds de
 2022–2025. O ano de 2026 pode ser relatado depois como comparação secundária,
@@ -381,3 +427,18 @@ As referências locais e globais excluem a própria equipe. Snowball exige
 vantagem mínima de duas kills aos 15 minutos e separa conversão em vitória de
 velocidade de encerramento. Agressividade quando à frente ou atrás usa o sinal
 do gold diff aos 15 minutos, não o resultado final.
+## Challenger conjunto por equipe
+
+O challenger conjunto transforma cada mapa em duas observações dirigidas e
+estima kills por minuto para cada equipe. A duração é prevista separadamente.
+As distribuições candidatas incluem soma exata de Binomiais Negativas, duração
+compartilhada, total coerente com divisão Beta-Binomial e cópula regularizada.
+
+O Monte Carlo Histórico mantém o vetor real
+`(duração, kills azuis, kills vermelhas)` pareado. As versões condicionais usam
+somente eventos anteriores e vizinhos calculados a partir de expectativas
+out-of-fold. Histórico puro, condicional e choques empíricos são challengers,
+não componentes obrigatórios da V1.
+
+Essa rodada foi rejeitada após validação temporal. O código permanece para
+reprodução e pesquisa, sem entrar no bundle público.

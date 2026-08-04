@@ -24,41 +24,55 @@ evaluate_line_probabilities <- function(map_metrics, lines) {
   ) {
     stop("Evaluation lines must end in .5.", call. = FALSE)
   }
-  batches <- lapply(seq_len(nrow(map_metrics)), function(index) {
-    row <- map_metrics[index, , drop = FALSE]
-    pmf <- row$pmf[[1L]]
-    rows <- lapply(lines, function(line) {
-      under_max <- floor(line)
-      available <- seq.int(0L, min(under_max, length(pmf) - 1L))
-      probability_under <- sum(pmf[available + 1L])
-      probability_over <- 1 - probability_under
-      result <- as.integer(row$observed[[1L]] > line)
-      probability_result <- if (result == 1L) {
-        probability_over
-      } else {
-        probability_under
-      }
-      data.frame(
-        gameid = as.character(row$gameid[[1L]]),
-        league_canonical = as.character(
-          row$league_canonical[[1L]]
-        ),
-        candidate_id = as.character(row$candidate_id[[1L]]),
-        fold_id = as.character(row$fold_id[[1L]]),
-        line = line,
-        observed = as.integer(row$observed[[1L]]),
-        probability_over = probability_over,
-        probability_under = probability_under,
-        probability_push = 0,
-        over_result = result,
-        brier = (probability_over - result)^2,
-        log_loss = -log(max(probability_result, 1e-12)),
-        stringsAsFactors = FALSE
-      )
-    })
-    do.call(rbind, rows)
-  })
-  rows <- do.call(rbind, batches)
+  probability_over_matrix <- t(vapply(
+    map_metrics$pmf,
+    function(pmf) {
+      cumulative <- cumsum(pmf)
+      vapply(lines, function(line) {
+        under_index <- min(floor(line) + 1L, length(cumulative))
+        1 - cumulative[[under_index]]
+      }, numeric(1L))
+    },
+    numeric(length(lines))
+  ))
+  line_count <- length(lines)
+  observed <- rep(as.integer(map_metrics$observed), each = line_count)
+  repeated_lines <- rep(lines, times = nrow(map_metrics))
+  over_result <- as.integer(observed > repeated_lines)
+  probability_over <- as.vector(t(probability_over_matrix))
+  probability_under <- 1 - probability_over
+  probability_result <- ifelse(
+    over_result == 1L,
+    probability_over,
+    probability_under
+  )
+  rows <- data.frame(
+    gameid = rep(
+      as.character(map_metrics$gameid),
+      each = line_count
+    ),
+    league_canonical = rep(
+      as.character(map_metrics$league_canonical),
+      each = line_count
+    ),
+    candidate_id = rep(
+      as.character(map_metrics$candidate_id),
+      each = line_count
+    ),
+    fold_id = rep(
+      as.character(map_metrics$fold_id),
+      each = line_count
+    ),
+    line = repeated_lines,
+    observed = observed,
+    probability_over = probability_over,
+    probability_under = probability_under,
+    probability_push = 0,
+    over_result = over_result,
+    brier = (probability_over - over_result)^2,
+    log_loss = -log(pmax(probability_result, 1e-12)),
+    stringsAsFactors = FALSE
+  )
   groups <- split(
     rows,
     interaction(

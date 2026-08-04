@@ -262,6 +262,41 @@
       "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
       "Repository": "CRAN"
     },
+    "S7": {
+      "Package": "S7",
+      "Version": "0.2.2",
+      "Source": "Repository",
+      "Priority": null,
+      "Depends": [
+        "R (>= 3.5.0)"
+      ],
+      "Imports": [
+        "utils"
+      ],
+      "LinkingTo": [
+        null
+      ],
+      "Suggests": [
+        "bench",
+        "callr",
+        "covr",
+        "knitr",
+        "methods",
+        "rmarkdown",
+        "testthat (>=\n3.2.0)",
+        "tibble"
+      ],
+      "Enhances": [
+        null
+      ],
+      "License": "MIT + file LICENSE",
+      "License_is_FOSS": null,
+      "License_restricts_use": null,
+      "OS_type": null,
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN",
+      "Type": "source"
+    },
     "abind": {
       "Package": "abind",
       "Version": "1.4-8",
@@ -1458,6 +1493,38 @@
       "Maintainer": "Kirill Müller <kirill@cynkra.com>",
       "Repository": "CRAN"
     },
+    "isodistrreg": {
+      "Package": "isodistrreg",
+      "Version": "0.1.0",
+      "Source": "Repository",
+      "Priority": null,
+      "Depends": [
+        "R (>= 3.6)"
+      ],
+      "Imports": [
+        "Rcpp (>= 1.0.1)",
+        "osqp",
+        "Matrix",
+        "utils"
+      ],
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "Suggests": [
+        "knitr",
+        "rmarkdown"
+      ],
+      "Enhances": [
+        null
+      ],
+      "License": "GPL (>= 2)",
+      "License_is_FOSS": null,
+      "License_restricts_use": null,
+      "OS_type": null,
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN",
+      "Type": "source"
+    },
     "iterators": {
       "Package": "iterators",
       "Version": "1.0.14",
@@ -1889,6 +1956,41 @@
       "URL": "http://optimizer.r-forge.r-project.org/",
       "NeedsCompilation": "no",
       "Repository": "CRAN"
+    },
+    "osqp": {
+      "Package": "osqp",
+      "Version": "1.0.0",
+      "Source": "Repository",
+      "Priority": null,
+      "Depends": [
+        null
+      ],
+      "Imports": [
+        "Rcpp (>= 0.12.14)",
+        "methods",
+        "Matrix (>= 1.6.1)",
+        "S7",
+        "cli"
+      ],
+      "LinkingTo": [
+        "Rcpp"
+      ],
+      "Suggests": [
+        "knitr",
+        "rmarkdown",
+        "slam",
+        "testthat"
+      ],
+      "Enhances": [
+        null
+      ],
+      "License": "Apache License 2.0 | file LICENSE",
+      "License_is_FOSS": null,
+      "License_restricts_use": null,
+      "OS_type": null,
+      "NeedsCompilation": "yes",
+      "Repository": "CRAN",
+      "Type": "source"
     },
     "otel": {
       "Package": "otel",

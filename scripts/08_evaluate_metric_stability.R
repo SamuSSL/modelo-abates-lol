@@ -53,6 +53,10 @@ metric_names <- c(
   "heralds",
   "towers"
 )
+metric_names <- setdiff(
+  metric_names,
+  c("first_blood")
+)
 block_sizes <- c(5L, 10L, 20L)
 studies <- lapply(block_sizes, function(block_size) {
   result <- evaluate_metric_stability(

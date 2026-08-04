@@ -175,6 +175,47 @@ estimativa ajustada
 > Estado atual: hipóteses relacionadas a jogadores foram arquivadas por decisão
 > do produto. Elas não fazem parte do V1, dos challengers ativos nem do contrato
 > de inferência. A pesquisa operacional segue com efeitos de equipe e draft.
+
+## H8 — Total de kills é a combinação de duração e intensidade
+
+O total observado será tratado como resultado de dois mecanismos:
+
+- quantos minutos o mapa permanece aberto;
+- quantas kills são produzidas por minuto enquanto ele permanece aberto.
+
+A hipótese prevê que modelar os mecanismos separadamente melhora CRPS, Log
+Score e calibração das linhas quando a incerteza dos dois componentes é
+propagada conjuntamente.
+
+Falsificação: a decomposição perde para o modelo direto nos mesmos folds,
+permanece superconfiante ou melhora apenas MAE sem melhorar as probabilidades.
+
+## H9 — Intensidade e duração possuem dependência negativa
+
+Mapas longos oferecem mais exposição para kills, mas a intensidade por minuto
+pode diminuir em jogos controlados e prolongados. O modelo deve estimar essa
+dependência, em vez de multiplicar duas previsões independentes.
+
+Falsificação: o coeficiente de acoplamento é instável entre folds ou sua
+remoção não piora CRPS e calibração.
+
+## H10 — Comportamentos de encerramento e prolongamento predizem duração
+
+Velocidade para fechar mapas quando há vantagem, capacidade de prolongar em
+desvantagem, atividade de objetivos, dano, ritmo inicial e força relativa das
+equipes devem prever duração melhor que a média histórica simples.
+
+Falsificação: o submodelo não supera a média de liga em erro, correlação e
+calibração de intervalos.
+
+## H11 — Sinais em múltiplas janelas distinguem nível e mudança
+
+Janelas curtas, médias e longas de intensidade, dano, objetivos e duração
+devem separar o nível estrutural da equipe de mudanças recentes. Razões e
+diferenças entre janelas serão regularizadas para evitar reação excessiva.
+
+Falsificação: as janelas adicionais não melhoram validação temporal ou geram
+degradação material por liga.
 5. Campeões individuais e familiaridade.
 6. Atributos e arquétipos de composição.
 7. Modelos mais complexos somente após ganho comprovado.

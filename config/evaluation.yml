@@ -286,3 +286,358 @@ structural_bayesian_round:
   comparison_year_2026_can_select: false
   status: pre_registered
   pre_registered_at: "2026-07-24"
+
+kill_market_distribution_round:
+  development_end: "2026-01-01 00:00:00"
+  secondary_comparison_start: "2026-01-01 00:00:00"
+  observation_half_life_days: 60
+  team_history_half_life_days:
+    short: 30
+    medium: 60
+    long: 120
+  team_prior_games: 10
+  monte_carlo_draws: 250
+  regularization_alpha: 0
+  inner_temporal_validation_fraction: 0.20
+  line_grid:
+    - 18.5
+    - 20.5
+    - 22.5
+    - 24.5
+    - 26.5
+    - 28.5
+    - 30.5
+    - 32.5
+    - 34.5
+    - 36.5
+    - 38.5
+    - 40.5
+    - 42.5
+    - 44.5
+  candidates:
+    - ridge_multiscale_team
+    - ridge_multiscale_team_draft
+    - coupled_kill_market
+    - coupled_no_duration_dependency
+  comparison_year_2026_can_select: false
+  promotion_requires_crps_log_score_and_line_calibration: true
+  status: pre_registered
+  pre_registered_at: "2026-07-26"
+
+hierarchical_distribution_round:
+  development_end: "2026-01-01 00:00:00"
+  training_start: "2022-01-01 00:00:00"
+  observation_half_life_days: 60
+  inner_dispersion_fraction: 0.30
+  nonlinear_basis: cubic_regression_spline
+  smooth_basis_dimension: 5
+  interaction_basis_dimension: 4
+  mean_distribution: negative_binomial
+  dispersion_distribution: gamma_log
+  team_effects:
+    - blue_team_random_effect
+    - red_team_random_effect
+  dispersion_blend_grid:
+    - 0
+    - 0.25
+    - 0.50
+    - 0.75
+    - 1
+  theta_scale_grid:
+    - 0.75
+    - 1
+    - 1.50
+    - 2
+  candidates:
+    - gam_hierarchical_distributional
+    - gam_hierarchical_global_theta
+    - gam_distributional_no_team
+  comparison_year_2026_can_select: false
+  promotion_requires_crps_log_score_and_line_calibration: true
+  specified_before_evaluation: true
+  evaluated_at: "2026-07-26"
+  status: rejected_after_temporal_validation
+
+joint_team_monte_carlo_round:
+  development_start: "2022-01-01 00:00:00"
+  development_end: "2026-01-01 00:00:00"
+  secondary_comparison_start: "2026-01-01 00:00:00"
+  fold_set: recency_sensitivity
+  observation_half_life_days: 60
+  inner_temporal_validation_fraction: 0.20
+  historical_bank_fraction: 0.15
+  historical_selection_fraction: 0.15
+  regularization_alpha: 0
+  include_team_and_opponent_effects: true
+  copula_shrinkage: 0.25
+  monte_carlo_draws: 10000
+  inner_monte_carlo_draws: 1000
+  maximum_inner_selection_maps: 200
+  monte_carlo_draw_grid:
+    - 1000
+    - 5000
+    - 10000
+    - 40000
+    - 100000
+  historical_neighbors:
+    - 100
+    - 250
+    - 500
+  historical_half_life_days:
+    - 30
+    - 60
+    - 120
+  historical_weight_grid:
+    - 0
+    - 0.10
+    - 0.20
+    - 0.40
+    - 0.60
+    - 1
+  parametric_candidates:
+    - independent_exact
+    - shared_duration
+    - coherent_total
+    - gaussian_copula
+  historical_candidates:
+    - pure
+    - nearest
+    - shock
+  team_features:
+    - own_attack_rate
+    - opponent_exposure_rate
+    - own_combined_kill_rate
+    - opponent_combined_kill_rate
+    - own_rating_attack_league
+    - opponent_rating_defense_league
+    - own_momentum_attack
+    - opponent_momentum_mortality
+    - own_momentum_bloodiness
+    - opponent_momentum_bloodiness
+    - own_aggression_ahead
+    - own_aggression_behind
+    - opponent_aggression_ahead
+    - opponent_aggression_behind
+    - own_snowball_index
+    - opponent_snowball_index
+    - draft_frontline_own
+    - draft_frontline_opponent
+    - draft_burst_own
+    - draft_burst_opponent
+    - draft_engage_own
+    - draft_engage_opponent
+    - draft_pick_own
+    - draft_pick_opponent
+    - draft_poke_siege_own
+    - draft_poke_siege_opponent
+    - draft_dive_own
+    - draft_dive_opponent
+    - draft_protect_own
+    - draft_protect_opponent
+    - draft_scaling_own
+    - draft_scaling_opponent
+  duration_features:
+    - duration_level_medium
+    - duration_imbalance_medium
+    - duration_trend
+    - close_speed_medium
+    - stall_capacity_medium
+    - matchup_snowball_imbalance
+    - draft_engage
+    - draft_protect
+    - draft_scaling
+    - draft_difficulty
+  line_grid:
+    - 18.5
+    - 20.5
+    - 22.5
+    - 24.5
+    - 26.5
+    - 28.5
+    - 30.5
+    - 32.5
+    - 34.5
+    - 36.5
+    - 38.5
+    - 40.5
+    - 42.5
+    - 44.5
+  promotion:
+    minimum_crps_gain_vs_v1: 0.02
+    minimum_crps_gain_vs_shadow: 0.01
+    maximum_log_score_degradation: 0.005
+    maximum_absolute_line_calibration_error: 0.05
+    coverage_90_minimum: 0.87
+    coverage_90_maximum: 0.93
+    maximum_interval_width_increase: 0.10
+    maximum_league_crps_degradation: 0.05
+    maximum_dependence_correlation_error: 0.05
+  comparison_year_2026_can_select: false
+  public_api_changes_allowed: false
+  status: pre_registered
+  pre_registered_at: "2026-07-28"
+
+premap_multiplicative_round:
+  development_start: "2022-01-01 00:00:00"
+  development_end: "2026-01-01 00:00:00"
+  secondary_comparison_start: "2026-01-01 00:00:00"
+  fold_set: recency_sensitivity
+  observation_half_life_days: 60
+  rating_prior_games: 10
+  result_lag_minutes: 5
+  fundamental_cutoff_mode: series
+  market_cutoff_mode: map
+  market_prediction_lead_minutes: 15
+  windows:
+    - season
+    - split
+    - last15
+    - last10
+    - last5
+  excluded_candidate_features:
+    - firstblood
+    - gspd
+  exclusion_decision_date: "2026-07-30"
+  expectation_families:
+    - count
+    - rate
+  window_combinations:
+    - single
+    - equal
+    - optimized
+    - regularized_exponents
+  duration_distributions:
+    - gamma
+    - lognormal
+    - regularized_lognormal
+  allocation_model: beta_binomial
+  moneyline_snapshot_minimum_minutes: 15
+  moneyline_snapshot_maximum_minutes: 30
+  favoritism_minimum_aggregate_maps: 100
+  favoritism_minimum_league_maps: 30
+  kill_market_feature_role: benchmark_and_hybrid_only
+  soft_market_minimum_ev: 0.05
+  soft_market_stake_units: 1
+  soft_market_confirmation:
+    minimum_quotes: 500
+    minimum_simulated_bets: 300
+    minimum_leagues: 3
+    minimum_yield_interval_lower: 0
+  comparison_year_2026_can_select: false
+  public_api_changes_allowed: false
+  status: approved_for_implementation
+  approved_at: "2026-07-29"
+
+directed_moneyline_joint_round:
+  research_id: directed_moneyline_joint_v1
+  registered_at: "2026-07-30"
+  status: pre_registered_before_execution
+  objective: predict_map_total_kills_and_team_allocation_at_t15
+  development_start: "2022-01-01 00:00:00"
+  development_end: "2026-01-01 00:00:00"
+  secondary_comparison_start: "2026-01-01 00:00:00"
+  historical_moneyline_audit_start: "2022-01-01 00:00:00"
+  historical_moneyline_audit_end: "2025-05-01 00:00:00"
+  prediction_lead_minutes: 15
+  maximum_snapshot_age_minutes: 30
+  observation_half_life_days: 60
+  inner_temporal_validation_fraction: 0.20
+  regularization_alpha: 0
+  monte_carlo_draws: 2000
+  prediction_seed: 20260730
+  bootstrap_replicates: 2000
+  bootstrap_seed: 20260730
+  rating_windows:
+    - season
+    - split
+    - last15
+    - last10
+    - last5
+  candidate_window_sets:
+    - id: last15
+      windows:
+        - last15
+    - id: season_last15
+      windows:
+        - season
+        - last15
+    - id: all_regularized
+      windows:
+        - season
+        - split
+        - last15
+        - last10
+        - last5
+  moneyline_shapes:
+    - none
+    - linear
+    - quadratic
+  duration_features:
+    - pace
+    - duration_level
+    - duration_imbalance
+    - favorite_imbalance
+    - favorite_imbalance_squared
+  intensity_feature_blocks:
+    - fundamental
+    - fundamental_moneyline
+    - fundamental_moneyline_interactions
+  total_distribution: negative_binomial
+  allocation_distribution: beta_binomial
+  dispersion_candidates:
+    - global
+    - favoritism
+    - favoritism_team_volatility
+  favoritism_is_continuous_in_model: true
+  favoritism_bands_are_diagnostic_only: true
+  favoritism_minimum_aggregate_maps: 100
+  favoritism_minimum_league_maps: 30
+  promotion:
+    selection_rule: simplest_within_one_standard_error_of_best_crps
+    maximum_log_score_degradation: 0
+    maximum_league_crps_degradation_fraction: 0.01
+    minimum_favoritism_bands_improved: 2
+    coverage_90_minimum: 0.87
+    coverage_90_maximum: 0.93
+    prospective_confirmation_required: true
+    comparison_year_2026_can_select: false
+    public_app_change_allowed: false
+
+directed_fundamental_temporal_round:
+  research_id: directed_fundamental_temporal_v1
+  registered_at: "2026-07-30"
+  status: pre_registered_before_execution
+  correction_contract: opponent_teamkills_for_concession_and_total
+  development_start: "2022-01-01 00:00:00"
+  development_end: "2026-01-01 00:00:00"
+  fold_set: recency_sensitivity
+  observation_half_life_days: 60
+  inner_temporal_validation_fraction: 0.20
+  regularization_alpha: 0
+  monte_carlo_draws: 500
+  prediction_seed: 20260730
+  bootstrap_replicates: 2000
+  bootstrap_seed: 20260730
+  candidates:
+    - id: joint_last15_global
+      windows:
+        - last15
+      complexity: 3
+    - id: joint_season_last15_global
+      windows:
+        - season
+        - last15
+      complexity: 4
+    - id: joint_all_windows_global
+      windows:
+        - season
+        - split
+        - last15
+        - last10
+        - last5
+      complexity: 7
+  selection_rule: simplest_within_one_standard_error_of_best_crps
+  maximum_league_crps_degradation_fraction: 0.01
+  coverage_90_minimum: 0.87
+  coverage_90_maximum: 0.93
+  final_test_reuse_allowed: false

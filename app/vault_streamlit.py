@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import os
 import json
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo
 
@@ -654,15 +654,28 @@ def _render_predraft_prediction(
     database_url: str | None,
 ) -> None:
     st.title("Total de kills pré-draft por mapa")
+    st.info(
+        "Paper betting prospectivo. O directed é o melhor candidato testado, "
+        "mas a vantagem econômica ainda não foi confirmada a 95%."
+    )
     st.write(
         "O directed semanal continua sendo o único modelo exibido. "
         "Os challengers são calculados e registrados sem aparecer na interface."
     )
     with st.container(border=True):
         league = st.selectbox("Liga", bundle["model"]["league_levels"])
+        planned_default = datetime.now(
+            ZoneInfo("America/Sao_Paulo")
+        ) + timedelta(minutes=35)
         match_columns = st.columns(3)
-        planned_date = match_columns[0].date_input("Data prevista")
-        planned_time = match_columns[1].time_input("Horário de Brasília")
+        planned_date = match_columns[0].date_input(
+            "Data prevista",
+            value=planned_default.date(),
+        )
+        planned_time = match_columns[1].time_input(
+            "Horário de Brasília",
+            value=planned_default.time(),
+        )
         map_number = match_columns[2].number_input(
             "Número do mapa", min_value=1, max_value=7, value=1, step=1
         )
@@ -871,6 +884,14 @@ def _render_predraft_prediction(
         details[0].metric("Duração esperada", f"{features['duration_mean']:.1f} min")
         details[1].metric(request["team_a"]["team_name"], f"{features['team_a_mean']:.1f} kills")
         details[2].metric(request["team_b"]["team_name"], f"{features['team_b_mean']:.1f} kills")
+        ev_columns = st.columns(2)
+        ev_columns[0].metric("EV Over na soft", f"{result['ev_over']:.1%}")
+        ev_columns[1].metric("EV Under na soft", f"{result['ev_under']:.1%}")
+        st.caption(
+            "Backtest semanal corrigido: 495 apostas, yield de 4,26%, "
+            "drawdown máximo de 15,44u e intervalo bootstrap de 95% "
+            "entre -4,34% e +12,95%."
+        )
         for warning in result.get("warnings") or []:
             st.warning(warning)
         with st.expander("Distribuição completa"):
@@ -885,7 +906,8 @@ def _render_predraft_prediction(
             for reason in result.get("bet_block_reasons") or []:
                 st.error(reason)
             st.caption(
-                "A previsão permanece visível, mas o EV acionável e a confirmação ficam bloqueados."
+                "A previsão e o EV permanecem visíveis para auditoria, "
+                "mas a confirmação fica bloqueada."
             )
         elif prediction_state["decision"]:
             decision_label = {

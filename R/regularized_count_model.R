@@ -4,19 +4,20 @@
   league_levels,
   expected_columns = NULL
 ) {
-  frame <- data.frame(
-    league_canonical = factor(
-      as.character(data$league_canonical),
-      levels = league_levels
-    ),
-    data[feature_names],
-    check.names = FALSE
+  league <- factor(
+    as.character(data$league_canonical),
+    levels = league_levels
   )
-  if (anyNA(frame$league_canonical)) {
+  if (anyNA(league)) {
     stop("Regularized model received an unseen league.", call. = FALSE)
   }
+  frame <- data.frame(data[feature_names], check.names = FALSE)
+  if (length(league_levels) > 1L) {
+    frame$league_canonical <- league
+    frame <- frame[c("league_canonical", feature_names)]
+  }
   matrix <- stats::model.matrix(
-    ~ league_canonical + .,
+    ~ .,
     data = frame
   )
   matrix <- matrix[, colnames(matrix) != "(Intercept)", drop = FALSE]

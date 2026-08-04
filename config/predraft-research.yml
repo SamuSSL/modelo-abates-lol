@@ -1,0 +1,56 @@
+contract:
+  observation_unit: map
+  prediction_stage: pre_draft
+  snapshot_min_minutes: 30
+  snapshot_max_minutes: 45
+  snapshot_bounds: strict
+  prediction_anchor: scheduled_map_start
+  historical_market_anchor: provider_market_close_proxy
+  timing_parity_status: hold_until_scheduled-start-history-exists
+  weekly_refresh_day: saturday
+  intraseeries_information: false
+  forbidden_inputs: [champions, draft, side, patch, prior_series_maps]
+  target_leagues: 7
+  half_lines_only: true
+coverage_gates:
+  total_market_maps: 500
+  total_market_leagues: 3
+  team_total_complete_maps: 300
+  team_total_leagues: 3
+validation:
+  folds:
+    - {id: fold_01, test_start: 2023-10-01, test_end: 2023-12-31}
+    - {id: fold_02, test_start: 2024-01-01, test_end: 2024-03-31}
+    - {id: fold_03, test_start: 2024-04-01, test_end: 2024-06-30}
+    - {id: fold_04, test_start: 2024-07-01, test_end: 2024-09-30}
+    - {id: fold_05, test_start: 2024-10-01, test_end: 2024-12-31}
+    - {id: fold_06, test_start: 2025-01-01, test_end: 2025-03-31}
+    - {id: fold_07, test_start: 2025-04-01, test_end: 2025-06-30}
+    - {id: fold_08, test_start: 2025-07-01, test_end: 2025-09-30}
+    - {id: fold_09, test_start: 2025-10-01, test_end: 2025-12-31}
+  diagnostic_start: 2026-01-01
+  diagnostic_reuse_status: development_only_not_holdout
+  prospective_protocol_id: predraft-t45-t30-v1-2026-08-03
+  bootstrap_replicates: 2000
+  bootstrap_blocks: [month, series]
+  primary_metrics: [brier, log_loss]
+  pmf_metrics: [crps, log_score]
+  calibration_tolerance_percentage_points: 1
+  league_degradation_limit: 0.01
+  pmf_degradation_limit: 0.005
+  interval_90_coverage: [0.87, 0.93]
+  improvement_probability: 0.95
+roster:
+  block_at_changes: 2
+  unlock_maps: 5
+  retention_grid: [0.25, 0.50, 0.75]
+economic:
+  stake_units: 1
+  ev_thresholds: [0, 0.03, 0.05, 0.08, 0.10]
+  historical_execution: pinnacle_conservative_benchmark
+  automatic_primary_threshold: null
+promotion:
+  visible_control: weekly_directed_raw
+  requires_explicit_user_choice: true
+  preserve_rollback: true
+  require_r_python_parity: true

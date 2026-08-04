@@ -12,10 +12,10 @@ import numpy as np
 
 from app.predraft_contract import (
     PredraftContractError,
+    evaluate_operational_gate,
     evaluate_roster_gate,
     legacy_request_from_predraft,
     normalize_predraft_request,
-    prediction_lead_minutes,
 )
 
 
@@ -553,6 +553,7 @@ def _predict_directed_moneyline(
         "probability_over": probability_over,
         "probability_under": probability_under,
         "probability_push": 0.0,
+        "no_vig_method": "proportional_normalization",
         "fair_odds_over": 1 / probability_over,
         "fair_odds_under": 1 / probability_under,
         "features": features,
@@ -681,16 +682,19 @@ def _predict_predraft(
         list(first.get("warnings") or [])
         + list(swapped.get("warnings") or [])
     ))
-    lead_minutes = prediction_lead_minutes(normalized)
-    if lead_minutes < 30 or lead_minutes > 45:
-        warnings.append(
-            "Snapshot fora da janela operacional T-45/T-30; registrado para auditoria."
-        )
+    operational_gate = evaluate_operational_gate(
+        normalized,
+        bundle.get("metadata") or {},
+    )
+    lead_minutes = operational_gate["prediction_lead_minutes"]
+    bet_block_reasons = list(dict.fromkeys(
+        roster_gate["reasons"] + operational_gate["reasons"]
+    ))
     mean = sum(index * mass for index, mass in enumerate(pmf))
     result: dict[str, Any] = {
         "status": "ok",
-        "bet_status": "blocked" if roster_gate["blocked"] else "allowed",
-        "bet_block_reasons": roster_gate["reasons"],
+        "bet_status": "blocked" if bet_block_reasons else "allowed",
+        "bet_block_reasons": bet_block_reasons,
         "prediction_id": _predraft_prediction_id(normalized),
         "contract": "predraft_v1",
         "mode": (
@@ -708,17 +712,22 @@ def _predict_predraft(
         "probability_over": probability_over,
         "probability_under": probability_under,
         "probability_push": 0.0,
+        "no_vig_method": "proportional_normalization",
         "fair_odds_over": 1 / probability_over,
         "fair_odds_under": 1 / probability_under,
         "ev_over": probability_over * normalized["soft_odds_over"] - 1,
         "ev_under": probability_under * normalized["soft_odds_under"] - 1,
         "features": features,
         "roster_gate": roster_gate,
+        "operational_gate": operational_gate,
         "prediction_lead_minutes": lead_minutes,
         "warnings": warnings,
         "model_version": bundle["metadata"]["model_version"],
         "model_candidate": bundle["metadata"].get("selected_candidate_id"),
         "model_status": bundle["metadata"].get("model_status"),
+        "prospective_protocol_id": bundle["metadata"].get(
+            "prospective_protocol_id"
+        ),
         "data_cutoff": bundle["metadata"]["data_cutoff"],
     }
     no_vig_over = 1 / normalized["soft_odds_over"]

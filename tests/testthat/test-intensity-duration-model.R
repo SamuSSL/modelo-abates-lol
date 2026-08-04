@@ -70,3 +70,27 @@ test_that("training partition rejects observations from 2026", {
     "2026"
   )
 })
+
+test_that("duration dispersion is invariant to global weight scaling", {
+  train <- data.frame(
+    league_canonical = rep("LCK", 80),
+    game_length_minutes = 30 + sin(seq_len(80) / 4),
+    pace = seq(0.8, 1.1, length.out = 80),
+    stringsAsFactors = FALSE
+  )
+  weights <- 0.5^(seq_len(80) / 20)
+  first <- fit_duration_regression(
+    train,
+    "lognormal",
+    "pace",
+    weights
+  )
+  second <- fit_duration_regression(
+    train,
+    "lognormal",
+    "pace",
+    weights * 100
+  )
+
+  expect_equal(first$dispersion, second$dispersion, tolerance = 1e-12)
+})

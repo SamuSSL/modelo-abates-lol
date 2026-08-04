@@ -653,6 +653,21 @@ assemble_draft_features <- function(draft_rows, taxonomy) {
       draft_damage_imbalance = imbalance("damage_score"),
       stringsAsFactors = FALSE
     )
+    base_side_scores <- c(
+      frontline = "frontline_score",
+      damage = "damage_score",
+      magic = "magic_score",
+      burst = "burst_score",
+      utility = "utility_score",
+      difficulty = "execution_difficulty"
+    )
+    for (name in names(base_side_scores)) {
+      score <- base_side_scores[[name]]
+      result_row[[paste0("blue_draft_", name)]] <-
+        as.numeric(side_scores$blue[[score]])
+      result_row[[paste0("red_draft_", name)]] <-
+        as.numeric(side_scores$red[[score]])
+    }
     functional_scores <- intersect(
       c(
         "engage_score", "pick_score", "poke_siege_score",
@@ -667,6 +682,10 @@ assemble_draft_features <- function(draft_rows, taxonomy) {
         average_score(score)
       result_row[[paste0("draft_", name, "_imbalance")]] <-
         imbalance(score)
+      result_row[[paste0("blue_draft_", name)]] <-
+        as.numeric(side_scores$blue[[score]])
+      result_row[[paste0("red_draft_", name)]] <-
+        as.numeric(side_scores$red[[score]])
     }
     if ("primary_archetype" %in% names(side_scores$blue)) {
       result_row$blue_primary_archetype <-

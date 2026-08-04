@@ -548,3 +548,74 @@ Cada decisão possui contexto, alternativas, decisão, consequência, data e sta
   de equipe e adversário.
 - Cutoff do bundle reconstruído: 2026-07-25 17:35:45 UTC.
 - Status: aprovado, implementado e reconstruído.
+
+## D-035 — Nova rodada do fenômeno de kills
+
+- Foram criados históricos pré-jogo com meias-vidas de 30, 60 e 120 dias para
+  intensidade, jogo inicial, jogo pós-15, dano, assistências, objetivos,
+  encerramento de vantagem e prolongamento em desvantagem.
+- A decomposição passou a simular duração e intensidade conjuntamente. O
+  acoplamento médio foi -0,160: durações maiores estão associadas a ritmo menor
+  de kills por minuto.
+- Nos 7.586 mapas de desenvolvimento, o modelo acoplado teve CRPS 4,5483 contra
+  4,5622 do V1. O intervalo bootstrap ainda incluiu empate.
+- Em 1.710 mapas de 2026, o acoplado teve CRPS 4,5021 contra 4,4959 do V1.
+  Portanto, a decomposição não foi promovida.
+- O XGBoost com as novas features foi rejeitado: CRPS 4,5775 no desenvolvimento
+  e 4,5463 em 2026.
+- O ensemble 50% V1 e 50% Ridge de equipe e draft obteve CRPS 4,5401 no
+  desenvolvimento e 4,4836 em 2026. Brier e Log Loss médios das linhas também
+  melhoraram ligeiramente.
+- Como 2026 já foi observado durante esta rodada, ele continua sendo comparação
+  secundária e não confirmação.
+- O V1 permanece em produção. O ensemble foi congelado como modelo-sombra
+  `kill-market-shadow-c2e3e7efd938` para avaliação apenas em mapas posteriores a
+  2026-07-25 17:35:44 UTC.
+- Evidência: `docs/kill-market-research-report.md` e artefatos
+  `kill_market_*`.
+- Data: 2026-07-26.
+- Status: challenger prospectivo congelado, sem promoção.
+
+## D-036 — Modelo hierárquico não linear distribucional
+
+- Foi implementado um GAM Negative Binomial com curvas cúbicas, interações,
+  efeitos aleatórios encolhidos de equipe e uma segunda equação para dispersão.
+- A dispersão foi aprendida somente com resíduos temporalmente posteriores ao
+  treino interno, com calibração em um terceiro bloco.
+- Em sete dos nove folds, o tuning eliminou a dispersão específica por mapa.
+- Os efeitos de equipe foram praticamente zerados e não alteraram as métricas.
+- Nos 7.586 mapas de desenvolvimento, o modelo completo obteve CRPS 4,5598
+  contra 4,5622 do V1. O intervalo bootstrap incluiu empate e piora.
+- Em 1.710 mapas de 2026, o modelo obteve CRPS 4,5412 contra 4,4959 do V1. O
+  intervalo bootstrap da diferença foi totalmente desfavorável.
+- Brier e Log Loss das linhas também pioraram em 2026.
+- Decisão: rejeitar o modelo para produção e manter o V1 e o ensemble
+  prospectivo anterior inalterados.
+- Evidência: `docs/hierarchical-distribution-model-report.md` e artefatos
+  `hierarchical_distribution_*`.
+- Data: 2026-07-26.
+- Status: implementado, avaliado e rejeitado.
+## D-037 — Kills por equipe e Monte Carlo Histórico
+
+- Cada mapa foi decomposto em duas intensidades dirigidas, com ataque próprio,
+  exposição adversária, efeitos Ridge de equipe/adversário e draft por lado.
+- Foram testados soma independente, duração compartilhada, total coerente,
+  cópula Gaussiana, histórico puro, histórico condicional, choques históricos e
+  misturas.
+- Os vetores históricos preservam juntos duração e kills das duas equipes e
+  aceitam somente previsões out-of-fold anteriores ao mapa.
+- Nos 7.586 mapas dos nove folds, o melhor novo candidato foi o total coerente:
+  CRPS 4,5712 contra 4,5622 da V1. O intervalo bootstrap da diferença foi
+  [-0,0143; 0,0339].
+- Em 1.710 mapas de 2026, o total coerente teve CRPS 4,5025 contra 4,4959 da
+  V1. O intervalo da diferença foi [-0,0280; 0,0413].
+- Monte Carlo Histórico puro e condicional pioraram CRPS e Log Score. O peso
+  selecionado para choques históricos foi zero.
+- Nenhum orçamento até 40 mil sorteios atingiu a tolerância numérica
+  pré-registrada contra a referência de 100 mil.
+- Decisão: rejeitar a rodada para produção. API, Streamlit, V1 e shadow
+  permanecem inalterados.
+- Evidência: `docs/joint-team-monte-carlo-report.md` e artefatos
+  `joint_team_monte_carlo_*`.
+- Data: 2026-07-28.
+- Status: implementado, avaliado e rejeitado.

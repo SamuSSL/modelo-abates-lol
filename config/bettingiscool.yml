@@ -1,0 +1,104 @@
+version: 1
+
+provider:
+  name: bettingiscool
+  base_url: https://api.bettingiscool.com
+  sport_id: 12
+  source_description: third_party_pinnacle_feed
+  redistribution_authorized: false
+
+coverage:
+  useful_history_start: "2025-05-01 00:00:00"
+  pre_2025_audit_only: true
+
+market_contract:
+  resulting_unit: Kills
+  market: totals
+  live: 0
+  full_history: 1
+  main_lines_only: 1
+  odds1_semantics: over
+  odds2_semantics: under
+  primary_snapshot_minutes_before_cutoff: 5
+  map_close_source: final_main_history_timestamp
+  series_cutoff_is_not_map_cutoff: true
+  secondary_snapshot_minutes_before_cutoff:
+    - 15
+    - 30
+    - 60
+  accepted_line_fraction: 0.5
+  cancelled_result_status:
+    - 3
+    - 4
+    - 5
+
+canonical_competitions:
+  - canonical_league: LCK
+    competition: LCK
+    bettingiscool_league_id: 192553
+    split: null
+  - canonical_league: LCK
+    competition: LCK Cup
+    bettingiscool_league_id: 240984
+    oracle_league: LCK
+    split: Cup
+  - canonical_league: LPL
+    competition: LPL
+    bettingiscool_league_id: 199353
+    split: null
+  - canonical_league: LEC
+    competition: LEC
+    bettingiscool_league_id: 196921
+    split: null
+  - canonical_league: LEC
+    competition: LEC Versus
+    bettingiscool_league_id: 284168
+    oracle_league: LEC
+    split: Versus
+  - canonical_league: CBLOL
+    competition: CBLOL
+    bettingiscool_league_id: 211507
+    split: null
+  - canonical_league: CBLOL
+    competition: CBLOL Cup
+    bettingiscool_league_id: 284293
+    oracle_league: CBLOL
+    split: Cup
+  - canonical_league: LCS
+    competition: LCS
+    bettingiscool_league_id: 196922
+    split: null
+  - canonical_league: LCS
+    competition: LTA North
+    bettingiscool_league_id: 240986
+    oracle_league: LTA N
+    season: 2025
+  - canonical_league: CBLOL
+    competition: LTA South
+    bettingiscool_league_id: 240988
+    oracle_league: LTA S
+    season: 2025
+  - canonical_league: LFL
+    competition: LFL
+    bettingiscool_league_id: 204030
+    split: null
+  - canonical_league: LES
+    competition: LES
+    bettingiscool_league_id: 284792
+    split: null
+  - canonical_league: LES
+    competition: LVP SL
+    bettingiscool_league_id: 200246
+    oracle_league: LVP SL
+
+excluded_competitions:
+  - competition: LCKC Kickoff
+    oracle_league: LCKC
+    rationale: challengers_competition_outside_target_scope
+
+collection:
+  fixture_window_days: 90
+  fixture_limit: 1000
+  quota_reserve_tokens: 1000
+  team_totals_quota_reserve_tokens: 10000
+  maximum_retries: 5

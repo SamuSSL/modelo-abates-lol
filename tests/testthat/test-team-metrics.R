@@ -51,6 +51,23 @@ test_that("team metrics derive offense, exposure, and opponent", {
   expect_equal(result$assists_per_kill[result$side == "Blue"], 2)
 })
 
+test_that("team metrics use opponent kills instead of reported deaths", {
+  rows <- make_team_metric_rows()
+  blue_team <- rows$position == "team" & rows$side == "Blue"
+  rows$teamdeaths[blue_team] <- rows$teamdeaths[blue_team] + 1L
+
+  result <- build_team_map_metrics(rows)
+  blue <- result[result$side == "Blue", , drop = FALSE]
+
+  expect_equal(blue$reported_team_deaths, 9)
+  expect_equal(blue$opponent_kills, 8)
+  expect_equal(blue$neutral_deaths, 1)
+  expect_equal(blue$team_deaths, 8)
+  expect_equal(blue$total_kills_game, 18)
+  expect_equal(blue$deaths_per_minute, 8 / 30)
+  expect_equal(blue$combined_kills_per_minute, 18 / 30)
+})
+
 test_that("team metric builder rejects malformed team structure", {
   rows <- make_team_metric_rows()
   rows <- rows[!(rows$position == "team" & rows$side == "Red"), ]

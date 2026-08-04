@@ -36,6 +36,7 @@
     opponent <- team_rows[-index, , drop = FALSE]
     team_kills <- .team_numeric(team, "teamkills")
     team_deaths <- .team_numeric(team, "teamdeaths")
+    opponent_kills <- .team_numeric(opponent, "teamkills")
     assists <- .team_numeric(team, "assists")
     damage_to_champions <- .team_numeric(team, "damagetochampions")
     kills_at_15 <- .team_numeric(team, "killsat15")
@@ -67,12 +68,15 @@
       result = as.integer(.team_numeric(team, "result")),
       game_length_minutes = duration_minutes,
       team_kills = team_kills,
-      team_deaths = team_deaths,
-      total_kills_game = team_kills + team_deaths,
+      reported_team_deaths = team_deaths,
+      opponent_kills = opponent_kills,
+      neutral_deaths = team_deaths - opponent_kills,
+      team_deaths = opponent_kills,
+      total_kills_game = team_kills + opponent_kills,
       kills_per_minute = team_kills / duration_minutes,
-      deaths_per_minute = team_deaths / duration_minutes,
+      deaths_per_minute = opponent_kills / duration_minutes,
       combined_kills_per_minute =
-        (team_kills + team_deaths) / duration_minutes,
+        (team_kills + opponent_kills) / duration_minutes,
       assists = assists,
       assists_per_kill = if (team_kills > 0) {
         assists / team_kills

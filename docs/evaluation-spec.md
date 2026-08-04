@@ -245,6 +245,22 @@ Além de CRPS, Log Score, Brier e calibração, a decomposição deve reportar:
 > arquivadas. A avaliação operacional usa somente equipe e draft; identidade,
 > amostra e interação de jogador não são elegíveis para promoção.
 
+### Avaliação da decomposição duração × intensidade
+
+Além das métricas do total de kills, a rodada deve medir separadamente:
+
+- MAE, RMSE, viés, correlação e cobertura da duração;
+- MAE, RMSE e correlação de kills por minuto;
+- estabilidade do acoplamento duração–intensidade entre folds;
+- CRPS e Log Score da mistura final;
+- Brier, Log Loss e calibração nas linhas 24,5, 27,5 e 30,5;
+- calibração por liga e por faixa de duração;
+- ablações de múltiplas janelas, objetivos, comportamento, draft e acoplamento.
+
+A decomposição só poderá substituir o modelo direto se melhorar as
+probabilidades fora da amostra. Melhorar apenas a previsão pontual de duração
+ou kills não é suficiente.
+
 O Bayes só é elegível quando todas as chains apresentam R-hat aceitável, ESS
 suficiente, zero divergências materiais, tree depth controlado e posterior
 predictive checks coerentes. Se os diagnósticos falharem, aumentar iterações
@@ -312,3 +328,17 @@ Cada execução de avaliação registra:
 - warnings;
 - duração;
 - métricas brutas e agregadas.
+## Avaliação do modelo conjunto e Monte Carlo
+
+A rodada conjunta usa os nove folds de `recency_sensitivity`. O ano de 2026
+somente pode ser avaliado depois de congelados features, dispersões,
+dependência, vizinhos, meia-vida e peso histórico.
+
+CRPS do total é a métrica principal. Log Score, Brier e Log Loss por linha,
+calibração, PIT, cobertura, largura, estabilidade por liga e bootstrap temporal
+são guardrails. MAE, RMSE e correlação das equipes são diagnósticos.
+
+O Monte Carlo é comparado com solução exata quando disponível. A menor
+quantidade de sorteios somente pode ser aceita se a diferença máxima de
+Over/Under for inferior a 0,25 ponto percentual e a diferença média absoluta
+de CRPS for inferior a 0,005 contra a referência de 100 mil sorteios.

@@ -67,6 +67,22 @@ canonical_match <- match(team_metrics$gameid, canonical_games$gameid)
 if (anyNA(canonical_match)) {
   stop("Team metrics contain games absent from canonical games.", call. = FALSE)
 }
+canonical_totals <- canonical_games$total_kills_game[canonical_match]
+if (any(team_metrics$total_kills_game != canonical_totals, na.rm = TRUE)) {
+  stop(
+    "Team metrics total kills disagree with canonical team-kill totals.",
+    call. = FALSE
+  )
+}
+if (any(
+  team_metrics$team_deaths != team_metrics$opponent_kills,
+  na.rm = TRUE
+)) {
+  stop(
+    "Concession metrics must equal the opponent team-kill count.",
+    call. = FALSE
+  )
+}
 team_metrics$series_id <- canonical_games$series_id[canonical_match]
 team_metrics$series_cutoff <- canonical_games$series_cutoff[canonical_match]
 duplicate_keys <- duplicated(
@@ -136,6 +152,42 @@ names(summary)[[4L]] <- "team_map_rows"
 utils::write.csv(
   summary,
   file.path(artifact_dir, "team_metric_coverage.csv"),
+  row.names = FALSE
+)
+integrity_summary <- data.frame(
+  check = c(
+    "team_map_rows",
+    "games",
+    "target_games",
+    "rows_with_reported_death_difference",
+    "games_with_reported_death_difference",
+    "maximum_absolute_reported_death_difference",
+    "canonical_total_mismatches",
+    "concession_opponent_kill_mismatches"
+  ),
+  value = c(
+    nrow(team_metrics),
+    length(unique(team_metrics$gameid)),
+    length(unique(team_metrics$gameid[
+      team_metrics$competition_role == "target"
+    ])),
+    sum(team_metrics$neutral_deaths != 0, na.rm = TRUE),
+    length(unique(team_metrics$gameid[
+      team_metrics$neutral_deaths != 0 &
+        !is.na(team_metrics$neutral_deaths)
+    ])),
+    max(abs(team_metrics$neutral_deaths), na.rm = TRUE),
+    sum(team_metrics$total_kills_game != canonical_totals, na.rm = TRUE),
+    sum(
+      team_metrics$team_deaths != team_metrics$opponent_kills,
+      na.rm = TRUE
+    )
+  ),
+  stringsAsFactors = FALSE
+)
+utils::write.csv(
+  integrity_summary,
+  file.path(artifact_dir, "team_metric_integrity.csv"),
   row.names = FALSE
 )
 cat(

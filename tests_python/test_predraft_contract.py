@@ -7,6 +7,7 @@ import pytest
 
 from app.lolkills_inference import predict
 from app.predraft_contract import (
+    evaluate_operational_gate,
     evaluate_roster_gate,
     legacy_request_from_predraft,
     normalize_predraft_request,
@@ -76,6 +77,23 @@ def test_optional_team_totals_require_complete_triplet(bundle):
     request["team_a_total_line"] = 15.5
     with pytest.raises(ValueError):
         normalize_predraft_request(request)
+
+
+def test_operational_gate_blocks_quotes_outside_t45_t30(bundle):
+    request = make_request(bundle)
+    request["quoted_at"] = "2026-08-08T11:00:00+00:00"
+    gate = evaluate_operational_gate(request, bundle["metadata"])
+    assert gate["blocked"] is True
+    assert any("T-45/T-30" in reason for reason in gate["reasons"])
+
+
+def test_operational_gate_blocks_stale_weekly_bundle(bundle):
+    request = make_request(bundle)
+    request["planned_at"] = "2026-08-09T12:00:00+00:00"
+    request["quoted_at"] = "2026-08-09T11:25:00+00:00"
+    gate = evaluate_operational_gate(request, bundle["metadata"])
+    assert gate["blocked"] is True
+    assert any("Bundle semanal vencido" in reason for reason in gate["reasons"])
 
 
 def test_legacy_mapping_swaps_teams_and_moneyline(bundle):
@@ -214,6 +232,7 @@ def test_predraft_prediction_is_invariant_to_team_order(bundle):
     )
     second = predict(swapped_request, inference_bundle)
     assert first["status"] == second["status"] == "ok"
+    assert first["no_vig_method"] == "proportional_normalization"
     assert first["prediction_id"] == second["prediction_id"]
     assert first["pmf"] == pytest.approx(second["pmf"], abs=1e-14)
     assert first["features"]["team_a_mean"] == pytest.approx(

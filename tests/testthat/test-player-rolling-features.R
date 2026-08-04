@@ -118,6 +118,10 @@ test_that("draft-only features do not require player identities", {
   expect_false(any(grepl("^player", names(result))))
   expect_equal(result$minimum_effective_champion_games, 8)
   expect_true(is.finite(result$draft_frontline))
+  expect_true(all(c(
+    "blue_draft_frontline",
+    "red_draft_frontline"
+  ) %in% names(result)))
 })
 
 test_that("champion coverage uses only picks before the series cutoff", {

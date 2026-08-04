@@ -176,7 +176,16 @@ def build_shadow_predictions(
         "pinnacle_probability_under": probability_under,
         "pinnacle_line": float(line),
         "theta": theta,
+        "no_vig_method": "proportional_normalization",
+        "fundamental_probability_over_pinnacle_line": _probability_over(
+            list(visible_result["pmf"]),
+            float(line),
+        ),
     }
+    diagnostics["fundamental_market_probability_gap"] = (
+        diagnostics["fundamental_probability_over_pinnacle_line"]
+        - probability_over
+    )
     rows.extend(
         [
             _shadow_row(
@@ -208,6 +217,9 @@ def build_shadow_predictions(
                     **diagnostics,
                     "market_implied_mean": exact_mean,
                     "directed_mean": float(visible_result["mean"]),
+                    "log_mean_gap_directed_vs_market": math.log(
+                        float(visible_result["mean"]) / exact_mean
+                    ),
                     "fundamental_weight": 0.7,
                     "selection_status": "prospective_only_not_promoted",
                 },
