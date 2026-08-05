@@ -1,6 +1,7 @@
 import json
 from pathlib import Path
 
+import pytest
 from streamlit.testing.v1 import AppTest
 from app.ui_options import team_label
 
@@ -213,7 +214,18 @@ def test_streamlit_uses_automatic_fallback_for_empty_pinnacle_odds():
     )
 
 
-def test_no_bet_is_confirmed_after_prediction():
+@pytest.mark.parametrize(
+    ("button_label", "saved_message"),
+    [
+        ("Confirmar Over", "Decisão salva: Over, stake de"),
+        ("Confirmar Under", "Decisão salva: Under, stake de"),
+        ("Não apostar", "Decisão salva: não apostar."),
+    ],
+)
+def test_all_three_decision_buttons_are_confirmed(
+    button_label,
+    saved_message,
+):
     app = AppTest.from_file(
         "streamlit_app.py",
         default_timeout=20,
@@ -221,14 +233,14 @@ def test_no_bet_is_confirmed_after_prediction():
 
     app = _fill_moneyline(app)
     app.button[0].click().run(timeout=30)
-    no_bet_button = next(
-        button for button in app.button if button.label == "Não apostar"
+    decision_button = next(
+        button for button in app.button if button.label == button_label
     )
-    no_bet_button.click().run(timeout=30)
+    decision_button.click().run(timeout=30)
 
     assert len(app.exception) == 0
     assert any(
-        "Decisão salva: não apostar." in message.value
+        saved_message in message.value
         for message in app.success
     )
 

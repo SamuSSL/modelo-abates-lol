@@ -1,6 +1,7 @@
 import sqlite3
 import sys
 import types
+from pathlib import Path
 
 import pytest
 
@@ -351,16 +352,21 @@ def test_bet_decision_requires_corresponding_odds(monkeypatch, tmp_path):
         save_bet_decision("event", "prediction", "under")
 
 
-def test_bet_decision_rejects_nonpositive_stake(monkeypatch, tmp_path):
+@pytest.mark.parametrize("stake", [0, -0.5, 0.25, 0.75, 1.5])
+def test_bet_decision_rejects_unsupported_stake(
+    monkeypatch,
+    tmp_path,
+    stake,
+):
     monkeypatch.chdir(tmp_path)
 
-    with pytest.raises(ValueError, match="stake precisa ser positiva"):
+    with pytest.raises(ValueError, match="stake precisa ser 0.5u ou 1u"):
         save_bet_decision(
             "event",
             "prediction",
             "under",
             1.90,
-            stake=0,
+            stake=stake,
         )
 
 
@@ -416,7 +422,20 @@ def test_postgres_uses_isolated_precreated_table(monkeypatch):
     assert statements[0][1][10:12] == (None, None)
 
 
-def test_postgres_saves_decision_in_separate_table(monkeypatch):
+@pytest.mark.parametrize(
+    ("decision", "stake", "offered_odds"),
+    [
+        ("over", 0.5, 1.91),
+        ("under", 1.0, 1.87),
+        ("no_bet", 1.0, None),
+    ],
+)
+def test_postgres_saves_all_three_decisions_in_separate_table(
+    monkeypatch,
+    decision,
+    stake,
+    offered_odds,
+):
     statements = []
 
     class FakeCursor:
@@ -447,11 +466,28 @@ def test_postgres_saves_decision_in_separate_table(monkeypatch):
     save_bet_decision(
         "event",
         "prediction",
-        "under",
-        1.87,
+        decision,
+        offered_odds,
         "postgresql://writer:secret@example.com/postgres",
+        stake=stake,
     )
 
     assert len(statements) == 1
     assert "INSERT INTO lol_kills.bet_decisions" in statements[0][0]
-    assert statements[0][1][3:] == ("under", 1.0, 1.87)
+    expected_stake = None if decision == "no_bet" else stake
+    assert statements[0][1][3:] == (
+        decision,
+        expected_stake,
+        offered_odds,
+    )
+
+
+def test_half_unit_postgres_migration_updates_the_check_constraint():
+    migration = Path(
+        "sql/004_allow_half_unit_bet_decisions.sql"
+    ).read_text(encoding="utf-8")
+
+    assert "stake in (0.5, 1.0)" in migration
+    assert "decision = 'no_bet'" in migration
+    assert "stake is null" in migration
+    assert "offered_odds is null" in migration

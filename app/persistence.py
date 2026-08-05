@@ -250,8 +250,8 @@ def save_bet_decision(
             raise ValueError(
                 "Uma aposta confirmada precisa da odd decimal correspondente."
             )
-        if not math.isfinite(float(stake)) or float(stake) <= 0:
-            raise ValueError("A stake precisa ser positiva.")
+        if not math.isfinite(float(stake)) or float(stake) not in {0.5, 1.0}:
+            raise ValueError("A stake precisa ser 0.5u ou 1u.")
         normalized_stake = float(stake)
         normalized_odds = float(offered_odds)
     else:
