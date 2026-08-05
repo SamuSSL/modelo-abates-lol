@@ -241,10 +241,10 @@ def evaluate_operational_gate(
     """Block actionable bets when the prospective protocol is not respected."""
     lead_minutes = prediction_lead_minutes(request)
     reasons: list[str] = []
-    if not (
-        SNAPSHOT_MIN_LEAD_MINUTES
-        <= lead_minutes
-        <= SNAPSHOT_MAX_LEAD_MINUTES
+    analysis_timing = request.get("analysis_timing", "predraft_t45_t30")
+    postdraft_live_open = analysis_timing == "postdraft_live_open"
+    if not postdraft_live_open and not (
+        SNAPSHOT_MIN_LEAD_MINUTES <= lead_minutes <= SNAPSHOT_MAX_LEAD_MINUTES
     ):
         reasons.append(
             "Cotacao registrada fora da janela operacional T-45/T-30."
@@ -288,11 +288,17 @@ def evaluate_operational_gate(
     return {
         "blocked": bool(reasons),
         "reasons": reasons,
-        "prediction_anchor": "scheduled_map_start",
-        "snapshot_window_minutes": [
-            SNAPSHOT_MIN_LEAD_MINUTES,
-            SNAPSHOT_MAX_LEAD_MINUTES,
-        ],
+        "prediction_anchor": (
+            "postdraft_live_open"
+            if postdraft_live_open
+            else "scheduled_map_start"
+        ),
+        "analysis_timing": analysis_timing,
+        "snapshot_window_minutes": (
+            None
+            if postdraft_live_open
+            else [SNAPSHOT_MIN_LEAD_MINUTES, SNAPSHOT_MAX_LEAD_MINUTES]
+        ),
         "prediction_lead_minutes": lead_minutes,
         "bundle_refreshed_at": (
             refreshed_at.isoformat() if refreshed_at is not None else None

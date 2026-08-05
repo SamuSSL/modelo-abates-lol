@@ -50,7 +50,7 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
 
     assert len(app.exception) == 0
     assert any(
-        "Interface predraft-ev-v2-2026-08-04" in markdown.value
+        "Interface postdraft-market-v3-2026-08-04" in markdown.value
         for markdown in app.markdown
     )
     default_league = app.selectbox[0].value
@@ -120,12 +120,21 @@ def test_default_draft_produces_a_prediction_without_ui_error():
         "EV Under",
     }.issubset(metric_labels)
     assert any(
-        "Versão da interface: predraft-ev-v2-2026-08-04" in caption.value
+        "Versão da interface: postdraft-market-v3-2026-08-04"
+        in caption.value
         for caption in app.caption
     )
-    assert "Previsão calculada." in [
-        message.value for message in app.success
-    ]
+    assert any(
+        message.value.startswith("Previsão calculada. Referência ativa:")
+        for message in app.success
+    )
+    assert any(
+        message.value in {
+            "Modelos concordam entre si",
+            "Modelos não concordam",
+        }
+        for message in [*app.success, *app.warning]
+    )
     assert "Aposta confirmada" not in [
         selectbox.label for selectbox in app.selectbox
     ]
@@ -134,6 +143,59 @@ def test_default_draft_produces_a_prediction_without_ui_error():
         "Confirmar Under",
         "Não apostar",
     }.issubset({button.label for button in app.button})
+
+
+def test_streamlit_uses_directed_fallback_without_pinnacle_total():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+    next(
+        item
+        for item in app.checkbox
+        if item.label.startswith("Total Pinnacle disponível")
+    ).set_value(False).run()
+    for label, value in (
+        ("Moneyline equipe A", 1.90),
+        ("Moneyline equipe B", 1.90),
+        ("Odd Over soft", 1.95),
+        ("Odd Under soft", 1.95),
+    ):
+        next(
+            item for item in app.number_input if item.label == label
+        ).set_value(value)
+    app.button[0].click().run(timeout=30)
+    assert len(app.exception) == 0
+    assert any(
+        "Fallback ativo: Modelo dirigido + moneyline" in message.value
+        for message in app.info
+    )
+    assert any(
+        "Confiômetro indisponível" in message.value
+        for message in app.info
+    )
+
+
+def test_streamlit_uses_automatic_fallback_for_empty_pinnacle_odds():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+    for label, value in (
+        ("Moneyline equipe A", 1.90),
+        ("Moneyline equipe B", 1.90),
+        ("Odd Over soft", 1.95),
+        ("Odd Under soft", 1.95),
+    ):
+        next(
+            item for item in app.number_input if item.label == label
+        ).set_value(value)
+    app.button[0].click().run(timeout=30)
+    assert len(app.exception) == 0
+    assert any(
+        "Fallback ativo: Modelo dirigido + moneyline" in message.value
+        for message in app.info
+    )
 
 
 def test_no_bet_is_confirmed_after_prediction():

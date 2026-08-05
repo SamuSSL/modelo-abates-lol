@@ -17,7 +17,10 @@ from app.persistence import (
     save_prediction,
     save_shadow_predictions,
 )
-from app.shadow_models import build_shadow_predictions
+from app.shadow_models import (
+    build_operational_prediction,
+    build_shadow_predictions,
+)
 from app.tracking import load_tracking_data, render_tracking_page
 from app.ui_options import team_label, team_options
 
@@ -25,7 +28,8 @@ from app.ui_options import team_label, team_options
 BUNDLE_PATH = Path("app_data/model_bundle.json")
 ROSTER_CATALOG_PATH = Path("app_data/roster_catalog.json")
 TRACKING_PATH = Path("app_data/time_series_tracking.csv.gz")
-UI_RELEASE = "predraft-ev-v2-2026-08-04"
+UI_RELEASE = "postdraft-market-v3-2026-08-04"
+STRUCTURAL_REFERENCE_INTERFACE = "predraft-ev-v2-2026-08-04"
 
 
 @st.cache_resource
@@ -224,8 +228,8 @@ def _render_hero(bundle: dict | None = None) -> None:
         <section class="vault-hero">
           <h1 class="vault-title">LoL Kills Intelligence</h1>
           <p class="vault-subtitle">
-            Probabilidades pré-mapa para o total de abates, com histórico
-            integral das apostas usadas na validação prospectiva.
+            Referência Pinnacle pós-draft com fallback para o modelo dirigido,
+            comparação estrutural e histórico integral das decisões.
           </p>
           <div class="vault-model">{model_label}</div>
         </section>
@@ -272,6 +276,16 @@ def _render_bet_history(database_url: str | None) -> None:
     display["ev_registro"] = display["expected_value"].map(
         lambda value: f"{value:.1%}" if pd.notna(value) else ""
     )
+    display["referencia"] = display["prediction_source"].map(
+        {
+            "pinnacle_postdraft": "Pinnacle pós-draft",
+            "directed_moneyline_fallback": "Modelo dirigido (fallback)",
+            "structural_legacy": "Modelo estrutural",
+        }
+    ).fillna(display["prediction_source"])
+    display["confiometro"] = display["agreement_message"].fillna(
+        "Sem registro"
+    )
     display_table = display.loc[
         :,
         [
@@ -283,6 +297,8 @@ def _render_bet_history(database_url: str | None) -> None:
             "lado",
             "line",
             "offered_odds",
+            "referencia",
+            "confiometro",
             "moneyline_blue_odds",
             "moneyline_red_odds",
             "probabilidade_modelo",
@@ -304,6 +320,8 @@ def _render_bet_history(database_url: str | None) -> None:
             "lado": "Aposta",
             "line": "Linha",
             "offered_odds": "Odd",
+            "referencia": "Referência ativa",
+            "confiometro": "Confiômetro",
             "moneyline_blue_odds": "ML azul",
             "moneyline_red_odds": "ML vermelha",
             "probabilidade_modelo": "Prob. modelo",
@@ -330,8 +348,8 @@ def _render_bet_history(database_url: str | None) -> None:
     )
     st.caption(
         "O arquivo inclui odds dos dois lados, probabilidades, odds justas, "
-        "moneyline, ratings derivados, duração, intervalo preditivo, pace, "
-        "cutoff e identificadores."
+        "moneyline, referência ativa, confiômetro, EVs de cada modelo, "
+        "duração, intervalo preditivo, pace, cutoff e identificadores."
     )
 
 
@@ -654,21 +672,20 @@ def _render_predraft_prediction(
     roster_catalog: dict,
     database_url: str | None,
 ) -> None:
-    st.title("Total de kills pré-draft por mapa")
+    st.title("Total de kills pós-draft por mapa")
     st.caption(f"Versão da interface: {UI_RELEASE}")
     st.info(
-        "Paper betting prospectivo. O directed é o melhor candidato testado, "
-        "mas a vantagem econômica ainda não foi confirmada a 95%."
+        "Quando o total Pinnacle pós-draft estiver disponível, ele será a "
+        "referência principal. Sem esse mercado, o modelo dirigido será usado "
+        "como fallback."
     )
     st.write(
-        "O directed semanal continua sendo o único modelo exibido. "
-        "Os challengers são calculados e registrados sem aparecer na interface."
+        "O confiômetro compara a direção de maior EV da Pinnacle com a do "
+        "modelo estrutural. Ele é apenas informativo e fica salvo no registro."
     )
     with st.container(border=True):
         league = st.selectbox("Liga", bundle["model"]["league_levels"])
-        planned_default = datetime.now(
-            ZoneInfo("America/Sao_Paulo")
-        ) + timedelta(minutes=35)
+        planned_default = datetime.now(ZoneInfo("America/Sao_Paulo"))
         match_columns = st.columns(3)
         planned_date = match_columns[0].date_input(
             "Data prevista",
@@ -757,7 +774,12 @@ def _render_predraft_prediction(
             "Moneyline equipe B", min_value=0.0, value=0.0, step=0.01
         )
         pinnacle_available = st.checkbox(
-            "Total Pinnacle disponível no snapshot T-45/T-30", value=True
+            "Total Pinnacle disponível no snapshot pós-draft/live open",
+            value=True,
+        )
+        st.caption(
+            "Sem as duas odds Pinnacle completas, o fallback estrutural será "
+            "ativado automaticamente."
         )
         pinnacle_line = pinnacle_over = pinnacle_under = None
         if pinnacle_available:
@@ -776,15 +798,23 @@ def _render_predraft_prediction(
         if include_team_totals:
             for label, title in (("team_a", "Equipe A"), ("team_b", "Equipe B")):
                 columns = st.columns(3)
-                team_total_values[f"{label}_total_line"] = columns[0].number_input(
+                team_total_line = columns[0].number_input(
                     f"Linha team total {title}", min_value=0.5, value=12.5, step=1.0
                 )
-                team_total_values[f"{label}_total_odds_over"] = columns[1].number_input(
+                team_total_over = columns[1].number_input(
                     f"Odd Over team total {title}", min_value=0.0, value=0.0, step=0.01
                 )
-                team_total_values[f"{label}_total_odds_under"] = columns[2].number_input(
+                team_total_under = columns[2].number_input(
                     f"Odd Under team total {title}", min_value=0.0, value=0.0, step=0.01
                 )
+                if team_total_over > 1 and team_total_under > 1:
+                    team_total_values[f"{label}_total_line"] = team_total_line
+                    team_total_values[f"{label}_total_odds_over"] = (
+                        team_total_over
+                    )
+                    team_total_values[f"{label}_total_odds_under"] = (
+                        team_total_under
+                    )
 
         st.subheader("Melhor cotação soft")
         soft_columns = st.columns(3)
@@ -806,10 +836,19 @@ def _render_predraft_prediction(
         planned_local = datetime.combine(
             planned_date, planned_time, tzinfo=ZoneInfo("America/Sao_Paulo")
         )
+        pinnacle_complete = bool(
+            pinnacle_available
+            and pinnacle_line is not None
+            and pinnacle_over is not None
+            and pinnacle_under is not None
+            and pinnacle_over > 1
+            and pinnacle_under > 1
+        )
         request = {
             "league": league,
             "planned_at": planned_local.astimezone(timezone.utc).isoformat(),
             "quoted_at": datetime.now(timezone.utc).isoformat(),
+            "analysis_timing": "postdraft_live_open",
             "map_number": int(map_number),
             "team_a": {
                 "team_name": selected_teams["team_a"]["team_name"],
@@ -823,9 +862,14 @@ def _render_predraft_prediction(
             },
             "moneyline_team_a_odds": moneyline_team_a or None,
             "moneyline_team_b_odds": moneyline_team_b or None,
-            "pinnacle_total_line": pinnacle_line if pinnacle_available else None,
-            "pinnacle_total_odds_over": pinnacle_over if pinnacle_available else None,
-            "pinnacle_total_odds_under": pinnacle_under if pinnacle_available else None,
+            "pinnacle_input_available": pinnacle_complete,
+            "pinnacle_total_line": pinnacle_line if pinnacle_complete else None,
+            "pinnacle_total_odds_over": (
+                pinnacle_over if pinnacle_complete else None
+            ),
+            "pinnacle_total_odds_under": (
+                pinnacle_under if pinnacle_complete else None
+            ),
             "soft_line": soft_line,
             "soft_odds_over": soft_over or None,
             "soft_odds_under": soft_under or None,
@@ -836,8 +880,26 @@ def _render_predraft_prediction(
         with st.spinner("Calculando distribuição de kills..."):
             result = predict(request, inference_bundle)
             shadow_rows = build_shadow_predictions(request, result, inference_bundle)
+            operational_prediction = (
+                build_operational_prediction(request, result, shadow_rows)
+                if result.get("status") == "ok"
+                else None
+            )
             persisted_result = dict(result)
             persisted_result["shadow_predictions"] = shadow_rows
+            result_with_shadow = dict(result)
+            result_with_shadow["shadow_predictions"] = shadow_rows
+            if operational_prediction is not None:
+                for saved_result in (persisted_result, result_with_shadow):
+                    saved_result["operational_prediction"] = (
+                        operational_prediction
+                    )
+                    saved_result["prediction_source"] = (
+                        operational_prediction["prediction_source"]
+                    )
+                    saved_result["model_agreement"] = (
+                        operational_prediction["model_agreement"]
+                    )
             event_id = save_prediction(request, persisted_result, database_url)
             shadow_persistence_error = None
             try:
@@ -852,7 +914,7 @@ def _render_predraft_prediction(
                 shadow_persistence_error = type(error).__name__
         st.session_state["last_predraft_prediction"] = {
             "request": request,
-            "result": result,
+            "result": result_with_shadow,
             "event_id": event_id,
             "decision": None,
             "shadow_persistence_error": shadow_persistence_error,
@@ -872,25 +934,117 @@ def _render_predraft_prediction(
     if result["status"] == "blocked":
         st.error(result["reason"])
     else:
-        st.success("Previsão calculada.")
+        operational = result.get("operational_prediction") or result
+        st.success(
+            "Previsão calculada. Referência ativa: "
+            f"{operational.get('source_label', 'modelo estrutural')}."
+        )
         line = float(request["soft_line"])
         metrics = st.columns(4)
-        metrics[0].metric("Média", f"{result['mean']:.1f}")
-        metrics[1].metric("Mediana", result["median"])
-        metrics[2].metric(f"Over {line:.1f}", f"{result['probability_over']:.1%}")
-        metrics[3].metric(f"Under {line:.1f}", f"{result['probability_under']:.1%}")
-        interval = result["prediction_interval_90"]
+        metrics[0].metric("Média ativa", f"{operational['mean']:.1f}")
+        metrics[1].metric("Mediana ativa", operational["median"])
+        metrics[2].metric(
+            f"Over {line:.1f}",
+            f"{operational['probability_over']:.1%}",
+        )
+        metrics[3].metric(
+            f"Under {line:.1f}",
+            f"{operational['probability_under']:.1%}",
+        )
+        interval = operational["prediction_interval_90"]
         st.write(f"Intervalo preditivo de 90%: {interval[0]} a {interval[1]} kills.")
         features = result.get("features") or {}
+        st.subheader("Diagnósticos do modelo estrutural")
         details = st.columns(3)
         details[0].metric("Duração esperada", f"{features['duration_mean']:.1f} min")
         details[1].metric(request["team_a"]["team_name"], f"{features['team_a_mean']:.1f} kills")
         details[2].metric(request["team_b"]["team_name"], f"{features['team_b_mean']:.1f} kills")
-        st.subheader("Valor na cotação soft")
+        shadow_rows = result.get("shadow_predictions") or []
+        pinnacle_reference = next(
+            (
+                row
+                for row in shadow_rows
+                if row.get("model_id") == "market_implied_nb_exact"
+            ),
+            None,
+        )
+        if pinnacle_reference is not None:
+            st.subheader("Comparação estrutural × Pinnacle")
+            pinnacle_columns = st.columns(4)
+            pinnacle_columns[0].metric(
+                "Média estrutural",
+                f"{result['mean']:.1f}",
+            )
+            pinnacle_columns[1].metric(
+                "Média Pinnacle",
+                f"{pinnacle_reference['mean']:.1f}",
+            )
+            pinnacle_columns[2].metric(
+                "Estrutural menos Pinnacle",
+                f"{result['mean'] - pinnacle_reference['mean']:+.1f} kills",
+            )
+            pinnacle_columns[3].metric(
+                "Linha Pinnacle",
+                f"{pinnacle_reference['diagnostics']['pinnacle_line']:.1f}",
+            )
+            st.caption(
+                "Modelo estrutural comparado: Modelo dirigido + moneyline · "
+                f"{result['model_version']} · Interface "
+                f"{STRUCTURAL_REFERENCE_INTERFACE}."
+            )
+            agreement = operational["model_agreement"]
+            if agreement["models_agree"]:
+                st.success("Modelos concordam entre si")
+            else:
+                st.warning("Modelos não concordam")
+            agreement_columns = st.columns(2)
+            pinnacle_side = agreement["pinnacle_preferred_side"]
+            structural_side = agreement["structural_preferred_side"]
+            agreement_columns[0].metric(
+                "Pinnacle prefere",
+                pinnacle_side.title(),
+                f"EV {agreement[f'pinnacle_ev_{pinnacle_side}']:+.1%}",
+            )
+            agreement_columns[1].metric(
+                "Estrutural prefere",
+                structural_side.title(),
+                f"EV {agreement[f'structural_ev_{structural_side}']:+.1%}",
+            )
+            st.caption(
+                "O confiômetro mede concordância de direção do EV. Ele não "
+                "altera a probabilidade ativa nem confirma uma aposta."
+            )
+            market_diagnostics = pinnacle_reference.get("diagnostics") or {}
+            if market_diagnostics.get("team_a_implied_mean") is not None:
+                st.subheader("Leitura dos team totals Pinnacle")
+                team_total_columns = st.columns(4)
+                team_total_columns[0].metric(
+                    request["team_a"]["team_name"],
+                    f"{market_diagnostics['team_a_implied_mean']:.1f} kills",
+                )
+                team_total_columns[1].metric(
+                    request["team_b"]["team_name"],
+                    f"{market_diagnostics['team_b_implied_mean']:.1f} kills",
+                )
+                team_total_columns[2].metric(
+                    "Participação equipe A",
+                    f"{market_diagnostics['team_a_implied_share']:.1%}",
+                )
+                team_total_columns[3].metric(
+                    "Soma menos total",
+                    f"{market_diagnostics['team_total_sum_gap']:+.1f} kills",
+                )
+        else:
+            st.info(
+                "Pinnacle pós-draft indisponível. Fallback ativo: Modelo "
+                "dirigido + moneyline."
+            )
+            st.info(operational["model_agreement"]["message"])
+        st.subheader("Valor da referência ativa na cotação soft")
         value_columns = st.columns(4)
         value_columns[0].metric(
             "Odd justa Over",
-            f"{result['fair_odds_over']:.2f}",
+            f"{operational['fair_odds_over']:.2f}",
         )
         value_columns[1].metric(
             "Odd soft Over",
@@ -898,22 +1052,26 @@ def _render_predraft_prediction(
         )
         value_columns[2].metric(
             "Odd justa Under",
-            f"{result['fair_odds_under']:.2f}",
+            f"{operational['fair_odds_under']:.2f}",
         )
         value_columns[3].metric(
             "Odd soft Under",
             f"{request['soft_odds_under']:.2f}",
         )
         ev_columns = st.columns(2)
-        ev_columns[0].metric("EV Over", f"{result['ev_over']:+.1%}")
-        ev_columns[1].metric("EV Under", f"{result['ev_under']:+.1%}")
+        ev_columns[0].metric("EV Over", f"{operational['ev_over']:+.1%}")
+        ev_columns[1].metric("EV Under", f"{operational['ev_under']:+.1%}")
         bet_blocked = result.get("bet_status") == "blocked"
-        best_side = "Over" if result["ev_over"] >= result["ev_under"] else "Under"
-        best_ev = max(result["ev_over"], result["ev_under"])
+        best_side = (
+            "Over"
+            if operational["ev_over"] >= operational["ev_under"]
+            else "Under"
+        )
+        best_ev = max(operational["ev_over"], operational["ev_under"])
         best_fair_odds = (
-            result["fair_odds_over"]
+            operational["fair_odds_over"]
             if best_side == "Over"
-            else result["fair_odds_under"]
+            else operational["fair_odds_under"]
         )
         best_soft_odds = (
             request["soft_odds_over"]
@@ -944,7 +1102,10 @@ def _render_predraft_prediction(
             st.warning(warning)
         with st.expander("Distribuição completa"):
             st.dataframe(
-                {"kills": list(range(len(result["pmf"]))), "probabilidade": result["pmf"]},
+                {
+                    "kills": list(range(len(operational["pmf"]))),
+                    "probabilidade": operational["pmf"],
+                },
                 hide_index=True,
                 width="stretch",
             )
@@ -992,7 +1153,8 @@ def _render_predraft_prediction(
                 st.session_state["last_predraft_prediction"] = prediction_state
                 st.rerun()
     st.caption(
-        f"Evento {event_id}. Modelo {result['model_version']}. "
+        f"Evento {event_id}. Referência {result.get('prediction_source')}. "
+        f"Modelo estrutural {result['model_version']}. "
         f"Dados até {result['data_cutoff']}."
     )
 

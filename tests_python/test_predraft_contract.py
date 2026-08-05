@@ -13,7 +13,11 @@ from app.predraft_contract import (
     normalize_predraft_request,
     roster_signature,
 )
-from app.shadow_models import build_shadow_predictions
+from app.shadow_models import (
+    build_operational_prediction,
+    build_shadow_predictions,
+    evaluate_model_agreement,
+)
 
 
 def make_request(bundle):
@@ -85,6 +89,16 @@ def test_operational_gate_blocks_quotes_outside_t45_t30(bundle):
     gate = evaluate_operational_gate(request, bundle["metadata"])
     assert gate["blocked"] is True
     assert any("T-45/T-30" in reason for reason in gate["reasons"])
+
+
+def test_operational_gate_accepts_postdraft_live_open(bundle):
+    request = make_request(bundle)
+    request["quoted_at"] = "2026-08-08T12:02:00+00:00"
+    request["analysis_timing"] = "postdraft_live_open"
+    gate = evaluate_operational_gate(request, bundle["metadata"])
+    assert gate["prediction_anchor"] == "postdraft_live_open"
+    assert gate["snapshot_window_minutes"] is None
+    assert not any("T-45/T-30" in reason for reason in gate["reasons"])
 
 
 def test_operational_gate_blocks_stale_weekly_bundle(bundle):
@@ -167,6 +181,34 @@ def test_shadow_market_exact_reproduces_pinnacle_probability(bundle):
     ]
 
 
+def test_shadow_records_complete_team_total_diagnostics(bundle):
+    request = make_request(bundle)
+    request.update(
+        {
+            "team_a_total_line": 15.5,
+            "team_a_total_odds_over": 1.91,
+            "team_a_total_odds_under": 1.99,
+            "team_b_total_line": 12.5,
+            "team_b_total_odds_over": 1.95,
+            "team_b_total_odds_under": 1.95,
+        }
+    )
+    visible = predict(legacy_request_from_predraft(request), bundle)
+    rows = build_shadow_predictions(request, visible, bundle)
+    exact = next(row for row in rows if row["model_id"] == "market_implied_nb_exact")
+    diagnostics = exact["diagnostics"]
+    assert diagnostics["team_total_sum"] == pytest.approx(
+        diagnostics["team_a_implied_mean"]
+        + diagnostics["team_b_implied_mean"]
+    )
+    assert diagnostics["team_a_implied_share"] + diagnostics[
+        "team_b_implied_share"
+    ] == pytest.approx(1.0)
+    assert diagnostics["team_total_sum_gap"] == pytest.approx(
+        diagnostics["team_total_sum"] - diagnostics["implied_mean"]
+    )
+
+
 def test_market_directed_blend_is_logged_as_prospective_only(bundle):
     request = make_request(bundle)
     visible = predict(legacy_request_from_predraft(request), bundle)
@@ -196,6 +238,53 @@ def test_shadow_uses_fundamental_fallback(bundle):
     rows = build_shadow_predictions(request, visible, bundle)
     fallback = next(row for row in rows if row["model_id"] == "market_implied_count")
     assert fallback["mode"] == "fundamental_fallback"
+
+
+def test_operational_prediction_uses_pinnacle_when_available(bundle):
+    request = make_request(bundle)
+    visible = predict(legacy_request_from_predraft(request), bundle)
+    rows = build_shadow_predictions(request, visible, bundle)
+    operational = build_operational_prediction(request, visible, rows)
+    exact = next(row for row in rows if row["model_id"] == "market_implied_nb_exact")
+    assert operational["prediction_source"] == "pinnacle_postdraft"
+    assert operational["fallback_used"] is False
+    assert operational["probability_over"] == pytest.approx(
+        exact["probability_over_soft"]
+    )
+
+
+def test_operational_prediction_falls_back_to_directed(bundle):
+    request = make_request(bundle)
+    request["pinnacle_total_line"] = None
+    request["pinnacle_total_odds_over"] = None
+    request["pinnacle_total_odds_under"] = None
+    visible = predict(legacy_request_from_predraft(request), bundle)
+    rows = build_shadow_predictions(request, visible, bundle)
+    operational = build_operational_prediction(request, visible, rows)
+    assert operational["prediction_source"] == "directed_moneyline_fallback"
+    assert operational["fallback_used"] is True
+    assert operational["pmf"] == pytest.approx(visible["pmf"])
+    assert operational["model_agreement"]["status"] == "unavailable"
+
+
+def test_confiometer_records_agreement_and_disagreement():
+    request = {
+        "soft_odds_over": 2.0,
+        "soft_odds_under": 2.0,
+    }
+    structural = {"probability_over": 0.60, "probability_under": 0.40}
+    pinnacle = {
+        "probability_over_soft": 0.55,
+        "probability_under_soft": 0.45,
+    }
+    agreement = evaluate_model_agreement(request, structural, pinnacle)
+    assert agreement["models_agree"] is True
+    assert agreement["message"] == "Modelos concordam entre si"
+    pinnacle["probability_over_soft"] = 0.45
+    pinnacle["probability_under_soft"] = 0.55
+    disagreement = evaluate_model_agreement(request, structural, pinnacle)
+    assert disagreement["models_agree"] is False
+    assert disagreement["message"] == "Modelos não concordam"
 
 
 def test_predraft_prediction_is_invariant_to_team_order(bundle):

@@ -100,6 +100,141 @@ def _paper_rules(
     ]
 
 
+def _pmf_quantile(pmf: list[float], probability: float) -> int:
+    cumulative = 0.0
+    for value, mass in enumerate(pmf):
+        cumulative += float(mass)
+        if cumulative >= probability:
+            return value
+    return len(pmf) - 1
+
+
+def _preferred_ev_side(ev_over: float, ev_under: float) -> str:
+    return "over" if ev_over >= ev_under else "under"
+
+
+def evaluate_model_agreement(
+    request: dict[str, Any],
+    structural_result: dict[str, Any],
+    pinnacle_reference: dict[str, Any] | None,
+) -> dict[str, Any]:
+    structural_ev_over = float(structural_result["probability_over"]) * float(
+        request["soft_odds_over"]
+    ) - 1
+    structural_ev_under = float(structural_result["probability_under"]) * float(
+        request["soft_odds_under"]
+    ) - 1
+    structural_side = _preferred_ev_side(
+        structural_ev_over,
+        structural_ev_under,
+    )
+    if pinnacle_reference is None:
+        return {
+            "status": "unavailable",
+            "models_agree": None,
+            "message": "Confiômetro indisponível sem Pinnacle pós-draft.",
+            "structural_preferred_side": structural_side,
+            "pinnacle_preferred_side": None,
+            "structural_ev_over": structural_ev_over,
+            "structural_ev_under": structural_ev_under,
+            "pinnacle_ev_over": None,
+            "pinnacle_ev_under": None,
+        }
+    pinnacle_ev_over = float(
+        pinnacle_reference["probability_over_soft"]
+    ) * float(request["soft_odds_over"]) - 1
+    pinnacle_ev_under = float(
+        pinnacle_reference["probability_under_soft"]
+    ) * float(request["soft_odds_under"]) - 1
+    pinnacle_side = _preferred_ev_side(pinnacle_ev_over, pinnacle_ev_under)
+    models_agree = structural_side == pinnacle_side
+    return {
+        "status": "agree" if models_agree else "disagree",
+        "models_agree": models_agree,
+        "message": (
+            "Modelos concordam entre si"
+            if models_agree
+            else "Modelos não concordam"
+        ),
+        "structural_preferred_side": structural_side,
+        "pinnacle_preferred_side": pinnacle_side,
+        "structural_ev_over": structural_ev_over,
+        "structural_ev_under": structural_ev_under,
+        "pinnacle_ev_over": pinnacle_ev_over,
+        "pinnacle_ev_under": pinnacle_ev_under,
+    }
+
+
+def build_operational_prediction(
+    request: dict[str, Any],
+    structural_result: dict[str, Any],
+    shadow_rows: list[dict[str, Any]],
+) -> dict[str, Any]:
+    pinnacle_reference = next(
+        (
+            row
+            for row in shadow_rows
+            if row.get("model_id") == "market_implied_nb_exact"
+        ),
+        None,
+    )
+    if pinnacle_reference is None:
+        pmf = list(structural_result["pmf"])
+        probability_over = float(structural_result["probability_over"])
+        probability_under = float(structural_result["probability_under"])
+        mean = float(structural_result["mean"])
+        source = "directed_moneyline_fallback"
+        source_label = "Modelo dirigido + moneyline (fallback)"
+        model_id = "weekly_directed_raw"
+        fallback_used = True
+        diagnostics: dict[str, Any] = {
+            "fallback_reason": "pinnacle_postdraft_total_missing"
+        }
+    else:
+        pmf = list(pinnacle_reference["pmf"])
+        probability_over = float(
+            pinnacle_reference["probability_over_soft"]
+        )
+        probability_under = float(
+            pinnacle_reference["probability_under_soft"]
+        )
+        mean = float(pinnacle_reference["mean"])
+        source = "pinnacle_postdraft"
+        source_label = "Pinnacle pós-draft"
+        model_id = "market_implied_nb_exact"
+        fallback_used = False
+        diagnostics = dict(pinnacle_reference.get("diagnostics") or {})
+    agreement = evaluate_model_agreement(
+        request,
+        structural_result,
+        pinnacle_reference,
+    )
+    ev_over = probability_over * float(request["soft_odds_over"]) - 1
+    ev_under = probability_under * float(request["soft_odds_under"]) - 1
+    return {
+        "prediction_source": source,
+        "source_label": source_label,
+        "model_id": model_id,
+        "fallback_used": fallback_used,
+        "pmf": pmf,
+        "mean": mean,
+        "median": _pmf_quantile(pmf, 0.5),
+        "prediction_interval_90": [
+            _pmf_quantile(pmf, 0.05),
+            _pmf_quantile(pmf, 0.95),
+        ],
+        "probability_over": probability_over,
+        "probability_under": probability_under,
+        "fair_odds_over": 1 / probability_over,
+        "fair_odds_under": 1 / probability_under,
+        "ev_over": ev_over,
+        "ev_under": ev_under,
+        "preferred_side": _preferred_ev_side(ev_over, ev_under),
+        "diagnostics": diagnostics,
+        "model_agreement": agreement,
+    }
+
+
 def _shadow_row(
     model_id: str,
     mode: str,
@@ -245,6 +380,9 @@ def build_shadow_predictions(
             if row["mode"] == "market_available":
                 row["diagnostics"].update(
                     {
+                        "team_a_implied_mean": team_means["team_a"],
+                        "team_b_implied_mean": team_means["team_b"],
+                        "team_total_sum": sum_team_means,
                         "team_a_implied_share": share_a,
                         "team_b_implied_share": 1 - share_a,
                         "team_total_sum_gap": sum_team_means

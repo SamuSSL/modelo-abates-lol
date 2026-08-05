@@ -205,6 +205,65 @@ def test_no_bet_decision_has_no_stake_or_odds(monkeypatch, tmp_path):
     assert row == ("no_bet", None, None)
 
 
+def test_bet_history_preserves_active_reference_and_confiometer(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    request = {
+        "league": "LCK",
+        "planned_at": "2026-08-01T12:00:00+00:00",
+        "map_number": 1,
+        "soft_line": 24.5,
+        "soft_odds_over": 2.0,
+        "soft_odds_under": 1.9,
+        "pinnacle_total_line": 25.5,
+        "pinnacle_total_odds_over": 1.95,
+        "pinnacle_total_odds_under": 1.95,
+        "team_a": {"team_name": "A"},
+        "team_b": {"team_name": "B"},
+    }
+    result = {
+        "status": "ok",
+        "prediction_id": "prediction",
+        "mean": 23.0,
+        "probability_over": 0.45,
+        "probability_under": 0.55,
+        "operational_prediction": {
+            "prediction_source": "pinnacle_postdraft",
+            "mean": 26.0,
+            "median": 25,
+            "prediction_interval_90": [12, 42],
+            "probability_over": 0.60,
+            "probability_under": 0.40,
+            "fair_odds_over": 1 / 0.60,
+            "fair_odds_under": 1 / 0.40,
+        },
+        "prediction_source": "pinnacle_postdraft",
+        "model_agreement": {
+            "status": "disagree",
+            "models_agree": False,
+            "message": "Modelos não concordam",
+            "structural_preferred_side": "under",
+            "pinnacle_preferred_side": "over",
+            "structural_ev_over": -0.10,
+            "structural_ev_under": 0.045,
+            "pinnacle_ev_over": 0.20,
+            "pinnacle_ev_under": -0.24,
+        },
+    }
+    event_id = save_prediction(request, result)
+    save_bet_decision(event_id, "prediction", "over", 2.0)
+    row = load_bet_history().iloc[0]
+    assert row["prediction_source"] == "pinnacle_postdraft"
+    assert row["models_agree"] == False
+    assert row["agreement_message"] == "Modelos não concordam"
+    assert row["chosen_probability"] == 0.60
+    assert row["expected_value"] == pytest.approx(0.20)
+    assert row["predicted_mean"] == 26.0
+    assert row["structural_mean"] == 23.0
+
+
 def test_bet_decision_requires_corresponding_odds(monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
 

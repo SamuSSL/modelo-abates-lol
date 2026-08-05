@@ -327,11 +327,13 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
     ) = row
     request = json.loads(request_json)
     result = json.loads(result_json)
-    interval = result.get("prediction_interval_90") or [None, None]
-    chosen_probability = result.get(
+    operational = result.get("operational_prediction") or result
+    agreement = result.get("model_agreement") or {}
+    interval = operational.get("prediction_interval_90") or [None, None]
+    chosen_probability = operational.get(
         "probability_over" if decision == "over" else "probability_under"
     )
-    chosen_fair_odds = result.get(
+    chosen_fair_odds = operational.get(
         "fair_odds_over" if decision == "over" else "fair_odds_under"
     )
     expected_value = (
@@ -353,10 +355,25 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
         "line": line,
         "offered_odds": offered_odds,
         "stake": stake,
-        "market_odds_over": request.get("odds_over"),
-        "market_odds_under": request.get("odds_under"),
-        "moneyline_blue_odds": request.get("moneyline_blue_odds"),
-        "moneyline_red_odds": request.get("moneyline_red_odds"),
+        "market_odds_over": request.get(
+            "soft_odds_over", request.get("odds_over")
+        ),
+        "market_odds_under": request.get(
+            "soft_odds_under", request.get("odds_under")
+        ),
+        "pinnacle_total_line": request.get("pinnacle_total_line"),
+        "pinnacle_total_odds_over": request.get(
+            "pinnacle_total_odds_over"
+        ),
+        "pinnacle_total_odds_under": request.get(
+            "pinnacle_total_odds_under"
+        ),
+        "moneyline_blue_odds": request.get(
+            "moneyline_team_a_odds", request.get("moneyline_blue_odds")
+        ),
+        "moneyline_red_odds": request.get(
+            "moneyline_team_b_odds", request.get("moneyline_red_odds")
+        ),
         "moneyline_blue_probability": (
             result.get("features") or {}
         ).get("p_blue_no_vig"),
@@ -365,13 +382,33 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
         ).get("p_red_no_vig"),
         "model_probability_over": result.get("probability_over"),
         "model_probability_under": result.get("probability_under"),
+        "reference_probability_over": operational.get("probability_over"),
+        "reference_probability_under": operational.get("probability_under"),
         "chosen_probability": chosen_probability,
-        "fair_odds_over": result.get("fair_odds_over"),
-        "fair_odds_under": result.get("fair_odds_under"),
+        "fair_odds_over": operational.get("fair_odds_over"),
+        "fair_odds_under": operational.get("fair_odds_under"),
         "chosen_fair_odds": chosen_fair_odds,
         "expected_value": expected_value,
-        "predicted_mean": result.get("mean"),
-        "predicted_median": result.get("median"),
+        "prediction_source": result.get(
+            "prediction_source",
+            operational.get("prediction_source", "structural_legacy"),
+        ),
+        "models_agree": agreement.get("models_agree"),
+        "agreement_status": agreement.get("status"),
+        "agreement_message": agreement.get("message"),
+        "structural_preferred_side": agreement.get(
+            "structural_preferred_side"
+        ),
+        "pinnacle_preferred_side": agreement.get(
+            "pinnacle_preferred_side"
+        ),
+        "structural_ev_over": agreement.get("structural_ev_over"),
+        "structural_ev_under": agreement.get("structural_ev_under"),
+        "pinnacle_ev_over": agreement.get("pinnacle_ev_over"),
+        "pinnacle_ev_under": agreement.get("pinnacle_ev_under"),
+        "predicted_mean": operational.get("mean"),
+        "structural_mean": result.get("mean"),
+        "predicted_median": operational.get("median"),
         "predicted_duration_mean": (
             result.get("features") or {}
         ).get("duration_mean"),
