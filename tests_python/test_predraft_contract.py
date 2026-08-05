@@ -267,24 +267,84 @@ def test_operational_prediction_falls_back_to_directed(bundle):
     assert operational["model_agreement"]["status"] == "unavailable"
 
 
-def test_confiometer_records_agreement_and_disagreement():
+@pytest.mark.parametrize(
+    (
+        "odds",
+        "structural_over",
+        "pinnacle_over",
+        "expected_status",
+        "expected_message",
+        "expected_stake",
+    ),
+    [
+        (
+            2.0,
+            0.60,
+            0.55,
+            "bet_agreement",
+            "Modelos concordam em uma aposta.",
+            None,
+        ),
+        (
+            1.9,
+            0.60,
+            0.51,
+            "high_trend",
+            "confiança alta de tendência. Sinal verde",
+            None,
+        ),
+        (
+            1.95,
+            0.60,
+            0.40,
+            "opposing_positive_ev",
+            "Modelos divergem. Apostar 0.5u no lado da Pinnacle.",
+            0.5,
+        ),
+        (
+            1.9,
+            0.51,
+            0.49,
+            "no_value",
+            "Nenhum modelo indica valor. Evitar aposta.",
+            None,
+        ),
+        (
+            1.9,
+            0.60,
+            0.49,
+            "one_sided_directional_disagreement",
+            "Modelos divergem. Apenas um modelo indica valor.",
+            None,
+        ),
+    ],
+)
+def test_confiometer_uses_positive_ev_states(
+    odds,
+    structural_over,
+    pinnacle_over,
+    expected_status,
+    expected_message,
+    expected_stake,
+):
     request = {
-        "soft_odds_over": 2.0,
-        "soft_odds_under": 2.0,
+        "soft_odds_over": odds,
+        "soft_odds_under": odds,
     }
-    structural = {"probability_over": 0.60, "probability_under": 0.40}
+    structural = {
+        "probability_over": structural_over,
+        "probability_under": 1 - structural_over,
+    }
     pinnacle = {
-        "probability_over_soft": 0.55,
-        "probability_under_soft": 0.45,
+        "probability_over_soft": pinnacle_over,
+        "probability_under_soft": 1 - pinnacle_over,
     }
     agreement = evaluate_model_agreement(request, structural, pinnacle)
-    assert agreement["models_agree"] is True
-    assert agreement["message"] == "Modelos concordam entre si"
-    pinnacle["probability_over_soft"] = 0.45
-    pinnacle["probability_under_soft"] = 0.55
-    disagreement = evaluate_model_agreement(request, structural, pinnacle)
-    assert disagreement["models_agree"] is False
-    assert disagreement["message"] == "Modelos não concordam"
+    assert agreement["status"] == expected_status
+    assert agreement["message"] == expected_message
+    assert agreement["recommended_stake"] == expected_stake
+    if expected_stake is not None:
+        assert agreement["recommended_side"] == "under"
 
 
 def test_predraft_prediction_is_invariant_to_team_order(bundle):

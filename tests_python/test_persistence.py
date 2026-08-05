@@ -241,11 +241,18 @@ def test_bet_history_preserves_active_reference_and_confiometer(
         },
         "prediction_source": "pinnacle_postdraft",
         "model_agreement": {
-            "status": "disagree",
+            "status": "opposing_positive_ev",
             "models_agree": False,
-            "message": "Modelos não concordam",
+            "directional_agreement": False,
+            "message": (
+                "Modelos divergem. Apostar 0.5u no lado da Pinnacle."
+            ),
             "structural_preferred_side": "under",
             "pinnacle_preferred_side": "over",
+            "structural_positive_side": "under",
+            "pinnacle_positive_side": "over",
+            "recommended_side": "over",
+            "recommended_stake": 0.5,
             "structural_ev_over": -0.10,
             "structural_ev_under": 0.045,
             "pinnacle_ev_over": 0.20,
@@ -253,11 +260,23 @@ def test_bet_history_preserves_active_reference_and_confiometer(
         },
     }
     event_id = save_prediction(request, result)
-    save_bet_decision(event_id, "prediction", "over", 2.0)
+    save_bet_decision(
+        event_id,
+        "prediction",
+        "over",
+        2.0,
+        stake=0.5,
+    )
     row = load_bet_history().iloc[0]
     assert row["prediction_source"] == "pinnacle_postdraft"
     assert row["models_agree"] == False
-    assert row["agreement_message"] == "Modelos não concordam"
+    assert row["directional_agreement"] == False
+    assert row["agreement_message"] == (
+        "Modelos divergem. Apostar 0.5u no lado da Pinnacle."
+    )
+    assert row["confiometer_recommended_side"] == "over"
+    assert row["confiometer_recommended_stake"] == 0.5
+    assert row["stake"] == 0.5
     assert row["chosen_probability"] == 0.60
     assert row["expected_value"] == pytest.approx(0.20)
     assert row["predicted_mean"] == 26.0
@@ -269,6 +288,19 @@ def test_bet_decision_requires_corresponding_odds(monkeypatch, tmp_path):
 
     with pytest.raises(ValueError, match="odd decimal"):
         save_bet_decision("event", "prediction", "under")
+
+
+def test_bet_decision_rejects_nonpositive_stake(monkeypatch, tmp_path):
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(ValueError, match="stake precisa ser positiva"):
+        save_bet_decision(
+            "event",
+            "prediction",
+            "under",
+            1.90,
+            stake=0,
+        )
 
 
 def test_postgres_uses_isolated_precreated_table(monkeypatch):

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import os
 import sqlite3
 import uuid
@@ -239,6 +240,8 @@ def save_bet_decision(
     decision: str,
     offered_odds: float | None = None,
     database_url: str | None = None,
+    *,
+    stake: float = 1.0,
 ) -> str:
     if decision not in {"over", "under", "no_bet"}:
         raise ValueError("Decisão inválida.")
@@ -247,10 +250,12 @@ def save_bet_decision(
             raise ValueError(
                 "Uma aposta confirmada precisa da odd decimal correspondente."
             )
-        stake = 1.0
+        if not math.isfinite(float(stake)) or float(stake) <= 0:
+            raise ValueError("A stake precisa ser positiva.")
+        normalized_stake = float(stake)
         normalized_odds = float(offered_odds)
     else:
-        stake = None
+        normalized_stake = None
         normalized_odds = None
 
     values = (
@@ -258,7 +263,7 @@ def save_bet_decision(
         prediction_id,
         datetime.now(timezone.utc).isoformat(),
         decision,
-        stake,
+        normalized_stake,
         normalized_odds,
     )
     database_url = database_url or os.getenv("DATABASE_URL")
@@ -394,6 +399,9 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
             operational.get("prediction_source", "structural_legacy"),
         ),
         "models_agree": agreement.get("models_agree"),
+        "directional_agreement": agreement.get(
+            "directional_agreement"
+        ),
         "agreement_status": agreement.get("status"),
         "agreement_message": agreement.get("message"),
         "structural_preferred_side": agreement.get(
@@ -401,6 +409,18 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
         ),
         "pinnacle_preferred_side": agreement.get(
             "pinnacle_preferred_side"
+        ),
+        "structural_positive_side": agreement.get(
+            "structural_positive_side"
+        ),
+        "pinnacle_positive_side": agreement.get(
+            "pinnacle_positive_side"
+        ),
+        "confiometer_recommended_side": agreement.get(
+            "recommended_side"
+        ),
+        "confiometer_recommended_stake": agreement.get(
+            "recommended_stake"
         ),
         "structural_ev_over": agreement.get("structural_ev_over"),
         "structural_ev_under": agreement.get("structural_ev_under"),

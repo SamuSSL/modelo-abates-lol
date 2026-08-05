@@ -113,6 +113,12 @@ def _preferred_ev_side(ev_over: float, ev_under: float) -> str:
     return "over" if ev_over >= ev_under else "under"
 
 
+def _positive_ev_side(ev_over: float, ev_under: float) -> str | None:
+    preferred_side = _preferred_ev_side(ev_over, ev_under)
+    preferred_ev = ev_over if preferred_side == "over" else ev_under
+    return preferred_side if preferred_ev > 0 else None
+
+
 def evaluate_model_agreement(
     request: dict[str, Any],
     structural_result: dict[str, Any],
@@ -128,13 +134,23 @@ def evaluate_model_agreement(
         structural_ev_over,
         structural_ev_under,
     )
+    structural_positive_side = _positive_ev_side(
+        structural_ev_over,
+        structural_ev_under,
+    )
     if pinnacle_reference is None:
         return {
             "status": "unavailable",
             "models_agree": None,
+            "directional_agreement": None,
             "message": "Confiômetro indisponível sem Pinnacle pós-draft.",
             "structural_preferred_side": structural_side,
             "pinnacle_preferred_side": None,
+            "structural_positive_side": structural_positive_side,
+            "pinnacle_positive_side": None,
+            "recommended_side": None,
+            "recommended_stake": None,
+            "alert_level": "info",
             "structural_ev_over": structural_ev_over,
             "structural_ev_under": structural_ev_under,
             "pinnacle_ev_over": None,
@@ -147,17 +163,61 @@ def evaluate_model_agreement(
         pinnacle_reference["probability_under_soft"]
     ) * float(request["soft_odds_under"]) - 1
     pinnacle_side = _preferred_ev_side(pinnacle_ev_over, pinnacle_ev_under)
-    models_agree = structural_side == pinnacle_side
+    pinnacle_positive_side = _positive_ev_side(
+        pinnacle_ev_over,
+        pinnacle_ev_under,
+    )
+    directional_agreement = structural_side == pinnacle_side
+    recommended_side = None
+    recommended_stake = None
+    if (
+        structural_positive_side is not None
+        and pinnacle_positive_side is not None
+    ):
+        if structural_positive_side == pinnacle_positive_side:
+            status = "bet_agreement"
+            message = "Modelos concordam em uma aposta."
+            alert_level = "success"
+            models_agree = True
+        else:
+            status = "opposing_positive_ev"
+            message = (
+                "Modelos divergem. Apostar 0.5u no lado da Pinnacle."
+            )
+            alert_level = "warning"
+            models_agree = False
+            recommended_side = pinnacle_positive_side
+            recommended_stake = 0.5
+    elif (
+        structural_positive_side is None
+        and pinnacle_positive_side is None
+    ):
+        status = "no_value"
+        message = "Nenhum modelo indica valor. Evitar aposta."
+        alert_level = "info"
+        models_agree = False
+    elif directional_agreement:
+        status = "high_trend"
+        message = "confiança alta de tendência. Sinal verde"
+        alert_level = "success"
+        models_agree = False
+    else:
+        status = "one_sided_directional_disagreement"
+        message = "Modelos divergem. Apenas um modelo indica valor."
+        alert_level = "warning"
+        models_agree = False
     return {
-        "status": "agree" if models_agree else "disagree",
+        "status": status,
         "models_agree": models_agree,
-        "message": (
-            "Modelos concordam entre si"
-            if models_agree
-            else "Modelos não concordam"
-        ),
+        "directional_agreement": directional_agreement,
+        "message": message,
         "structural_preferred_side": structural_side,
         "pinnacle_preferred_side": pinnacle_side,
+        "structural_positive_side": structural_positive_side,
+        "pinnacle_positive_side": pinnacle_positive_side,
+        "recommended_side": recommended_side,
+        "recommended_stake": recommended_stake,
+        "alert_level": alert_level,
         "structural_ev_over": structural_ev_over,
         "structural_ev_under": structural_ev_under,
         "pinnacle_ev_over": pinnacle_ev_over,

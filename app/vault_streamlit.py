@@ -28,7 +28,7 @@ from app.ui_options import team_label, team_options
 BUNDLE_PATH = Path("app_data/model_bundle.json")
 ROSTER_CATALOG_PATH = Path("app_data/roster_catalog.json")
 TRACKING_PATH = Path("app_data/time_series_tracking.csv.gz")
-UI_RELEASE = "postdraft-market-v3-2026-08-04"
+UI_RELEASE = "postdraft-confidence-v4-2026-08-05"
 STRUCTURAL_REFERENCE_INTERFACE = "predraft-ev-v2-2026-08-04"
 
 
@@ -297,6 +297,7 @@ def _render_bet_history(database_url: str | None) -> None:
             "lado",
             "line",
             "offered_odds",
+            "stake",
             "referencia",
             "confiometro",
             "moneyline_blue_odds",
@@ -320,6 +321,7 @@ def _render_bet_history(database_url: str | None) -> None:
             "lado": "Aposta",
             "line": "Linha",
             "offered_odds": "Odd",
+            "stake": "Stake",
             "referencia": "Referência ativa",
             "confiometro": "Confiômetro",
             "moneyline_blue_odds": "ML azul",
@@ -680,8 +682,8 @@ def _render_predraft_prediction(
         "como fallback."
     )
     st.write(
-        "O confiômetro compara a direção de maior EV da Pinnacle com a do "
-        "modelo estrutural. Ele é apenas informativo e fica salvo no registro."
+        "O confiômetro separa concordância de aposta, tendência, divergência "
+        "e ausência de valor. O estado fica salvo no registro."
     )
     with st.container(border=True):
         league = st.selectbox("Liga", bundle["model"]["league_levels"])
@@ -917,6 +919,7 @@ def _render_predraft_prediction(
             "result": result_with_shadow,
             "event_id": event_id,
             "decision": None,
+            "decision_stake": None,
             "shadow_persistence_error": shadow_persistence_error,
         }
 
@@ -993,10 +996,12 @@ def _render_predraft_prediction(
                 f"{STRUCTURAL_REFERENCE_INTERFACE}."
             )
             agreement = operational["model_agreement"]
-            if agreement["models_agree"]:
-                st.success("Modelos concordam entre si")
+            if agreement["alert_level"] == "success":
+                st.success(agreement["message"])
+            elif agreement["alert_level"] == "warning":
+                st.warning(agreement["message"])
             else:
-                st.warning("Modelos não concordam")
+                st.info(agreement["message"])
             agreement_columns = st.columns(2)
             pinnacle_side = agreement["pinnacle_preferred_side"]
             structural_side = agreement["structural_preferred_side"]
@@ -1011,8 +1016,8 @@ def _render_predraft_prediction(
                 f"EV {agreement[f'structural_ev_{structural_side}']:+.1%}",
             )
             st.caption(
-                "O confiômetro mede concordância de direção do EV. Ele não "
-                "altera a probabilidade ativa nem confirma uma aposta."
+                "O sinal considera EV positivo nas odds soft. A recomendação "
+                "de 0.5u só aparece quando ambos têm valor em lados opostos."
             )
             market_diagnostics = pinnacle_reference.get("diagnostics") or {}
             if market_diagnostics.get("team_a_implied_mean") is not None:
@@ -1118,11 +1123,12 @@ def _render_predraft_prediction(
                 "mas a confirmação fica bloqueada."
             )
         elif prediction_state["decision"]:
-            decision_label = {
-                "over": "Over, stake de 1 unidade",
-                "under": "Under, stake de 1 unidade",
-                "no_bet": "não apostar",
-            }[prediction_state["decision"]]
+            if prediction_state["decision"] == "no_bet":
+                decision_label = "não apostar"
+            else:
+                saved_stake = prediction_state.get("decision_stake") or 1.0
+                side_label = prediction_state["decision"].title()
+                decision_label = f"{side_label}, stake de {saved_stake:g}u"
             st.success(f"Decisão salva: {decision_label}.")
         else:
             decision_columns = st.columns(3)
@@ -1146,10 +1152,25 @@ def _render_predraft_prediction(
                     offered_odds = request["soft_odds_over"]
                 elif decision == "under":
                     offered_odds = request["soft_odds_under"]
+                agreement = operational.get("model_agreement") or {}
+                decision_stake = 1.0
+                if (
+                    decision == agreement.get("recommended_side")
+                    and agreement.get("recommended_stake") is not None
+                ):
+                    decision_stake = float(agreement["recommended_stake"])
                 save_bet_decision(
-                    event_id, result["prediction_id"], decision, offered_odds, database_url
+                    event_id,
+                    result["prediction_id"],
+                    decision,
+                    offered_odds,
+                    database_url,
+                    stake=decision_stake,
                 )
                 prediction_state["decision"] = decision
+                prediction_state["decision_stake"] = (
+                    decision_stake if decision != "no_bet" else None
+                )
                 st.session_state["last_predraft_prediction"] = prediction_state
                 st.rerun()
     st.caption(

@@ -50,7 +50,7 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
 
     assert len(app.exception) == 0
     assert any(
-        "Interface postdraft-market-v3-2026-08-04" in markdown.value
+        "Interface postdraft-confidence-v4-2026-08-05" in markdown.value
         for markdown in app.markdown
     )
     default_league = app.selectbox[0].value
@@ -120,7 +120,7 @@ def test_default_draft_produces_a_prediction_without_ui_error():
         "EV Under",
     }.issubset(metric_labels)
     assert any(
-        "Versão da interface: postdraft-market-v3-2026-08-04"
+        "Versão da interface: postdraft-confidence-v4-2026-08-05"
         in caption.value
         for caption in app.caption
     )
@@ -130,10 +130,13 @@ def test_default_draft_produces_a_prediction_without_ui_error():
     )
     assert any(
         message.value in {
-            "Modelos concordam entre si",
-            "Modelos não concordam",
+            "Modelos concordam em uma aposta.",
+            "confiança alta de tendência. Sinal verde",
+            "Modelos divergem. Apostar 0.5u no lado da Pinnacle.",
+            "Nenhum modelo indica valor. Evitar aposta.",
+            "Modelos divergem. Apenas um modelo indica valor.",
         }
-        for message in [*app.success, *app.warning]
+        for message in [*app.success, *app.warning, *app.info]
     )
     assert "Aposta confirmada" not in [
         selectbox.label for selectbox in app.selectbox
