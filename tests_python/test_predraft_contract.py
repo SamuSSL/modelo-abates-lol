@@ -275,6 +275,7 @@ def test_operational_prediction_falls_back_to_directed(bundle):
         "expected_status",
         "expected_message",
         "expected_stake",
+        "expected_side",
     ),
     [
         (
@@ -282,31 +283,35 @@ def test_operational_prediction_falls_back_to_directed(bundle):
             0.60,
             0.55,
             "bet_agreement",
-            "Modelos concordam em uma aposta.",
-            None,
+            "Modelos concordam em uma aposta. Over confirmado.",
+            1.0,
+            "over",
         ),
         (
             1.9,
             0.60,
             0.51,
             "high_trend",
-            "confiança alta de tendência. Sinal verde",
-            None,
+            "Confiança alta de tendência. Sinal verde para Over.",
+            1.0,
+            "over",
         ),
         (
             1.95,
             0.60,
             0.40,
             "opposing_positive_ev",
-            "Modelos divergem. Apostar 0.5u no lado da Pinnacle.",
+            "Modelos divergem. Apostar 0.5u no lado da Pinnacle: Under.",
             0.5,
+            "under",
         ),
         (
             1.9,
             0.51,
             0.49,
             "no_value",
-            "Nenhum modelo indica valor. Evitar aposta.",
+            "Nenhum valor indicado. Não apostar.",
+            None,
             None,
         ),
         (
@@ -314,8 +319,18 @@ def test_operational_prediction_falls_back_to_directed(bundle):
             0.60,
             0.49,
             "one_sided_directional_disagreement",
-            "Modelos divergem. Apenas um modelo indica valor.",
+            "Pinnacle se opõe ao sinal estrutural. Não apostar.",
             None,
+            None,
+        ),
+        (
+            1.9,
+            0.49,
+            0.60,
+            "pinnacle_only_value",
+            "Pinnacle indica valor. Apostar 0.5u no lado da Pinnacle: Over.",
+            0.5,
+            "over",
         ),
     ],
 )
@@ -326,6 +341,7 @@ def test_confiometer_uses_positive_ev_states(
     expected_status,
     expected_message,
     expected_stake,
+    expected_side,
 ):
     request = {
         "soft_odds_over": odds,
@@ -343,8 +359,61 @@ def test_confiometer_uses_positive_ev_states(
     assert agreement["status"] == expected_status
     assert agreement["message"] == expected_message
     assert agreement["recommended_stake"] == expected_stake
-    if expected_stake is not None:
-        assert agreement["recommended_side"] == "under"
+    assert agreement["recommended_side"] == expected_side
+
+
+def test_confiometer_treats_tiny_market_difference_as_neutral():
+    request = {
+        "soft_odds_over": 1.78,
+        "soft_odds_under": 1.85,
+    }
+    structural = {
+        "mean": 28.0,
+        "probability_over": 0.40,
+        "probability_under": 0.60,
+    }
+    pinnacle = {
+        "mean": 29.5,
+        "probability_over_soft": 0.51,
+        "probability_under_soft": 0.49,
+    }
+    agreement = evaluate_model_agreement(request, structural, pinnacle)
+    assert agreement["status"] == "single_model_value_other_neutral"
+    assert agreement["pinnacle_signal_side"] is None
+    assert agreement["structural_signal_side"] == "under"
+    assert agreement["message"] == (
+        "Somente o modelo estrutural indica valor; Pinnacle neutra."
+    )
+    assert agreement["recommended_side"] == "under"
+    assert agreement["recommended_stake"] == 0.5
+    assert agreement["recommended_model"] == "structural"
+
+
+def test_confiometer_flags_extreme_mean_disagreement():
+    request = {
+        "soft_odds_over": 1.78,
+        "soft_odds_under": 1.85,
+    }
+    structural = {
+        "mean": 24.9,
+        "probability_over": 0.27,
+        "probability_under": 0.73,
+    }
+    pinnacle = {
+        "mean": 30.4,
+        "probability_over_soft": 0.51,
+        "probability_under_soft": 0.49,
+    }
+    agreement = evaluate_model_agreement(request, structural, pinnacle)
+    assert agreement["status"] == "extreme_mean_disagreement"
+    assert agreement["extreme_mean_disagreement"] is True
+    assert agreement["mean_disagreement_kills"] == pytest.approx(-5.5)
+    assert agreement["message"] == (
+        "Divergência extrema entre estrutural e Pinnacle. "
+        "Não tratar como confiança alta."
+    )
+    assert agreement["recommended_side"] is None
+    assert agreement["recommended_stake"] is None
 
 
 def test_predraft_prediction_is_invariant_to_team_order(bundle):

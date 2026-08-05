@@ -245,7 +245,7 @@ def test_bet_history_preserves_active_reference_and_confiometer(
             "models_agree": False,
             "directional_agreement": False,
             "message": (
-                "Modelos divergem. Apostar 0.5u no lado da Pinnacle."
+                "Modelos divergem. Apostar 0.5u no lado da Pinnacle: Over."
             ),
             "structural_preferred_side": "under",
             "pinnacle_preferred_side": "over",
@@ -253,6 +253,10 @@ def test_bet_history_preserves_active_reference_and_confiometer(
             "pinnacle_positive_side": "over",
             "recommended_side": "over",
             "recommended_stake": 0.5,
+            "recommended_model": "pinnacle",
+            "recommended_probability": 0.60,
+            "recommended_fair_odds": 1 / 0.60,
+            "recommended_ev": 0.20,
             "structural_ev_over": -0.10,
             "structural_ev_under": 0.045,
             "pinnacle_ev_over": 0.20,
@@ -272,15 +276,72 @@ def test_bet_history_preserves_active_reference_and_confiometer(
     assert row["models_agree"] == False
     assert row["directional_agreement"] == False
     assert row["agreement_message"] == (
-        "Modelos divergem. Apostar 0.5u no lado da Pinnacle."
+        "Modelos divergem. Apostar 0.5u no lado da Pinnacle: Over."
     )
     assert row["confiometer_recommended_side"] == "over"
     assert row["confiometer_recommended_stake"] == 0.5
+    assert row["confiometer_recommended_model"] == "pinnacle"
+    assert row["decision_probability_source"] == "pinnacle"
     assert row["stake"] == 0.5
     assert row["chosen_probability"] == 0.60
     assert row["expected_value"] == pytest.approx(0.20)
     assert row["predicted_mean"] == 26.0
     assert row["structural_mean"] == 23.0
+
+
+def test_bet_history_uses_structural_probability_for_structural_recommendation(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    request = {
+        "league": "LCK",
+        "planned_at": "2026-08-01T12:00:00+00:00",
+        "map_number": 1,
+        "soft_line": 29.5,
+        "soft_odds_over": 1.90,
+        "soft_odds_under": 1.90,
+        "team_a": {"team_name": "A"},
+        "team_b": {"team_name": "B"},
+    }
+    result = {
+        "status": "ok",
+        "prediction_id": "prediction",
+        "mean": 31.0,
+        "probability_over": 0.56,
+        "probability_under": 0.44,
+        "operational_prediction": {
+            "prediction_source": "pinnacle_postdraft",
+            "mean": 30.0,
+            "median": 30,
+            "prediction_interval_90": [17, 44],
+            "probability_over": 0.52,
+            "probability_under": 0.48,
+            "fair_odds_over": 1 / 0.52,
+            "fair_odds_under": 1 / 0.48,
+        },
+        "prediction_source": "pinnacle_postdraft",
+        "model_agreement": {
+            "status": "high_trend",
+            "models_agree": False,
+            "directional_agreement": True,
+            "message": "Confiança alta de tendência. Sinal verde para Over.",
+            "recommended_side": "over",
+            "recommended_stake": 1.0,
+            "recommended_model": "structural",
+            "recommended_probability": 0.56,
+            "recommended_fair_odds": 1 / 0.56,
+            "recommended_ev": 0.064,
+        },
+    }
+    event_id = save_prediction(request, result)
+    save_bet_decision(event_id, "prediction", "over", 1.90, stake=1.0)
+    row = load_bet_history().iloc[0]
+    assert row["decision_probability_source"] == "structural"
+    assert row["chosen_probability"] == pytest.approx(0.56)
+    assert row["chosen_fair_odds"] == pytest.approx(1 / 0.56)
+    assert row["expected_value"] == pytest.approx(0.064)
+    assert row["stake"] == 1.0
 
 
 def test_bet_decision_requires_corresponding_odds(monkeypatch, tmp_path):

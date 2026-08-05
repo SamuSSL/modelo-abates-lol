@@ -50,7 +50,7 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
 
     assert len(app.exception) == 0
     assert any(
-        "Interface postdraft-confidence-v4-2026-08-05" in markdown.value
+        "Interface market-decision-v6-2026-08-05" in markdown.value
         for markdown in app.markdown
     )
     default_league = app.selectbox[0].value
@@ -118,9 +118,11 @@ def test_default_draft_produces_a_prediction_without_ui_error():
         "Odd soft Under",
         "EV Over",
         "EV Under",
+        "Leitura Pinnacle",
+        "Leitura estrutural",
     }.issubset(metric_labels)
     assert any(
-        "Versão da interface: postdraft-confidence-v4-2026-08-05"
+        "Versão da interface: market-decision-v6-2026-08-05"
         in caption.value
         for caption in app.caption
     )
@@ -130,11 +132,21 @@ def test_default_draft_produces_a_prediction_without_ui_error():
     )
     assert any(
         message.value in {
-            "Modelos concordam em uma aposta.",
-            "confiança alta de tendência. Sinal verde",
-            "Modelos divergem. Apostar 0.5u no lado da Pinnacle.",
-            "Nenhum modelo indica valor. Evitar aposta.",
-            "Modelos divergem. Apenas um modelo indica valor.",
+            "Modelos concordam em uma aposta. Over confirmado.",
+            "Modelos concordam em uma aposta. Under confirmado.",
+            "Confiança alta de tendência. Sinal verde para Over.",
+            "Confiança alta de tendência. Sinal verde para Under.",
+            "Modelos divergem. Apostar 0.5u no lado da Pinnacle: Over.",
+            "Modelos divergem. Apostar 0.5u no lado da Pinnacle: Under.",
+            "Nenhum valor indicado. Não apostar.",
+            "Pinnacle se opõe ao sinal estrutural. Não apostar.",
+            "Somente o modelo estrutural indica valor; Pinnacle neutra.",
+            "Pinnacle indica valor. Apostar 0.5u no lado da Pinnacle: Over.",
+            "Pinnacle indica valor. Apostar 0.5u no lado da Pinnacle: Under.",
+            (
+                "Divergência extrema entre estrutural e Pinnacle. "
+                "Não tratar como confiança alta."
+            ),
         }
         for message in [*app.success, *app.warning, *app.info]
     )

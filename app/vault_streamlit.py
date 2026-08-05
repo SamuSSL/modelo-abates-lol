@@ -28,7 +28,7 @@ from app.ui_options import team_label, team_options
 BUNDLE_PATH = Path("app_data/model_bundle.json")
 ROSTER_CATALOG_PATH = Path("app_data/roster_catalog.json")
 TRACKING_PATH = Path("app_data/time_series_tracking.csv.gz")
-UI_RELEASE = "postdraft-confidence-v4-2026-08-05"
+UI_RELEASE = "market-decision-v6-2026-08-05"
 STRUCTURAL_REFERENCE_INTERFACE = "predraft-ev-v2-2026-08-04"
 
 
@@ -1005,19 +1005,22 @@ def _render_predraft_prediction(
             agreement_columns = st.columns(2)
             pinnacle_side = agreement["pinnacle_preferred_side"]
             structural_side = agreement["structural_preferred_side"]
+            pinnacle_signal = agreement.get("pinnacle_signal_side")
+            structural_signal = agreement.get("structural_signal_side")
             agreement_columns[0].metric(
-                "Pinnacle prefere",
-                pinnacle_side.title(),
-                f"EV {agreement[f'pinnacle_ev_{pinnacle_side}']:+.1%}",
+                "Leitura Pinnacle",
+                pinnacle_signal.title() if pinnacle_signal else "Neutra",
+                f"Melhor EV {agreement[f'pinnacle_ev_{pinnacle_side}']:+.1%}",
             )
             agreement_columns[1].metric(
-                "Estrutural prefere",
-                structural_side.title(),
-                f"EV {agreement[f'structural_ev_{structural_side}']:+.1%}",
+                "Leitura estrutural",
+                structural_signal.title() if structural_signal else "Neutra",
+                f"Melhor EV {agreement[f'structural_ev_{structural_side}']:+.1%}",
             )
             st.caption(
-                "O sinal considera EV positivo nas odds soft. A recomendação "
-                "de 0.5u só aparece quando ambos têm valor em lados opostos."
+                "Neutra significa diferença inferior a 1 ponto percentual "
+                "contra a probabilidade no-vig da soft. A stake exibida "
+                "segue a decisão combinada abaixo."
             )
             market_diagnostics = pinnacle_reference.get("diagnostics") or {}
             if market_diagnostics.get("team_a_implied_mean") is not None:
@@ -1066,38 +1069,35 @@ def _render_predraft_prediction(
         ev_columns = st.columns(2)
         ev_columns[0].metric("EV Over", f"{operational['ev_over']:+.1%}")
         ev_columns[1].metric("EV Under", f"{operational['ev_under']:+.1%}")
+        st.subheader("Decisão combinada do paper bet")
         bet_blocked = result.get("bet_status") == "blocked"
-        best_side = (
-            "Over"
-            if operational["ev_over"] >= operational["ev_under"]
-            else "Under"
-        )
-        best_ev = max(operational["ev_over"], operational["ev_under"])
-        best_fair_odds = (
-            operational["fair_odds_over"]
-            if best_side == "Over"
-            else operational["fair_odds_under"]
-        )
-        best_soft_odds = (
-            request["soft_odds_over"]
-            if best_side == "Over"
-            else request["soft_odds_under"]
-        )
+        agreement = operational.get("model_agreement") or {}
+        recommended_side = agreement.get("recommended_side")
+        recommended_stake = agreement.get("recommended_stake")
+        recommended_model = agreement.get("recommended_model")
         if bet_blocked:
             st.warning(
                 "Não apostar agora. O cálculo de valor está visível apenas "
                 "para auditoria porque a aposta foi bloqueada."
             )
-        elif best_ev > 0:
+        elif recommended_side is not None and recommended_stake is not None:
+            side_label = recommended_side.title()
+            recommended_soft_odds = request[f"soft_odds_{recommended_side}"]
+            model_label = (
+                "modelo estrutural"
+                if recommended_model == "structural"
+                else "Pinnacle"
+            )
             st.success(
-                f"Paper bet indicada: {best_side} {line:.1f} a "
-                f"{best_soft_odds:.2f}. Odd justa {best_fair_odds:.2f} e "
-                f"EV {best_ev:+.1%}."
+                f"Paper bet indicada: {side_label} {line:.1f} a "
+                f"{recommended_soft_odds:.2f}, stake de "
+                f"{recommended_stake:g}u. Referência do sinal: "
+                f"{model_label}. Odd justa "
+                f"{agreement['recommended_fair_odds']:.2f} e EV "
+                f"{agreement['recommended_ev']:+.1%}."
             )
         else:
-            st.info(
-                "Sem valor positivo nas odds informadas. Não fazer paper bet."
-            )
+            st.info("Nenhum valor indicado. Não apostar.")
         st.caption(
             "Backtest semanal corrigido: 495 apostas, yield de 4,26%, "
             "drawdown máximo de 15,44u e intervalo bootstrap de 95% "

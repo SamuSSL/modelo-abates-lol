@@ -335,12 +335,22 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
     operational = result.get("operational_prediction") or result
     agreement = result.get("model_agreement") or {}
     interval = operational.get("prediction_interval_90") or [None, None]
-    chosen_probability = operational.get(
-        "probability_over" if decision == "over" else "probability_under"
+    recommendation_applied = (
+        decision == agreement.get("recommended_side")
+        and agreement.get("recommended_probability") is not None
     )
-    chosen_fair_odds = operational.get(
-        "fair_odds_over" if decision == "over" else "fair_odds_under"
-    )
+    if recommendation_applied:
+        chosen_probability = agreement.get("recommended_probability")
+        chosen_fair_odds = agreement.get("recommended_fair_odds")
+        decision_probability_source = agreement.get("recommended_model")
+    else:
+        chosen_probability = operational.get(
+            "probability_over" if decision == "over" else "probability_under"
+        )
+        chosen_fair_odds = operational.get(
+            "fair_odds_over" if decision == "over" else "fair_odds_under"
+        )
+        decision_probability_source = operational.get("prediction_source")
     expected_value = (
         float(chosen_probability) * float(offered_odds) - 1
         if chosen_probability is not None and offered_odds is not None
@@ -393,6 +403,7 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
         "fair_odds_over": operational.get("fair_odds_over"),
         "fair_odds_under": operational.get("fair_odds_under"),
         "chosen_fair_odds": chosen_fair_odds,
+        "decision_probability_source": decision_probability_source,
         "expected_value": expected_value,
         "prediction_source": result.get(
             "prediction_source",
@@ -416,12 +427,39 @@ def _flatten_bet_row(row: tuple[Any, ...]) -> dict[str, Any]:
         "pinnacle_positive_side": agreement.get(
             "pinnacle_positive_side"
         ),
+        "structural_signal_side": agreement.get("structural_signal_side"),
+        "pinnacle_signal_side": agreement.get("pinnacle_signal_side"),
+        "soft_no_vig_probability_over": agreement.get(
+            "soft_no_vig_probability_over"
+        ),
+        "structural_probability_edge": agreement.get(
+            "structural_probability_edge"
+        ),
+        "pinnacle_probability_edge": agreement.get(
+            "pinnacle_probability_edge"
+        ),
+        "mean_disagreement_kills": agreement.get(
+            "mean_disagreement_kills"
+        ),
+        "extreme_mean_disagreement": agreement.get(
+            "extreme_mean_disagreement"
+        ),
         "confiometer_recommended_side": agreement.get(
             "recommended_side"
         ),
         "confiometer_recommended_stake": agreement.get(
             "recommended_stake"
         ),
+        "confiometer_recommended_model": agreement.get(
+            "recommended_model"
+        ),
+        "confiometer_recommended_probability": agreement.get(
+            "recommended_probability"
+        ),
+        "confiometer_recommended_fair_odds": agreement.get(
+            "recommended_fair_odds"
+        ),
+        "confiometer_recommended_ev": agreement.get("recommended_ev"),
         "structural_ev_over": agreement.get("structural_ev_over"),
         "structural_ev_under": agreement.get("structural_ev_under"),
         "pinnacle_ev_over": agreement.get("pinnacle_ev_over"),

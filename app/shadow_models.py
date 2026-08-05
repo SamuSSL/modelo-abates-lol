@@ -7,6 +7,10 @@ from app.lolkills_inference import negative_binomial_pmf
 from app.predraft_contract import EV_THRESHOLDS, no_vig_probabilities
 
 
+MARKET_SIGNAL_DEADBAND = 0.01
+EXTREME_MEAN_DISAGREEMENT_KILLS = 4.1
+
+
 def _probability_over(pmf: list[float], line: float) -> float:
     threshold = math.floor(float(line))
     return 1 - sum(pmf[: threshold + 1])
@@ -119,6 +123,18 @@ def _positive_ev_side(ev_over: float, ev_under: float) -> str | None:
     return preferred_side if preferred_ev > 0 else None
 
 
+def _directional_signal_side(
+    probability_over: float,
+    reference_probability_over: float,
+) -> str | None:
+    difference = probability_over - reference_probability_over
+    if difference >= MARKET_SIGNAL_DEADBAND:
+        return "over"
+    if difference <= -MARKET_SIGNAL_DEADBAND:
+        return "under"
+    return None
+
+
 def evaluate_model_agreement(
     request: dict[str, Any],
     structural_result: dict[str, Any],
@@ -138,7 +154,35 @@ def evaluate_model_agreement(
         structural_ev_over,
         structural_ev_under,
     )
+    soft_probability_over, _ = no_vig_probabilities(
+        request["soft_odds_over"],
+        request["soft_odds_under"],
+    )
+    structural_probability_edge = (
+        float(structural_result["probability_over"])
+        - soft_probability_over
+    )
+    structural_signal_side = _directional_signal_side(
+        float(structural_result["probability_over"]),
+        soft_probability_over,
+    )
     if pinnacle_reference is None:
+        recommended_side = structural_positive_side
+        recommended_stake = (
+            1.0 if structural_positive_side is not None else None
+        )
+        recommended_probability = (
+            float(structural_result[f"probability_{recommended_side}"])
+            if recommended_side is not None
+            else None
+        )
+        recommended_ev = (
+            structural_ev_over
+            if recommended_side == "over"
+            else structural_ev_under
+            if recommended_side == "under"
+            else None
+        )
         return {
             "status": "unavailable",
             "models_agree": None,
@@ -148,13 +192,30 @@ def evaluate_model_agreement(
             "pinnacle_preferred_side": None,
             "structural_positive_side": structural_positive_side,
             "pinnacle_positive_side": None,
-            "recommended_side": None,
-            "recommended_stake": None,
+            "structural_signal_side": structural_signal_side,
+            "pinnacle_signal_side": None,
+            "recommended_side": recommended_side,
+            "recommended_stake": recommended_stake,
+            "recommended_model": (
+                "structural" if recommended_side is not None else None
+            ),
+            "recommended_probability": recommended_probability,
+            "recommended_fair_odds": (
+                1 / recommended_probability
+                if recommended_probability is not None
+                else None
+            ),
+            "recommended_ev": recommended_ev,
             "alert_level": "info",
             "structural_ev_over": structural_ev_over,
             "structural_ev_under": structural_ev_under,
             "pinnacle_ev_over": None,
             "pinnacle_ev_under": None,
+            "soft_no_vig_probability_over": soft_probability_over,
+            "structural_probability_edge": structural_probability_edge,
+            "pinnacle_probability_edge": None,
+            "mean_disagreement_kills": None,
+            "extreme_mean_disagreement": None,
         }
     pinnacle_ev_over = float(
         pinnacle_reference["probability_over_soft"]
@@ -167,45 +228,130 @@ def evaluate_model_agreement(
         pinnacle_ev_over,
         pinnacle_ev_under,
     )
-    directional_agreement = structural_side == pinnacle_side
+    pinnacle_probability_edge = float(
+        pinnacle_reference["probability_over_soft"]
+    ) - soft_probability_over
+    pinnacle_signal_side = _directional_signal_side(
+        float(pinnacle_reference["probability_over_soft"]),
+        soft_probability_over,
+    )
+    directional_agreement = (
+        structural_signal_side is not None
+        and structural_signal_side == pinnacle_signal_side
+    )
+    mean_disagreement_kills = (
+        float(structural_result["mean"])
+        - float(pinnacle_reference["mean"])
+        if structural_result.get("mean") is not None
+        and pinnacle_reference.get("mean") is not None
+        else None
+    )
+    extreme_mean_disagreement = (
+        mean_disagreement_kills is not None
+        and abs(mean_disagreement_kills)
+        >= EXTREME_MEAN_DISAGREEMENT_KILLS
+    )
     recommended_side = None
     recommended_stake = None
+    recommended_model = None
     if (
         structural_positive_side is not None
         and pinnacle_positive_side is not None
     ):
         if structural_positive_side == pinnacle_positive_side:
             status = "bet_agreement"
-            message = "Modelos concordam em uma aposta."
+            message = (
+                "Modelos concordam em uma aposta. "
+                f"{structural_positive_side.title()} confirmado."
+            )
             alert_level = "success"
             models_agree = True
+            recommended_side = structural_positive_side
+            recommended_stake = 1.0
+            recommended_model = "structural"
         else:
             status = "opposing_positive_ev"
             message = (
-                "Modelos divergem. Apostar 0.5u no lado da Pinnacle."
+                "Modelos divergem. Apostar 0.5u no lado da Pinnacle: "
+                f"{pinnacle_positive_side.title()}."
             )
             alert_level = "warning"
             models_agree = False
             recommended_side = pinnacle_positive_side
             recommended_stake = 0.5
+            recommended_model = "pinnacle"
     elif (
         structural_positive_side is None
         and pinnacle_positive_side is None
     ):
         status = "no_value"
-        message = "Nenhum modelo indica valor. Evitar aposta."
+        message = "Nenhum valor indicado. Não apostar."
         alert_level = "info"
         models_agree = False
-    elif directional_agreement:
-        status = "high_trend"
-        message = "confiança alta de tendência. Sinal verde"
-        alert_level = "success"
-        models_agree = False
     else:
-        status = "one_sided_directional_disagreement"
-        message = "Modelos divergem. Apenas um modelo indica valor."
-        alert_level = "warning"
+        if pinnacle_positive_side is not None:
+            status = "pinnacle_only_value"
+            message = (
+                "Pinnacle indica valor. Apostar 0.5u no lado da "
+                f"Pinnacle: {pinnacle_positive_side.title()}."
+            )
+            alert_level = "success"
+            recommended_side = pinnacle_positive_side
+            recommended_stake = 0.5
+            recommended_model = "pinnacle"
+        elif extreme_mean_disagreement:
+            status = "extreme_mean_disagreement"
+            message = (
+                "Divergência extrema entre estrutural e Pinnacle. "
+                "Não tratar como confiança alta."
+            )
+            alert_level = "warning"
+        elif pinnacle_signal_side == structural_positive_side:
+            status = "high_trend"
+            message = (
+                "Confiança alta de tendência. Sinal verde para "
+                f"{structural_positive_side.title()}."
+            )
+            alert_level = "success"
+            recommended_side = structural_positive_side
+            recommended_stake = 1.0
+            recommended_model = "structural"
+        elif pinnacle_signal_side is None:
+            status = "single_model_value_other_neutral"
+            message = (
+                "Somente o modelo estrutural indica valor; "
+                "Pinnacle neutra."
+            )
+            alert_level = "info"
+            recommended_side = structural_positive_side
+            recommended_stake = 0.5
+            recommended_model = "structural"
+        else:
+            status = "one_sided_directional_disagreement"
+            message = "Pinnacle se opõe ao sinal estrutural. Não apostar."
+            alert_level = "warning"
         models_agree = False
+    if recommended_model == "structural":
+        recommended_probability = float(
+            structural_result[f"probability_{recommended_side}"]
+        )
+        recommended_ev = (
+            structural_ev_over
+            if recommended_side == "over"
+            else structural_ev_under
+        )
+    elif recommended_model == "pinnacle":
+        recommended_probability = float(
+            pinnacle_reference[f"probability_{recommended_side}_soft"]
+        )
+        recommended_ev = (
+            pinnacle_ev_over
+            if recommended_side == "over"
+            else pinnacle_ev_under
+        )
+    else:
+        recommended_probability = None
+        recommended_ev = None
     return {
         "status": status,
         "models_agree": models_agree,
@@ -215,13 +361,28 @@ def evaluate_model_agreement(
         "pinnacle_preferred_side": pinnacle_side,
         "structural_positive_side": structural_positive_side,
         "pinnacle_positive_side": pinnacle_positive_side,
+        "structural_signal_side": structural_signal_side,
+        "pinnacle_signal_side": pinnacle_signal_side,
         "recommended_side": recommended_side,
         "recommended_stake": recommended_stake,
+        "recommended_model": recommended_model,
+        "recommended_probability": recommended_probability,
+        "recommended_fair_odds": (
+            1 / recommended_probability
+            if recommended_probability is not None
+            else None
+        ),
+        "recommended_ev": recommended_ev,
         "alert_level": alert_level,
         "structural_ev_over": structural_ev_over,
         "structural_ev_under": structural_ev_under,
         "pinnacle_ev_over": pinnacle_ev_over,
         "pinnacle_ev_under": pinnacle_ev_under,
+        "soft_no_vig_probability_over": soft_probability_over,
+        "structural_probability_edge": structural_probability_edge,
+        "pinnacle_probability_edge": pinnacle_probability_edge,
+        "mean_disagreement_kills": mean_disagreement_kills,
+        "extreme_mean_disagreement": extreme_mean_disagreement,
     }
 
 

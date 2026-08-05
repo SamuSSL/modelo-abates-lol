@@ -15,7 +15,7 @@ from app.ui_options import team_label, team_options
 from app.vault_streamlit import UI_RELEASE, run_vault_app
 
 
-DEPLOY_RELEASE = "postdraft-confidence-v4-2026-08-05"
+DEPLOY_RELEASE = "market-decision-v6-2026-08-05"
 if UI_RELEASE != DEPLOY_RELEASE:
     raise RuntimeError("A versão da interface não corresponde ao deploy.")
 run_vault_app()
