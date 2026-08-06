@@ -1045,16 +1045,21 @@ def _render_predraft_prediction(
                         operational_prediction["model_agreement"]
                     )
             event_id = save_prediction(request, persisted_result, database_url)
-            quote_ids = [
-                save_soft_quote_observation(
-                    quote_row["request"],
-                    event_id,
-                    result.get("prediction_id", "blocked"),
-                    database_url,
-                )
-                for quote_row in operational_quotes
-            ]
-            quote_id = quote_ids[0]
+            quote_ids = []
+            quote_persistence_error = None
+            try:
+                quote_ids = [
+                    save_soft_quote_observation(
+                        quote_row["request"],
+                        event_id,
+                        result.get("prediction_id", "blocked"),
+                        database_url,
+                    )
+                    for quote_row in operational_quotes
+                ]
+            except Exception as error:
+                quote_persistence_error = type(error).__name__
+            quote_id = quote_ids[0] if quote_ids else None
             shadow_persistence_error = None
             try:
                 save_shadow_predictions(
@@ -1075,6 +1080,7 @@ def _render_predraft_prediction(
             "operational_quotes": operational_quotes,
             "decision": None,
             "decision_stake": None,
+            "quote_persistence_error": quote_persistence_error,
             "shadow_persistence_error": shadow_persistence_error,
         }
 
@@ -1085,6 +1091,11 @@ def _render_predraft_prediction(
     result = prediction_state["result"]
     event_id = prediction_state["event_id"]
     quote_id = prediction_state.get("quote_id")
+    if prediction_state.get("quote_persistence_error"):
+        st.warning(
+            "A previsão foi calculada, mas as cotações soft não puderam ser "
+            "salvas no banco permanente."
+        )
     if prediction_state.get("shadow_persistence_error"):
         st.warning(
             "A previsão e os challengers foram preservados no evento, mas as "
@@ -1746,25 +1757,32 @@ def _render_synthetic_pinnacle(
         planned_time,
         tzinfo=ZoneInfo("America/Sao_Paulo"),
     ).astimezone(timezone.utc).isoformat()
-    for quote_row, quote_result in zip(soft_quotes, results):
-        quote = {
-            "observed_at": observed_at,
-            "bookmaker": quote_row["bookmaker"],
-            "league": league,
-            "planned_at": planned_at,
-            "map_number": int(map_number),
-            "quote_stage": "first_seen",
-            "soft_line": quote_row["line"],
-            "soft_odds_over": quote_row["odds_over"],
-            "soft_odds_under": quote_row["odds_under"],
-            "pinnacle_input_available": False,
-            "quote_source": "manual_synthetic_pinnacle",
-            "team_a": {"team_name": team_a["team_name"], "team_id": team_a.get("team_id")},
-            "team_b": {"team_name": team_b["team_name"], "team_id": team_b.get("team_id")},
-        }
-        quote_id = save_soft_quote_observation(quote, database_url=database_url)
-        save_pinnacle_forecast(quote_id, quote_result, database_url)
-    st.success(f"{len(results)} cotação(ões) e forecasts sintéticos registrados.")
+    try:
+        for quote_row, quote_result in zip(soft_quotes, results):
+            quote = {
+                "observed_at": observed_at,
+                "bookmaker": quote_row["bookmaker"],
+                "league": league,
+                "planned_at": planned_at,
+                "map_number": int(map_number),
+                "quote_stage": "first_seen",
+                "soft_line": quote_row["line"],
+                "soft_odds_over": quote_row["odds_over"],
+                "soft_odds_under": quote_row["odds_under"],
+                "pinnacle_input_available": False,
+                "quote_source": "manual_synthetic_pinnacle",
+                "team_a": {"team_name": team_a["team_name"], "team_id": team_a.get("team_id")},
+                "team_b": {"team_name": team_b["team_name"], "team_id": team_b.get("team_id")},
+            }
+            quote_id = save_soft_quote_observation(quote, database_url=database_url)
+            save_pinnacle_forecast(quote_id, quote_result, database_url)
+    except Exception:
+        st.warning(
+            "A previsão foi calculada, mas a cotação e o forecast não puderam "
+            "ser salvos no banco permanente."
+        )
+    else:
+        st.success(f"{len(results)} cotação(ões) e forecasts sintéticos registrados.")
 
 
 def run_vault_app() -> None:
