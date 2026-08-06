@@ -9,6 +9,11 @@ from app.ui_options import team_label
 def _fill_moneyline(app):
     next(
         item
+        for item in app.text_input
+        if item.label == "Casa soft"
+    ).set_value("Soft Test")
+    next(
+        item
         for item in app.number_input
         if item.label == "Moneyline equipe A"
     ).set_value(1.90)
@@ -51,7 +56,7 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
 
     assert len(app.exception) == 0
     assert any(
-        "Interface market-decision-v6-2026-08-05" in markdown.value
+        "Interface synthetic-pinnacle-direct-v7-2026-08-05" in markdown.value
         for markdown in app.markdown
     )
     default_league = app.selectbox[0].value
@@ -123,7 +128,7 @@ def test_default_draft_produces_a_prediction_without_ui_error():
         "Leitura estrutural",
     }.issubset(metric_labels)
     assert any(
-        "Versão da interface: market-decision-v6-2026-08-05"
+            "Versão da interface: synthetic-pinnacle-direct-v7-2026-08-05"
         in caption.value
         for caption in app.caption
     )
@@ -171,6 +176,9 @@ def test_streamlit_uses_directed_fallback_without_pinnacle_total():
         for item in app.checkbox
         if item.label.startswith("Total Pinnacle disponível")
     ).set_value(False).run()
+    next(
+        item for item in app.text_input if item.label == "Casa soft"
+    ).set_value("Soft Test")
     for label, value in (
         ("Moneyline equipe A", 1.90),
         ("Moneyline equipe B", 1.90),
@@ -197,6 +205,9 @@ def test_streamlit_uses_automatic_fallback_for_empty_pinnacle_odds():
         "streamlit_app.py",
         default_timeout=20,
     ).run()
+    next(
+        item for item in app.text_input if item.label == "Casa soft"
+    ).set_value("Soft Test")
     for label, value in (
         ("Moneyline equipe A", 1.90),
         ("Moneyline equipe B", 1.90),
@@ -211,6 +222,20 @@ def test_streamlit_uses_automatic_fallback_for_empty_pinnacle_odds():
     assert any(
         "Fallback ativo: Modelo dirigido + moneyline" in message.value
         for message in app.info
+    )
+
+
+def test_streamlit_requires_bookmaker_for_manual_soft_collection():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+
+    app.button[0].click().run(timeout=30)
+
+    assert any(
+        "Informe a casa soft" in message.value
+        for message in app.error
     )
 
 
@@ -257,6 +282,93 @@ def test_tracking_page_loads_without_ui_error():
     assert any(
         title.value == "Tracking temporal"
         for title in app.title
+    )
+
+
+def test_synthetic_pinnacle_page_uses_no_moneyline_input():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+
+    app.radio[0].set_value("Pinnacle sintética").run(timeout=30)
+
+    assert len(app.exception) == 0
+    assert any(
+        title.value == "Pinnacle sintética pré-abertura"
+        for title in app.title
+    )
+    assert not any(
+        "Moneyline" in item.label
+        for item in app.number_input
+    )
+
+
+def test_current_model_exposes_three_optional_soft_quotes():
+    app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
+    for label in ("Adicionar cotação soft 2", "Adicionar cotação soft 3"):
+        next(item for item in app.checkbox if item.label == label).set_value(True).run()
+    labels = {item.label for item in app.number_input}
+    assert {"Linha soft", "Linha soft 2", "Linha soft 3"}.issubset(labels)
+    assert {"Odd Over soft 2", "Odd Under soft 3"}.issubset(labels)
+
+
+def test_synthetic_model_exposes_three_optional_soft_quotes():
+    app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
+    app.radio[0].set_value("Pinnacle sintética").run(timeout=30)
+    for label in (
+        "Adicionar cotação sintética 2",
+        "Adicionar cotação sintética 3",
+    ):
+        next(item for item in app.checkbox if item.label == label).set_value(True).run()
+    labels = {item.label for item in app.number_input}
+    assert {
+        "Linha soft sintética", "Linha soft sintética 2",
+        "Linha soft sintética 3",
+    }.issubset(labels)
+
+
+def test_synthetic_model_calculates_three_soft_quotes_without_ui_error():
+    app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
+    app.radio[0].set_value("Pinnacle sintética").run(timeout=30)
+    for label in (
+        "Adicionar cotação sintética 2",
+        "Adicionar cotação sintética 3",
+    ):
+        next(item for item in app.checkbox if item.label == label).set_value(True).run()
+    for label, value in (
+        ("Casa soft sintética", "Soft 1"),
+        ("Casa soft sintética 2", "Soft 2"),
+        ("Casa soft sintética 3", "Soft 3"),
+    ):
+        next(item for item in app.text_input if item.label == label).set_value(value)
+    next(
+        button for button in app.button
+        if button.label == "Calcular Pinnacle sintética"
+    ).click().run(timeout=30)
+    assert len(app.exception) == 0
+    assert any(
+        metric.label == "Linha Pinnacle final esperada" for metric in app.metric
+    )
+    assert sum(
+        "Confiômetro:" in info.value for info in app.info
+    ) >= 3
+
+
+def test_current_model_calculates_three_soft_quotes_without_ui_error():
+    app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
+    for label in ("Adicionar cotação soft 2", "Adicionar cotação soft 3"):
+        next(item for item in app.checkbox if item.label == label).set_value(True).run()
+    for label, value in (("Casa soft 2", "Soft 2"), ("Casa soft 3", "Soft 3")):
+        next(item for item in app.text_input if item.label == label).set_value(value)
+    app = _fill_moneyline(app)
+    next(
+        button for button in app.button if button.label == "Calcular previsão"
+    ).click().run(timeout=30)
+    assert len(app.exception) == 0
+    assert any(
+        "Confiômetro e valor por cotação soft" in subheader.value
+        for subheader in app.subheader
     )
 
 

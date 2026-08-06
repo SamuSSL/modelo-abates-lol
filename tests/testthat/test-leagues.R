@@ -1,13 +1,15 @@
-test_that("league mapping preserves the seven canonical targets", {
+test_that("league mapping preserves the canonical targets", {
   expect_equal(
     canonical_target_leagues(),
-    c("LCK", "LPL", "LEC", "CBLOL", "LCS", "LFL", "LES")
+    c("LCK", "LPL", "LEC", "CBLOL", "LCS", "LFL", "LES", "TCL", "PRM")
   )
 
-  raw <- c("LCK", "LVP SL", "LES", "LTA N", "LTA S", "LTA", "MSI")
+  raw <- c(
+    "LCK", "LVP SL", "LES", "LTA N", "LTA S", "TCL", "PRM", "LTA", "MSI"
+  )
   expect_equal(
     canonicalize_league(raw),
-    c("LCK", "LES", "LES", "LCS", "CBLOL", NA, NA)
+    c("LCK", "LES", "LES", "LCS", "CBLOL", "TCL", "PRM", NA, NA)
   )
 })
 

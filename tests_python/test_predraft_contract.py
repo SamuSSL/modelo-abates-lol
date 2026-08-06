@@ -76,6 +76,28 @@ def test_predraft_contract_requires_both_soft_odds(bundle):
         normalize_predraft_request(request)
 
 
+def test_predraft_contract_accepts_manual_soft_observation(bundle):
+    request = make_request(bundle)
+    request.update(
+        {
+            "bookmaker": "Soft Test",
+            "quote_stage": "first_seen",
+            "observed_at": "2026-08-08T11:25:00+00:00",
+        }
+    )
+    normalized = normalize_predraft_request(request)
+    assert normalized["bookmaker"] == "Soft Test"
+    assert normalized["quote_stage"] == "first_seen"
+
+
+def test_predraft_contract_rejects_invalid_quote_stage(bundle):
+    request = make_request(bundle)
+    request["bookmaker"] = "Soft Test"
+    request["quote_stage"] = "opening"
+    with pytest.raises(ValueError, match="quote_stage"):
+        normalize_predraft_request(request)
+
+
 def test_optional_team_totals_require_complete_triplet(bundle):
     request = make_request(bundle)
     request["team_a_total_line"] = 15.5

@@ -9,6 +9,7 @@ provider:
 
 coverage:
   useful_history_start: "2025-05-01 00:00:00"
+  live_history_start: "2026-03-01 00:00:00"
   pre_2025_audit_only: true
 
 market_contract:
@@ -90,6 +91,15 @@ canonical_competitions:
     competition: LVP SL
     bettingiscool_league_id: 200246
     oracle_league: LVP SL
+  - canonical_league: TCL
+    competition: TCL
+    bettingiscool_league_id: 197466
+    split: null
+  - canonical_league: PRM
+    competition: Prime League 1st Division
+    bettingiscool_league_id: 218127
+    oracle_league: PRM
+    split: null
 
 excluded_competitions:
   - competition: LCKC Kickoff
@@ -100,5 +110,6 @@ collection:
   fixture_window_days: 90
   fixture_limit: 1000
   quota_reserve_tokens: 1000
+  live_quota_reserve_tokens: 10000
   team_totals_quota_reserve_tokens: 10000
   maximum_retries: 5

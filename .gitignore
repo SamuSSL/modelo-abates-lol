@@ -31,5 +31,6 @@ __pycache__/
 *.pyc
 .venv/
 .streamlit/secrets.toml
+key.txt
 .local/
 stan/*.exe

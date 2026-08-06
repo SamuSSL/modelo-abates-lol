@@ -8,6 +8,8 @@ target_leagues:
   - LCS
   - LFL
   - LES
+  - TCL
+  - PRM
 
 canonical_mapping:
   LCK: LCK
@@ -18,6 +20,8 @@ canonical_mapping:
   LFL: LFL
   LVP SL: LES
   LES: LES
+  TCL: TCL
+  PRM: PRM
   LTA N: LCS
   LTA S: CBLOL
 
@@ -31,4 +35,3 @@ auxiliary_competitions:
   - DCup
   - KeSPA
   - KeSPA Cup
-

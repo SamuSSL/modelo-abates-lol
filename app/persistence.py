@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import os
 import sqlite3
@@ -75,6 +76,83 @@ CREATE TABLE IF NOT EXISTS paper_bet_decisions (
     stake REAL NOT NULL,
     FOREIGN KEY (shadow_id) REFERENCES shadow_predictions(shadow_id),
     FOREIGN KEY (event_id) REFERENCES prediction_events(event_id)
+)
+"""
+
+SOFT_QUOTE_SCHEMA = """
+CREATE TABLE IF NOT EXISTS soft_quote_observations (
+    quote_id TEXT PRIMARY KEY,
+    event_id TEXT,
+    prediction_id TEXT,
+    observed_at TEXT NOT NULL,
+    bookmaker TEXT NOT NULL,
+    gameid TEXT,
+    league TEXT NOT NULL,
+    planned_at TEXT NOT NULL,
+    blue_team TEXT NOT NULL,
+    red_team TEXT NOT NULL,
+    map_number INTEGER NOT NULL,
+    quote_stage TEXT NOT NULL CHECK (quote_stage IN ('first_seen', 'update')),
+    line REAL NOT NULL,
+    odds_over REAL NOT NULL,
+    odds_under REAL NOT NULL,
+    pinnacle_available INTEGER NOT NULL,
+    pinnacle_line REAL,
+    pinnacle_odds_over REAL,
+    pinnacle_odds_under REAL,
+    quote_source TEXT NOT NULL,
+    payload_json TEXT NOT NULL
+)
+"""
+
+PINNACLE_FORECAST_SCHEMA = """
+CREATE TABLE IF NOT EXISTS pinnacle_forecasts (
+    forecast_id TEXT PRIMARY KEY,
+    quote_id TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    model_id TEXT NOT NULL,
+    model_status TEXT NOT NULL,
+    target TEXT NOT NULL,
+    predicted_last_mu REAL,
+    predicted_last_mu_low REAL,
+    predicted_last_mu_high REAL,
+    probability_over REAL,
+    probability_under REAL,
+    conservative_ev_over REAL,
+    conservative_ev_under REAL,
+    recommended_side TEXT,
+    action TEXT NOT NULL,
+    stake REAL NOT NULL,
+    payload_json TEXT NOT NULL,
+    FOREIGN KEY (quote_id) REFERENCES soft_quote_observations(quote_id)
+)
+"""
+
+QUOTE_OUTCOME_SCHEMA = """
+CREATE TABLE IF NOT EXISTS quote_outcomes (
+    quote_id TEXT PRIMARY KEY,
+    updated_at TEXT NOT NULL,
+    execution_status TEXT NOT NULL CHECK (
+        execution_status IN (
+            'pending', 'not_attempted', 'accepted', 'rejected',
+            'win', 'loss', 'void'
+        )
+    ),
+    executed_side TEXT CHECK (executed_side IN ('over', 'under')),
+    requested_odds REAL,
+    requested_stake REAL,
+    accepted_odds REAL,
+    accepted_stake REAL,
+    settled_at TEXT,
+    profit REAL,
+    final_pinnacle_time TEXT,
+    final_pinnacle_line REAL,
+    final_pinnacle_odds_over REAL,
+    final_pinnacle_odds_under REAL,
+    clv REAL,
+    notes TEXT,
+    payload_json TEXT NOT NULL,
+    FOREIGN KEY (quote_id) REFERENCES soft_quote_observations(quote_id)
 )
 """
 
@@ -541,3 +619,353 @@ def load_bet_history(
                 )
             ).fetchall()
     return pd.DataFrame([_flatten_bet_row(row) for row in rows])
+
+
+def _validate_soft_quote(quote: dict[str, Any]) -> dict[str, Any]:
+    normalized = dict(quote)
+    bookmaker = str(normalized.get("bookmaker") or "").strip()
+    if not bookmaker:
+        raise ValueError("A casa soft precisa ser informada.")
+    stage = str(normalized.get("quote_stage") or "first_seen")
+    if stage not in {"first_seen", "update"}:
+        raise ValueError("quote_stage precisa ser first_seen ou update.")
+    observed_raw = normalized.get("observed_at") or datetime.now(
+        timezone.utc
+    ).isoformat()
+    observed_at = datetime.fromisoformat(
+        str(observed_raw).replace("Z", "+00:00")
+    )
+    if observed_at.tzinfo is None:
+        raise ValueError("observed_at precisa informar o fuso.")
+    planned_at = datetime.fromisoformat(
+        str(normalized["planned_at"]).replace("Z", "+00:00")
+    )
+    if planned_at.tzinfo is None:
+        raise ValueError("planned_at precisa informar o fuso.")
+    line = float(normalized["soft_line"])
+    odds_over = float(normalized["soft_odds_over"])
+    odds_under = float(normalized["soft_odds_under"])
+    if (
+        not math.isfinite(line)
+        or line < 0.5
+        or not math.isclose(line % 1, 0.5, abs_tol=1e-12)
+        or not math.isfinite(odds_over)
+        or not math.isfinite(odds_under)
+        or odds_over <= 1
+        or odds_under <= 1
+    ):
+        raise ValueError("A cotação soft precisa de linha .5 e duas odds válidas.")
+    pinnacle_available = bool(normalized.get("pinnacle_input_available"))
+    pinnacle_values = (
+        normalized.get("pinnacle_total_line"),
+        normalized.get("pinnacle_total_odds_over"),
+        normalized.get("pinnacle_total_odds_under"),
+    )
+    if pinnacle_available:
+        if any(value is None for value in pinnacle_values):
+            raise ValueError("Pinnacle disponível exige linha e duas odds.")
+        pinnacle_line = float(pinnacle_values[0])
+        pinnacle_over = float(pinnacle_values[1])
+        pinnacle_under = float(pinnacle_values[2])
+        if (
+            pinnacle_over <= 1
+            or pinnacle_under <= 1
+            or not math.isclose(pinnacle_line % 1, 0.5, abs_tol=1e-12)
+        ):
+            raise ValueError("A cotação Pinnacle está inválida.")
+    normalized.update(
+        {
+            "bookmaker": bookmaker,
+            "quote_stage": stage,
+            "observed_at": observed_at.astimezone(timezone.utc).isoformat(),
+            "planned_at": planned_at.astimezone(timezone.utc).isoformat(),
+            "soft_line": line,
+            "soft_odds_over": odds_over,
+            "soft_odds_under": odds_under,
+            "pinnacle_input_available": pinnacle_available,
+            "quote_source": str(normalized.get("quote_source") or "manual"),
+        }
+    )
+    return normalized
+
+
+def _soft_quote_values(
+    quote: dict[str, Any],
+    event_id: str | None,
+    prediction_id: str | None,
+) -> tuple[Any, ...]:
+    normalized = _validate_soft_quote(quote)
+    team_a = normalized.get("team_a") or normalized.get("blue") or {}
+    team_b = normalized.get("team_b") or normalized.get("red") or {}
+    identity = "|".join(
+        str(value)
+        for value in (
+            normalized["observed_at"],
+            normalized["bookmaker"],
+            normalized.get("gameid"),
+            normalized["league"],
+            normalized["map_number"],
+            normalized["quote_stage"],
+            normalized["soft_line"],
+            normalized["soft_odds_over"],
+            normalized["soft_odds_under"],
+        )
+    )
+    quote_id = hashlib.sha256(identity.encode("utf-8")).hexdigest()
+    return (
+        quote_id,
+        event_id,
+        prediction_id,
+        normalized["observed_at"],
+        normalized["bookmaker"],
+        normalized.get("gameid"),
+        normalized["league"],
+        normalized["planned_at"],
+        str(team_a.get("team_name") or ""),
+        str(team_b.get("team_name") or ""),
+        int(normalized["map_number"]),
+        normalized["quote_stage"],
+        normalized["soft_line"],
+        normalized["soft_odds_over"],
+        normalized["soft_odds_under"],
+        int(normalized["pinnacle_input_available"]),
+        normalized.get("pinnacle_total_line"),
+        normalized.get("pinnacle_total_odds_over"),
+        normalized.get("pinnacle_total_odds_under"),
+        normalized["quote_source"],
+        json.dumps(normalized, ensure_ascii=False, sort_keys=True),
+    )
+
+
+def save_soft_quote_observation(
+    quote: dict[str, Any],
+    event_id: str | None = None,
+    prediction_id: str | None = None,
+    database_url: str | None = None,
+) -> str:
+    values = _soft_quote_values(quote, event_id, prediction_id)
+    database_url = database_url or os.getenv("DATABASE_URL")
+    placeholders = ", ".join(["%s"] * len(values))
+    if database_url and database_url.startswith(("postgres://", "postgresql://")):
+        import psycopg
+
+        with psycopg.connect(database_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(SOFT_QUOTE_SCHEMA.replace(
+                    "soft_quote_observations", "lol_kills.soft_quote_observations"
+                ))
+                cursor.execute(
+                    f"INSERT INTO lol_kills.soft_quote_observations VALUES ({placeholders}) "
+                    "ON CONFLICT (quote_id) DO NOTHING",
+                    values,
+                )
+        return str(values[0])
+    local_path = Path(".local") / "predictions.sqlite"
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(local_path) as connection:
+        connection.execute("PRAGMA foreign_keys = ON")
+        connection.execute(SOFT_QUOTE_SCHEMA)
+        connection.execute(
+            "INSERT OR IGNORE INTO soft_quote_observations VALUES ("
+            + ", ".join(["?"] * len(values))
+            + ")",
+            values,
+        )
+    return str(values[0])
+
+
+def save_pinnacle_forecast(
+    quote_id: str,
+    forecast: dict[str, Any],
+    database_url: str | None = None,
+) -> str:
+    created_at = datetime.now(timezone.utc).isoformat()
+    forecast_id = hashlib.sha256(
+        f"{quote_id}|{forecast['model_id']}|{created_at}".encode("utf-8")
+    ).hexdigest()
+    values = (
+        forecast_id,
+        quote_id,
+        created_at,
+        forecast["model_id"],
+        forecast["model_status"],
+        forecast["forecast_target"],
+        forecast.get("predicted_last_mu"),
+        forecast.get("predicted_last_mu_low"),
+        forecast.get("predicted_last_mu_high"),
+        forecast.get("probability_over"),
+        forecast.get("probability_under"),
+        forecast.get("conservative_ev_over"),
+        forecast.get("conservative_ev_under"),
+        forecast.get("recommended_side"),
+        forecast["action"],
+        float(forecast.get("stake", 0.0)),
+        json.dumps(forecast, ensure_ascii=False, sort_keys=True),
+    )
+    database_url = database_url or os.getenv("DATABASE_URL")
+    if database_url and database_url.startswith(("postgres://", "postgresql://")):
+        import psycopg
+
+        with psycopg.connect(database_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(PINNACLE_FORECAST_SCHEMA.replace(
+                    "pinnacle_forecasts", "lol_kills.pinnacle_forecasts"
+                ).replace(
+                    "soft_quote_observations", "lol_kills.soft_quote_observations"
+                ))
+                cursor.execute(
+                    "INSERT INTO lol_kills.pinnacle_forecasts VALUES ("
+                    + ", ".join(["%s"] * len(values))
+                    + ")",
+                    values,
+                )
+        return forecast_id
+    local_path = Path(".local") / "predictions.sqlite"
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(local_path) as connection:
+        connection.execute("PRAGMA foreign_keys = ON")
+        connection.execute(SOFT_QUOTE_SCHEMA)
+        connection.execute(PINNACLE_FORECAST_SCHEMA)
+        connection.execute(
+            "INSERT INTO pinnacle_forecasts VALUES ("
+            + ", ".join(["?"] * len(values))
+            + ")",
+            values,
+        )
+    return forecast_id
+
+
+def save_quote_outcome(
+    quote_id: str,
+    outcome: dict[str, Any],
+    database_url: str | None = None,
+) -> str:
+    status = str(outcome.get("execution_status") or "pending")
+    allowed = {"pending", "not_attempted", "accepted", "rejected", "win", "loss", "void"}
+    if status not in allowed:
+        raise ValueError("Status de execução inválido.")
+    accepted_odds = outcome.get("accepted_odds")
+    accepted_stake = outcome.get("accepted_stake")
+    executed_side = outcome.get("executed_side")
+    if status in {"accepted", "win", "loss"} and (
+        accepted_odds is None
+        or float(accepted_odds) <= 1
+        or accepted_stake is None
+        or float(accepted_stake) <= 0
+        or executed_side not in {"over", "under"}
+    ):
+        raise ValueError("Execução aceita exige lado, odd e stake aceitas.")
+    values = (
+        quote_id,
+        datetime.now(timezone.utc).isoformat(),
+        status,
+        executed_side,
+        outcome.get("requested_odds"),
+        outcome.get("requested_stake"),
+        accepted_odds,
+        accepted_stake,
+        outcome.get("settled_at"),
+        outcome.get("profit"),
+        outcome.get("final_pinnacle_time"),
+        outcome.get("final_pinnacle_line"),
+        outcome.get("final_pinnacle_odds_over"),
+        outcome.get("final_pinnacle_odds_under"),
+        outcome.get("clv"),
+        outcome.get("notes"),
+        json.dumps(outcome, ensure_ascii=False, sort_keys=True),
+    )
+    database_url = database_url or os.getenv("DATABASE_URL")
+    columns = (
+        "quote_id, updated_at, execution_status, executed_side, requested_odds, requested_stake, "
+        "accepted_odds, accepted_stake, settled_at, profit, final_pinnacle_time, "
+        "final_pinnacle_line, final_pinnacle_odds_over, final_pinnacle_odds_under, "
+        "clv, notes, payload_json"
+    )
+    if database_url and database_url.startswith(("postgres://", "postgresql://")):
+        import psycopg
+
+        with psycopg.connect(database_url) as connection:
+            with connection.cursor() as cursor:
+                cursor.execute(QUOTE_OUTCOME_SCHEMA.replace(
+                    "quote_outcomes", "lol_kills.quote_outcomes"
+                ).replace(
+                    "soft_quote_observations", "lol_kills.soft_quote_observations"
+                ))
+                cursor.execute(
+                    f"INSERT INTO lol_kills.quote_outcomes ({columns}) VALUES ("
+                    + ", ".join(["%s"] * len(values))
+                    + ") ON CONFLICT (quote_id) DO UPDATE SET "
+                    "updated_at = EXCLUDED.updated_at, execution_status = EXCLUDED.execution_status, "
+                    "executed_side = EXCLUDED.executed_side, "
+                    "requested_odds = EXCLUDED.requested_odds, requested_stake = EXCLUDED.requested_stake, "
+                    "accepted_odds = EXCLUDED.accepted_odds, accepted_stake = EXCLUDED.accepted_stake, "
+                    "settled_at = EXCLUDED.settled_at, profit = EXCLUDED.profit, "
+                    "final_pinnacle_time = EXCLUDED.final_pinnacle_time, "
+                    "final_pinnacle_line = EXCLUDED.final_pinnacle_line, "
+                    "final_pinnacle_odds_over = EXCLUDED.final_pinnacle_odds_over, "
+                    "final_pinnacle_odds_under = EXCLUDED.final_pinnacle_odds_under, "
+                    "clv = EXCLUDED.clv, notes = EXCLUDED.notes, payload_json = EXCLUDED.payload_json",
+                    values,
+                )
+        return quote_id
+    local_path = Path(".local") / "predictions.sqlite"
+    local_path.parent.mkdir(parents=True, exist_ok=True)
+    with sqlite3.connect(local_path) as connection:
+        connection.execute("PRAGMA foreign_keys = ON")
+        connection.execute(SOFT_QUOTE_SCHEMA)
+        connection.execute(QUOTE_OUTCOME_SCHEMA)
+        connection.execute(
+            f"INSERT INTO quote_outcomes ({columns}) VALUES ("
+            + ", ".join(["?"] * len(values))
+            + ") ON CONFLICT(quote_id) DO UPDATE SET "
+            "updated_at=excluded.updated_at, execution_status=excluded.execution_status, "
+            "executed_side=excluded.executed_side, "
+            "requested_odds=excluded.requested_odds, requested_stake=excluded.requested_stake, "
+            "accepted_odds=excluded.accepted_odds, accepted_stake=excluded.accepted_stake, "
+            "settled_at=excluded.settled_at, profit=excluded.profit, "
+            "final_pinnacle_time=excluded.final_pinnacle_time, "
+            "final_pinnacle_line=excluded.final_pinnacle_line, "
+            "final_pinnacle_odds_over=excluded.final_pinnacle_odds_over, "
+            "final_pinnacle_odds_under=excluded.final_pinnacle_odds_under, "
+            "clv=excluded.clv, notes=excluded.notes, payload_json=excluded.payload_json",
+            values,
+        )
+    return quote_id
+
+
+def load_soft_quote_observations(
+    database_url: str | None = None,
+) -> pd.DataFrame:
+    database_url = database_url or os.getenv("DATABASE_URL")
+    query = """
+        SELECT quote.*, outcome.execution_status, outcome.executed_side, outcome.accepted_odds,
+               outcome.accepted_stake, outcome.profit, outcome.clv,
+               outcome.settled_at
+        FROM {quote_table} quote
+        LEFT JOIN {outcome_table} outcome ON outcome.quote_id = quote.quote_id
+        ORDER BY quote.observed_at DESC
+    """
+    if database_url and database_url.startswith(("postgres://", "postgresql://")):
+        import psycopg
+
+        with psycopg.connect(database_url) as connection:
+            return pd.read_sql_query(
+                query.format(
+                    quote_table="lol_kills.soft_quote_observations",
+                    outcome_table="lol_kills.quote_outcomes",
+                ),
+                connection,
+            )
+    local_path = Path(".local") / "predictions.sqlite"
+    if not local_path.exists():
+        return pd.DataFrame()
+    with sqlite3.connect(local_path) as connection:
+        connection.execute(SOFT_QUOTE_SCHEMA)
+        connection.execute(QUOTE_OUTCOME_SCHEMA)
+        return pd.read_sql_query(
+            query.format(
+                quote_table="soft_quote_observations",
+                outcome_table="quote_outcomes",
+            ),
+            connection,
+        )

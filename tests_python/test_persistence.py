@@ -7,9 +7,13 @@ import pytest
 
 from app.persistence import (
     load_bet_history,
+    load_soft_quote_observations,
     save_bet_decision,
+    save_pinnacle_forecast,
     save_prediction,
+    save_quote_outcome,
     save_shadow_predictions,
+    save_soft_quote_observation,
 )
 
 
@@ -75,6 +79,120 @@ def test_prediction_is_appended_without_bet_decision(monkeypatch, tmp_path):
             "SELECT event_id, stake, bet_side FROM prediction_events"
         ).fetchone()
     assert row == (event_id, None, None)
+
+
+def make_manual_soft_quote():
+    return {
+        "observed_at": "2026-08-06T11:00:00+00:00",
+        "bookmaker": "Soft Test",
+        "gameid": "game-1",
+        "league": "LCK",
+        "planned_at": "2026-08-06T12:00:00+00:00",
+        "map_number": 1,
+        "team_a": {"team_name": "A"},
+        "team_b": {"team_name": "B"},
+        "quote_stage": "first_seen",
+        "soft_line": 24.5,
+        "soft_odds_over": 1.95,
+        "soft_odds_under": 1.85,
+        "pinnacle_input_available": False,
+        "quote_source": "manual",
+    }
+
+
+def test_manual_soft_quote_is_idempotent_and_preserves_updates(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    quote = make_manual_soft_quote()
+    first_id = save_soft_quote_observation(quote)
+    assert save_soft_quote_observation(quote) == first_id
+    update = dict(quote)
+    update["observed_at"] = "2026-08-06T11:05:00+00:00"
+    update["quote_stage"] = "update"
+    update["soft_odds_over"] = 1.90
+    second_id = save_soft_quote_observation(update)
+    rows = load_soft_quote_observations()
+    assert first_id != second_id
+    assert len(rows) == 2
+    assert set(rows["quote_stage"]) == {"first_seen", "update"}
+
+
+def test_manual_soft_quote_requires_bookmaker_and_two_valid_odds(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    quote = make_manual_soft_quote()
+    quote["bookmaker"] = ""
+    with pytest.raises(ValueError, match="casa soft"):
+        save_soft_quote_observation(quote)
+    quote = make_manual_soft_quote()
+    quote["soft_odds_under"] = 1.0
+    with pytest.raises(ValueError, match="duas odds válidas"):
+        save_soft_quote_observation(quote)
+
+
+def test_forecast_and_outcome_are_additive_and_settlement_updates(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    quote_id = save_soft_quote_observation(make_manual_soft_quote())
+    forecast_id = save_pinnacle_forecast(
+        quote_id,
+        {
+            "model_id": "ridge-v1",
+            "model_status": "shadow_only",
+            "forecast_target": "pinnacle_last_prematch_implied_mean",
+            "predicted_last_mu": 25.5,
+            "predicted_last_mu_low": 23.0,
+            "predicted_last_mu_high": 28.0,
+            "probability_over": 0.52,
+            "probability_under": 0.48,
+            "conservative_ev_over": -0.03,
+            "conservative_ev_under": -0.08,
+            "recommended_side": None,
+            "action": "shadow_abstain",
+            "stake": 0.0,
+        },
+    )
+    save_quote_outcome(
+        quote_id,
+        {"execution_status": "rejected", "requested_odds": 1.95},
+    )
+    save_quote_outcome(
+        quote_id,
+        {
+            "execution_status": "void",
+            "executed_side": "over",
+            "requested_odds": 1.95,
+            "requested_stake": 1.0,
+            "settled_at": "2026-08-06T13:00:00+00:00",
+            "profit": 0.0,
+        },
+    )
+    with sqlite3.connect(".local/predictions.sqlite") as connection:
+        forecast_count = connection.execute(
+            "SELECT count(*) FROM pinnacle_forecasts"
+        ).fetchone()[0]
+        outcome = connection.execute(
+            "SELECT execution_status, profit FROM quote_outcomes"
+        ).fetchone()
+    assert forecast_id
+    assert forecast_count == 1
+    assert outcome == ("void", 0.0)
+
+
+def test_accepted_outcome_requires_accepted_price_and_stake(
+    monkeypatch,
+    tmp_path,
+):
+    monkeypatch.chdir(tmp_path)
+    quote_id = save_soft_quote_observation(make_manual_soft_quote())
+    with pytest.raises(ValueError, match="odd e stake aceitas"):
+        save_quote_outcome(quote_id, {"execution_status": "accepted"})
 
 
 def test_bet_decision_is_saved_after_prediction(monkeypatch, tmp_path):

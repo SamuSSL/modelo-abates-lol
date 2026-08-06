@@ -99,6 +99,27 @@ def normalize_predraft_request(
                 "Os cinco titulares de uma equipe precisam ser unicos."
             )
     normalized = dict(request)
+    if normalized.get("bookmaker") is not None:
+        bookmaker = str(normalized["bookmaker"]).strip()
+        if not bookmaker:
+            raise PredraftContractError("A casa soft não pode ficar vazia.")
+        normalized["bookmaker"] = bookmaker
+    if normalized.get("quote_stage") is not None:
+        quote_stage = str(normalized["quote_stage"])
+        if quote_stage not in {"first_seen", "update"}:
+            raise PredraftContractError(
+                "quote_stage precisa ser first_seen ou update."
+            )
+        normalized["quote_stage"] = quote_stage
+    if normalized.get("observed_at") is not None:
+        observed_at = datetime.fromisoformat(
+            str(normalized["observed_at"]).replace("Z", "+00:00")
+        )
+        if observed_at.tzinfo is None:
+            raise PredraftContractError("observed_at precisa informar o fuso.")
+        normalized["observed_at"] = observed_at.astimezone(
+            timezone.utc
+        ).isoformat()
     normalized["soft_line"] = float(request["soft_line"])
     normalized["soft_odds_over"] = float(request["soft_odds_over"])
     normalized["soft_odds_under"] = float(request["soft_odds_under"])

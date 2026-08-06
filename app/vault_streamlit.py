@@ -4,6 +4,7 @@ import os
 import json
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
+from typing import Any
 from zoneinfo import ZoneInfo
 
 import pandas as pd
@@ -13,9 +14,19 @@ from streamlit.errors import StreamlitSecretNotFoundError
 from app.lolkills_inference import load_bundle, predict
 from app.persistence import (
     load_bet_history,
+    load_soft_quote_observations,
     save_bet_decision,
+    save_pinnacle_forecast,
     save_prediction,
+    save_quote_outcome,
     save_shadow_predictions,
+    save_soft_quote_observation,
+)
+from app.prematch_forecast import assess_soft_model_readiness
+from app.synthetic_pinnacle import (
+    load_synthetic_pinnacle_bundle,
+    predict_synthetic_pinnacle,
+    predict_synthetic_pinnacle_quotes,
 )
 from app.shadow_models import (
     build_operational_prediction,
@@ -28,8 +39,35 @@ from app.ui_options import team_label, team_options
 BUNDLE_PATH = Path("app_data/model_bundle.json")
 ROSTER_CATALOG_PATH = Path("app_data/roster_catalog.json")
 TRACKING_PATH = Path("app_data/time_series_tracking.csv.gz")
-UI_RELEASE = "market-decision-v6-2026-08-05"
+SYNTHETIC_PINNACLE_PATH = Path("app_data/synthetic_pinnacle_bundle.json")
+UI_RELEASE = "synthetic-pinnacle-direct-v7-2026-08-05"
 STRUCTURAL_REFERENCE_INTERFACE = "predraft-ev-v2-2026-08-04"
+
+
+def _probability_over_at_line(pmf: list[float], line: float) -> float:
+    return float(sum(pmf[int(line // 1) + 1:]))
+
+
+def _result_at_soft_quote(
+    result: dict[str, Any],
+    line: float,
+    odds_over: float,
+    odds_under: float,
+) -> dict[str, Any]:
+    adjusted = dict(result)
+    if result.get("status") != "ok" or not result.get("pmf"):
+        return adjusted
+    probability_over = _probability_over_at_line(result["pmf"], line)
+    probability_under = 1 - probability_over
+    adjusted.update({
+        "probability_over": probability_over,
+        "probability_under": probability_under,
+        "fair_odds_over": 1 / probability_over,
+        "fair_odds_under": 1 / probability_under,
+        "ev_over": probability_over * odds_over - 1,
+        "ev_under": probability_under * odds_under - 1,
+    })
+    return adjusted
 
 
 @st.cache_resource
@@ -818,7 +856,26 @@ def _render_predraft_prediction(
                         team_total_under
                     )
 
-        st.subheader("Melhor cotação soft")
+        st.subheader("Melhor cotação soft observada")
+        st.caption(
+            "O registro é first seen: a primeira cotação que você observou, "
+            "não uma abertura oficial da casa."
+        )
+        soft_identity_columns = st.columns(3)
+        bookmaker = soft_identity_columns[0].text_input(
+            "Casa soft",
+            placeholder="Ex.: Bet365",
+        )
+        quote_stage = soft_identity_columns[1].selectbox(
+            "Estágio da cotação",
+            ("first_seen", "update"),
+            format_func=lambda value: (
+                "Primeira observada" if value == "first_seen" else "Atualização"
+            ),
+        )
+        market_gameid = soft_identity_columns[2].text_input(
+            "Game ID do mercado (opcional)",
+        )
         soft_columns = st.columns(3)
         soft_line = soft_columns[0].number_input(
             "Linha soft", min_value=0.5, value=24.5, step=1.0
@@ -829,9 +886,50 @@ def _render_predraft_prediction(
         soft_under = soft_columns[2].number_input(
             "Odd Under soft", min_value=0.0, value=0.0, step=0.01
         )
+        additional_soft_quotes: list[dict[str, Any]] = []
+        for quote_number in (2, 3):
+            enabled = st.checkbox(
+                f"Adicionar cotação soft {quote_number}",
+                key=f"predraft_enable_soft_{quote_number}",
+            )
+            if enabled:
+                extra_columns = st.columns(4)
+                extra_bookmaker = extra_columns[0].text_input(
+                    f"Casa soft {quote_number}",
+                    placeholder="Ex.: Bet365",
+                    key=f"predraft_bookmaker_{quote_number}",
+                )
+                extra_line = extra_columns[1].number_input(
+                    f"Linha soft {quote_number}", min_value=0.5,
+                    value=24.5, step=0.5,
+                    key=f"predraft_soft_line_{quote_number}",
+                )
+                extra_over = extra_columns[2].number_input(
+                    f"Odd Over soft {quote_number}", min_value=1.01,
+                    value=1.90, step=0.01,
+                    key=f"predraft_soft_over_{quote_number}",
+                )
+                extra_under = extra_columns[3].number_input(
+                    f"Odd Under soft {quote_number}", min_value=1.01,
+                    value=1.90, step=0.01,
+                    key=f"predraft_soft_under_{quote_number}",
+                )
+                additional_soft_quotes.append({
+                    "bookmaker": extra_bookmaker,
+                    "line": float(extra_line),
+                    "odds_over": float(extra_over),
+                    "odds_under": float(extra_under),
+                    "slot": quote_number,
+                })
         submitted = st.button("Calcular previsão", type="primary", width="stretch")
 
     if submitted:
+        if not bookmaker.strip():
+            st.error("Informe a casa soft antes de salvar a cotação.")
+            return
+        if any(not quote["bookmaker"].strip() for quote in additional_soft_quotes):
+            st.error("Informe a casa de cada cotação soft ativada.")
+            return
         if len(selected_starters["team_a"]) != 5 or len(selected_starters["team_b"]) != 5:
             st.error("Selecione exatamente cinco titulares para cada equipe.")
             return
@@ -846,10 +944,16 @@ def _render_predraft_prediction(
             and pinnacle_over > 1
             and pinnacle_under > 1
         )
+        observed_at = datetime.now(timezone.utc).isoformat()
         request = {
             "league": league,
             "planned_at": planned_local.astimezone(timezone.utc).isoformat(),
-            "quoted_at": datetime.now(timezone.utc).isoformat(),
+            "quoted_at": observed_at,
+            "observed_at": observed_at,
+            "bookmaker": bookmaker.strip(),
+            "quote_stage": quote_stage,
+            "quote_source": "manual",
+            "gameid": market_gameid.strip() or None,
             "analysis_timing": "postdraft_live_open",
             "map_number": int(map_number),
             "team_a": {
@@ -877,6 +981,16 @@ def _render_predraft_prediction(
             "soft_odds_under": soft_under or None,
             **team_total_values,
         }
+        soft_quotes = [{
+            "bookmaker": bookmaker.strip(),
+            "line": float(soft_line),
+            "odds_over": float(soft_over),
+            "odds_under": float(soft_under),
+            "slot": 1,
+        }] + [
+            {**quote, "bookmaker": quote["bookmaker"].strip()}
+            for quote in additional_soft_quotes
+        ]
         inference_bundle = dict(bundle)
         inference_bundle["roster_catalog"] = roster_catalog
         with st.spinner("Calculando distribuição de kills..."):
@@ -887,6 +1001,34 @@ def _render_predraft_prediction(
                 if result.get("status") == "ok"
                 else None
             )
+            operational_quotes = []
+            for quote in soft_quotes:
+                quote_request = {
+                    **request,
+                    "bookmaker": quote["bookmaker"],
+                    "soft_line": quote["line"],
+                    "soft_odds_over": quote["odds_over"],
+                    "soft_odds_under": quote["odds_under"],
+                }
+                quote_result = _result_at_soft_quote(
+                    result, quote["line"], quote["odds_over"],
+                    quote["odds_under"],
+                )
+                quote_shadow = build_shadow_predictions(
+                    quote_request, quote_result, inference_bundle
+                )
+                quote_operational = (
+                    build_operational_prediction(
+                        quote_request, quote_result, quote_shadow
+                    )
+                    if result.get("status") == "ok"
+                    else None
+                )
+                operational_quotes.append({
+                    "quote": quote,
+                    "request": quote_request,
+                    "operational": quote_operational,
+                })
             persisted_result = dict(result)
             persisted_result["shadow_predictions"] = shadow_rows
             result_with_shadow = dict(result)
@@ -903,6 +1045,16 @@ def _render_predraft_prediction(
                         operational_prediction["model_agreement"]
                     )
             event_id = save_prediction(request, persisted_result, database_url)
+            quote_ids = [
+                save_soft_quote_observation(
+                    quote_row["request"],
+                    event_id,
+                    result.get("prediction_id", "blocked"),
+                    database_url,
+                )
+                for quote_row in operational_quotes
+            ]
+            quote_id = quote_ids[0]
             shadow_persistence_error = None
             try:
                 save_shadow_predictions(
@@ -918,6 +1070,9 @@ def _render_predraft_prediction(
             "request": request,
             "result": result_with_shadow,
             "event_id": event_id,
+            "quote_id": quote_id,
+            "quote_ids": quote_ids,
+            "operational_quotes": operational_quotes,
             "decision": None,
             "decision_stake": None,
             "shadow_persistence_error": shadow_persistence_error,
@@ -929,6 +1084,7 @@ def _render_predraft_prediction(
     request = prediction_state["request"]
     result = prediction_state["result"]
     event_id = prediction_state["event_id"]
+    quote_id = prediction_state.get("quote_id")
     if prediction_state.get("shadow_persistence_error"):
         st.warning(
             "A previsão e os challengers foram preservados no evento, mas as "
@@ -942,6 +1098,44 @@ def _render_predraft_prediction(
             "Previsão calculada. Referência ativa: "
             f"{operational.get('source_label', 'modelo estrutural')}."
         )
+        operational_quotes = prediction_state.get("operational_quotes") or []
+        st.subheader("Confiômetro e valor por cotação soft")
+        for quote_row in operational_quotes:
+            quote = quote_row["quote"]
+            quote_operational = quote_row.get("operational")
+            if quote_operational is None:
+                continue
+            st.markdown(
+                f"**Cotação {quote['slot']} · {quote['bookmaker']} · "
+                f"linha {quote['line']:.1f}**"
+            )
+            quote_metrics = st.columns(6)
+            quote_metrics[0].metric(
+                "Prob. Over", f"{quote_operational['probability_over']:.1%}"
+            )
+            quote_metrics[1].metric(
+                "Odd justa Over", f"{quote_operational['fair_odds_over']:.2f}"
+            )
+            quote_metrics[2].metric(
+                "EV Over", f"{quote_operational['ev_over']:+.1%}"
+            )
+            quote_metrics[3].metric(
+                "Prob. Under", f"{quote_operational['probability_under']:.1%}"
+            )
+            quote_metrics[4].metric(
+                "Odd justa Under", f"{quote_operational['fair_odds_under']:.2f}"
+            )
+            quote_metrics[5].metric(
+                "EV Under", f"{quote_operational['ev_under']:+.1%}"
+            )
+            agreement = quote_operational.get("model_agreement") or {}
+            message = agreement.get("message", "Confiômetro indisponível.")
+            if agreement.get("alert_level") == "success":
+                st.success(f"Confiômetro: {message}")
+            elif agreement.get("alert_level") == "warning":
+                st.warning(f"Confiômetro: {message}")
+            else:
+                st.info(f"Confiômetro: {message}")
         line = float(request["soft_line"])
         metrics = st.columns(4)
         metrics[0].metric("Média ativa", f"{operational['mean']:.1f}")
@@ -1167,6 +1361,25 @@ def _render_predraft_prediction(
                     database_url,
                     stake=decision_stake,
                 )
+                if quote_id:
+                    save_quote_outcome(
+                        quote_id,
+                        {
+                            "execution_status": (
+                                "accepted" if decision != "no_bet" else "not_attempted"
+                            ),
+                            "executed_side": decision if decision != "no_bet" else None,
+                            "requested_odds": offered_odds,
+                            "requested_stake": (
+                                decision_stake if decision != "no_bet" else None
+                            ),
+                            "accepted_odds": offered_odds,
+                            "accepted_stake": (
+                                decision_stake if decision != "no_bet" else None
+                            ),
+                        },
+                        database_url,
+                    )
                 prediction_state["decision"] = decision
                 prediction_state["decision_stake"] = (
                     decision_stake if decision != "no_bet" else None
@@ -1178,6 +1391,380 @@ def _render_predraft_prediction(
         f"Modelo estrutural {result['model_version']}. "
         f"Dados até {result['data_cutoff']}."
     )
+
+
+def _render_soft_quote_history(database_url: str | None) -> None:
+    st.title("Cotações soft observadas")
+    st.caption(
+        "Cada linha é uma observação manual. First seen não significa "
+        "abertura oficial da casa."
+    )
+    quotes = load_soft_quote_observations(database_url)
+    if quotes.empty:
+        st.info("Nenhuma cotação soft foi registrada.")
+        return
+    readiness = assess_soft_model_readiness(quotes.to_dict(orient="records"))
+    readiness_columns = st.columns(3)
+    readiness_columns[0].metric(
+        "First seen",
+        readiness["first_seen_quotes"],
+        "meta: 500",
+    )
+    readiness_columns[1].metric("Ligas", readiness["leagues"], "meta: 3")
+    readiness_columns[2].metric(
+        "Modelo B",
+        "Pronto" if readiness["ready_to_train_model_b"] else "Coletando",
+    )
+    display_columns = [
+        "observed_at", "bookmaker", "league", "blue_team", "red_team",
+        "map_number", "quote_stage", "line", "odds_over", "odds_under",
+        "pinnacle_available", "execution_status", "executed_side",
+        "accepted_odds", "accepted_stake", "profit", "clv",
+    ]
+    st.dataframe(
+        quotes[[column for column in display_columns if column in quotes.columns]],
+        hide_index=True,
+        width="stretch",
+    )
+    labels = {
+        row.quote_id: (
+            f"{row.bookmaker} | {row.blue_team} x {row.red_team} | "
+            f"mapa {row.map_number} | {row.observed_at}"
+        )
+        for row in quotes.itertuples()
+    }
+    quote_id = st.selectbox(
+        "Cotação para atualizar",
+        list(labels),
+        format_func=labels.get,
+    )
+    selected_soft_line = float(
+        quotes.loc[quotes["quote_id"] == quote_id, "line"].iloc[0]
+    )
+    with st.container(border=True):
+        status = st.selectbox(
+            "Status de execução",
+            (
+                "pending", "not_attempted", "accepted", "rejected",
+                "win", "loss", "void",
+            ),
+        )
+        side = st.selectbox("Lado executado", ("over", "under"))
+        execution_columns = st.columns(4)
+        requested_odds = execution_columns[0].number_input(
+            "Odd solicitada", min_value=0.0, value=0.0, step=0.01
+        )
+        requested_stake = execution_columns[1].number_input(
+            "Stake solicitada", min_value=0.0, value=1.0, step=0.5
+        )
+        accepted_odds = execution_columns[2].number_input(
+            "Odd aceita", min_value=0.0, value=0.0, step=0.01
+        )
+        accepted_stake = execution_columns[3].number_input(
+            "Stake aceita", min_value=0.0, value=1.0, step=0.5
+        )
+        pinnacle_columns = st.columns(3)
+        final_line = pinnacle_columns[0].number_input(
+            "Linha Pinnacle final", min_value=0.0, value=0.0, step=0.5
+        )
+        final_over = pinnacle_columns[1].number_input(
+            "Odd Over Pinnacle final", min_value=0.0, value=0.0, step=0.01
+        )
+        final_under = pinnacle_columns[2].number_input(
+            "Odd Under Pinnacle final", min_value=0.0, value=0.0, step=0.01
+        )
+        notes = st.text_input("Observações")
+        if st.button("Salvar execução e liquidação", type="primary"):
+            if final_line > 0 and abs(final_line - selected_soft_line) > 1e-9:
+                st.error(
+                    "O CLV exige a Pinnacle final na mesma linha da cotaÃ§Ã£o soft."
+                )
+                return
+            accepted = status in {"accepted", "win", "loss"}
+            settled = status in {"win", "loss", "void"}
+            stake_value = accepted_stake if accepted else None
+            odds_value = accepted_odds if accepted else None
+            profit = None
+            if status == "win":
+                profit = accepted_stake * (accepted_odds - 1)
+            elif status == "loss":
+                profit = -accepted_stake
+            elif status == "void":
+                profit = 0.0
+            closing_odds = final_over if side == "over" else final_under
+            clv = (
+                accepted_odds / closing_odds - 1
+                if accepted and accepted_odds > 1 and closing_odds > 1
+                else None
+            )
+            save_quote_outcome(
+                quote_id,
+                {
+                    "execution_status": status,
+                    "executed_side": side if accepted else None,
+                    "requested_odds": requested_odds or None,
+                    "requested_stake": requested_stake or None,
+                    "accepted_odds": odds_value,
+                    "accepted_stake": stake_value,
+                    "settled_at": (
+                        datetime.now(timezone.utc).isoformat() if settled else None
+                    ),
+                    "profit": profit,
+                    "final_pinnacle_time": (
+                        datetime.now(timezone.utc).isoformat()
+                        if final_line > 0 and final_over > 1 and final_under > 1
+                        else None
+                    ),
+                    "final_pinnacle_line": final_line or None,
+                    "final_pinnacle_odds_over": final_over or None,
+                    "final_pinnacle_odds_under": final_under or None,
+                    "clv": clv,
+                    "notes": notes or None,
+                },
+                database_url,
+            )
+            st.success("Execução atualizada.")
+            st.rerun()
+
+
+def _render_synthetic_pinnacle(
+    active_bundle: dict[str, Any],
+    database_url: str | None,
+) -> None:
+    st.title("Pinnacle sintética pré-abertura")
+    st.caption(
+        "Estima diretamente a linha principal e as odds finais prematch da Pinnacle usando somente "
+        "dados estruturais disponíveis antes da abertura. Não usa moneyline, "
+        "lado azul/vermelho ou cotação soft como feature."
+    )
+    if not SYNTHETIC_PINNACLE_PATH.exists():
+        st.error("Bundle da Pinnacle sintética não encontrado.")
+        return
+    synthetic_bundle = load_synthetic_pinnacle_bundle(SYNTHETIC_PINNACLE_PATH)
+    teams = synthetic_bundle.get("inference_teams") or active_bundle.get("teams") or []
+    leagues = sorted({str(team["league_canonical"]) for team in teams})
+    league = st.selectbox("Liga sintética", leagues)
+    league_teams = [
+        team for team in teams if str(team["league_canonical"]) == league
+    ]
+    labels = {
+        team["key"]: f"{team['team_name']} | {team['effective_team_games']:.1f} jogos efetivos"
+        for team in league_teams
+    }
+    selection_columns = st.columns(3)
+    team_a_key = selection_columns[0].selectbox(
+        "Equipe 1", list(labels), format_func=labels.get, key="synthetic_team_a"
+    )
+    team_b_options = [key for key in labels if key != team_a_key]
+    team_b_key = selection_columns[1].selectbox(
+        "Equipe 2",
+        team_b_options,
+        format_func=labels.get,
+        key="synthetic_team_b",
+    )
+    map_number = selection_columns[2].number_input(
+        "Mapa da série", min_value=1, max_value=5, value=1, step=1,
+        key="synthetic_map_number",
+    )
+    quote_columns = st.columns(4)
+    bookmaker = quote_columns[0].text_input(
+        "Casa soft sintética", placeholder="Ex.: Bet365"
+    )
+    soft_line = quote_columns[1].number_input(
+        "Linha soft sintética", min_value=0.5, value=25.5, step=0.5
+    )
+    soft_odds_over = quote_columns[2].number_input(
+        "Odd Over soft sintética", min_value=1.01, value=1.90, step=0.01
+    )
+    soft_odds_under = quote_columns[3].number_input(
+        "Odd Under soft sintética", min_value=1.01, value=1.90, step=0.01
+    )
+    additional_quotes: list[dict[str, Any]] = []
+    for quote_number in (2, 3):
+        enabled = st.checkbox(
+            f"Adicionar cotação sintética {quote_number}",
+            key=f"synthetic_enable_quote_{quote_number}",
+        )
+        if enabled:
+            extra_columns = st.columns(4)
+            extra_bookmaker = extra_columns[0].text_input(
+                f"Casa soft sintética {quote_number}",
+                placeholder="Ex.: Bet365",
+                key=f"synthetic_bookmaker_{quote_number}",
+            )
+            extra_line = extra_columns[1].number_input(
+                f"Linha soft sintética {quote_number}", min_value=0.5,
+                value=25.5, step=0.5,
+                key=f"synthetic_line_{quote_number}",
+            )
+            extra_over = extra_columns[2].number_input(
+                f"Odd Over soft sintética {quote_number}", min_value=1.01,
+                value=1.90, step=0.01,
+                key=f"synthetic_over_{quote_number}",
+            )
+            extra_under = extra_columns[3].number_input(
+                f"Odd Under soft sintética {quote_number}", min_value=1.01,
+                value=1.90, step=0.01,
+                key=f"synthetic_under_{quote_number}",
+            )
+            additional_quotes.append({
+                "bookmaker": extra_bookmaker,
+                "line": float(extra_line),
+                "odds_over": float(extra_over),
+                "odds_under": float(extra_under),
+                "slot": quote_number,
+            })
+    timing_columns = st.columns(2)
+    local_now = datetime.now(ZoneInfo("America/Sao_Paulo"))
+    planned_date = timing_columns[0].date_input(
+        "Data planejada sintética", value=(local_now + timedelta(days=1)).date()
+    )
+    planned_time = timing_columns[1].time_input(
+        "Horário planejado sintético",
+        value=local_now.replace(second=0, microsecond=0).time(),
+    )
+    if not st.button("Calcular Pinnacle sintética", type="primary"):
+        return
+    if not bookmaker.strip():
+        st.error("Informe a casa soft antes de calcular.")
+        return
+    if any(not quote["bookmaker"].strip() for quote in additional_quotes):
+        st.error("Informe a casa de cada cotação sintética ativada.")
+        return
+    team_index = {team["key"]: team for team in league_teams}
+    team_a = team_index[team_a_key]
+    team_b = team_index[team_b_key]
+    soft_quotes = [{
+        "bookmaker": bookmaker.strip(),
+        "line": float(soft_line),
+        "odds_over": float(soft_odds_over),
+        "odds_under": float(soft_odds_under),
+        "slot": 1,
+    }] + [
+        {**quote, "bookmaker": quote["bookmaker"].strip()}
+        for quote in additional_quotes
+    ]
+    if len(soft_quotes) == 3:
+        results = predict_synthetic_pinnacle_quotes(
+            team_a, team_b, league, int(map_number), soft_quotes,
+            synthetic_bundle,
+        )
+    else:
+        results = [
+            predict_synthetic_pinnacle(
+                team_a, team_b, league, int(map_number), quote["line"],
+                quote["odds_over"], quote["odds_under"], synthetic_bundle,
+            )
+            for quote in soft_quotes
+        ]
+    result = results[0]
+    metric_columns = st.columns(4)
+    metric_columns[0].metric(
+        "Linha Pinnacle final esperada",
+        f"{result.get('predicted_final_line', result.get('predicted_last_mu')):.1f}",
+    )
+    metric_columns[1].metric(
+        "Intervalo conservador",
+        f"{result.get('predicted_final_line_low', result.get('predicted_last_mu_low')):.1f} "
+        f"a {result.get('predicted_final_line_high', result.get('predicted_last_mu_high')):.1f}",
+    )
+    metric_columns[2].metric(
+        "EV conservador Over", f"{result['conservative_ev_over']:+.1%}"
+    )
+    metric_columns[3].metric(
+        "EV conservador Under", f"{result['conservative_ev_under']:+.1%}"
+    )
+    probability_columns = st.columns(4)
+    probability_columns[0].metric(
+        "Probabilidade Over", f"{result['probability_over']:.1%}"
+    )
+    probability_columns[1].metric("Odd justa Over", f"{result['fair_odds_over']:.2f}")
+    probability_columns[2].metric(
+        "Probabilidade Under", f"{result['probability_under']:.1%}"
+    )
+    probability_columns[3].metric("Odd justa Under", f"{result['fair_odds_under']:.2f}")
+    if result.get("predicted_final_odds_over") is not None:
+        final_price_columns = st.columns(3)
+        final_price_columns[0].metric(
+            "Odd Pinnacle final Over prevista",
+            f"{result['predicted_final_odds_over']:.2f}",
+        )
+        final_price_columns[1].metric(
+            "Odd Pinnacle final Under prevista",
+            f"{result['predicted_final_odds_under']:.2f}",
+        )
+        final_price_columns[2].metric(
+            "Probabilidade no-vig Over final",
+            f"{result['predicted_final_probability_over']:.1%}",
+        )
+    st.subheader("Confiômetro e valor por cotação soft")
+    for quote, quote_result in zip(soft_quotes, results):
+        st.markdown(
+            f"**Cotação {quote['slot']} · {quote['bookmaker']} · "
+            f"linha {quote['line']:.1f}**"
+        )
+        quote_metrics = st.columns(6)
+        quote_metrics[0].metric(
+            "Odd justa Over", f"{quote_result['fair_odds_over']:.2f}"
+        )
+        quote_metrics[1].metric(
+            "EV Over", f"{quote_result['ev_over']:+.1%}"
+        )
+        quote_metrics[2].metric(
+            "EV conservador Over",
+            f"{quote_result['conservative_ev_over']:+.1%}",
+        )
+        quote_metrics[3].metric(
+            "Odd justa Under", f"{quote_result['fair_odds_under']:.2f}"
+        )
+        quote_metrics[4].metric(
+            "EV Under", f"{quote_result['ev_under']:+.1%}"
+        )
+        quote_metrics[5].metric(
+            "EV conservador Under",
+            f"{quote_result['conservative_ev_under']:+.1%}",
+        )
+        st.info(
+            "Confiômetro: "
+            f"{str(quote_result.get('confidence', 'indisponível')).title()}."
+        )
+    if result["action"] == "manual_review":
+        st.warning(
+            f"Revisão manual: possível {result['recommended_side'].title()}. "
+            "Stake automática permanece bloqueada."
+        )
+    else:
+        st.info("EV conservador insuficiente. Não apostar.")
+    st.caption(
+        "O modelo prevê diretamente a linha principal e os preços finais. "
+        "As probabilidades nas linhas soft usam a curva histórica de preços "
+        "da Pinnacle. Este modo é comparação manual, não autorização automática."
+    )
+    observed_at = datetime.now(timezone.utc).isoformat()
+    planned_at = datetime.combine(
+        planned_date,
+        planned_time,
+        tzinfo=ZoneInfo("America/Sao_Paulo"),
+    ).astimezone(timezone.utc).isoformat()
+    for quote_row, quote_result in zip(soft_quotes, results):
+        quote = {
+            "observed_at": observed_at,
+            "bookmaker": quote_row["bookmaker"],
+            "league": league,
+            "planned_at": planned_at,
+            "map_number": int(map_number),
+            "quote_stage": "first_seen",
+            "soft_line": quote_row["line"],
+            "soft_odds_over": quote_row["odds_over"],
+            "soft_odds_under": quote_row["odds_under"],
+            "pinnacle_input_available": False,
+            "quote_source": "manual_synthetic_pinnacle",
+            "team_a": {"team_name": team_a["team_name"], "team_id": team_a.get("team_id")},
+            "team_b": {"team_name": team_b["team_name"], "team_id": team_b.get("team_id")},
+        }
+        quote_id = save_soft_quote_observation(quote, database_url=database_url)
+        save_pinnacle_forecast(quote_id, quote_result, database_url)
+    st.success(f"{len(results)} cotação(ões) e forecasts sintéticos registrados.")
 
 
 def run_vault_app() -> None:
@@ -1199,13 +1786,19 @@ def run_vault_app() -> None:
     _render_hero(bundle)
     view = st.radio(
         "Área",
-        ("Previsão", "Apostas registradas", "Tracking temporal"),
+        (
+            "Previsão", "Cotações soft", "Apostas registradas",
+            "Tracking temporal",
+            "Pinnacle sintética",
+        ),
         horizontal=True,
         label_visibility="collapsed",
     )
     database_url = _database_url()
     if view == "Apostas registradas":
         _render_bet_history(database_url)
+    elif view == "Cotações soft":
+        _render_soft_quote_history(database_url)
     elif view == "Tracking temporal":
         if not TRACKING_PATH.exists():
             st.error(
@@ -1214,6 +1807,11 @@ def run_vault_app() -> None:
             )
             return
         render_tracking_page(load_tracking_data(TRACKING_PATH))
+    elif view == "Pinnacle sintética":
+        if bundle is None:
+            st.error("Bundle estrutural não encontrado.")
+            return
+        _render_synthetic_pinnacle(bundle, database_url)
     else:
         if bundle is None or roster_catalog is None:
             st.error(

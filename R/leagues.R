@@ -47,7 +47,7 @@
 #' Return the canonical target leagues
 #'
 #' @param config_path Path to the league configuration.
-#' @return Character vector of seven target leagues.
+#' @return Character vector of target leagues.
 #' @export
 canonical_target_leagues <- function(config_path = .league_config_path()) {
   as.character(.read_league_config(config_path)$target_leagues)
