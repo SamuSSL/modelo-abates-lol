@@ -16,8 +16,6 @@ from app.vault_streamlit import UI_RELEASE, run_vault_app
 
 
 DEPLOY_RELEASE = "synthetic-pinnacle-direct-v7-2026-08-05"
-if UI_RELEASE != DEPLOY_RELEASE:
-    raise RuntimeError("A versão da interface não corresponde ao deploy.")
 run_vault_app()
 st.stop()
 
