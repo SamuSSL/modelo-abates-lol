@@ -8058,6 +8058,7 @@
   "automatic_betting_approved": false,
   "minimum_conservative_ev": 0.05,
   "minimum_history_required": 5,
+  "trained_at": "2026-08-21T02:22:53Z",
   "data_cutoff": "2026-08-20T17:52:22Z",
   "training_maps": 1809,
   "confirmation_maps": 343,

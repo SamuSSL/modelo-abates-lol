@@ -677,6 +677,7 @@ portable <- list(
   automatic_betting_approved = FALSE,
   minimum_conservative_ev = 0.05,
   minimum_history_required = 5,
+  trained_at = format(Sys.time(), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"),
   data_cutoff = format(max(model_data$game_datetime), "%Y-%m-%dT%H:%M:%SZ", tz = "UTC"),
   training_maps = nrow(model_data),
   confirmation_maps = nrow(confirmation),

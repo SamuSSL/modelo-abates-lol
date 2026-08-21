@@ -255,7 +255,23 @@ def _apply_theme() -> None:
 
 
 def _render_hero(bundle: dict | None = None) -> None:
+    synthetic_bundle = load_synthetic_pinnacle_bundle(SYNTHETIC_PINNACLE_PATH)
+    trained_at = synthetic_bundle.get("trained_at")
+    training_timestamp = trained_at or synthetic_bundle.get("data_cutoff")
+    training_label = "Data de treinamento indisponível"
+    if training_timestamp:
+        try:
+            training_datetime = datetime.fromisoformat(
+                str(training_timestamp).replace("Z", "+00:00")
+            )
+            training_label = (
+                "Treinado em "
+                f"{training_datetime.astimezone(ZoneInfo('America/Sao_Paulo')).strftime('%d/%m/%Y')}"
+            )
+        except ValueError:
+            training_label = "Data de treinamento indisponível"
     model_label = f"Vault Corp · Pinnacle sintética pré-abertura · Interface {UI_RELEASE}"
+    model_label = f"{model_label} · {training_label}"
     st.markdown(
         f"""
         <section class="vault-hero">
