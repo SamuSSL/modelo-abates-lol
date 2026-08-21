@@ -255,19 +255,14 @@ def _apply_theme() -> None:
 
 
 def _render_hero(bundle: dict | None = None) -> None:
-    model_label = "Vault Corp · Modelo dirigido + moneyline"
-    if bundle:
-        model_label = (
-            f"Vault Corp · Modelo dirigido + moneyline · "
-            f"{bundle['metadata']['model_version']} · Interface {UI_RELEASE}"
-        )
+    model_label = f"Vault Corp · Pinnacle sintética pré-abertura · Interface {UI_RELEASE}"
     st.markdown(
         f"""
         <section class="vault-hero">
           <h1 class="vault-title">LoL Kills Intelligence</h1>
           <p class="vault-subtitle">
-            Referência Pinnacle pós-draft com fallback para o modelo dirigido,
-            comparação estrutural e histórico integral das decisões.
+            Linha principal e odds finais estimadas antes da abertura,
+            para comparação manual com cotações disponíveis.
           </p>
           <div class="vault-model">{model_label}</div>
         </section>
@@ -1751,6 +1746,7 @@ def _render_synthetic_pinnacle(
         "As probabilidades nas linhas soft usam a curva histórica de preços "
         "da Pinnacle. Este modo é comparação manual, não autorização automática."
     )
+    return
     observed_at = datetime.now(timezone.utc).isoformat()
     planned_at = datetime.combine(
         planned_date,
@@ -1802,6 +1798,8 @@ def run_vault_app() -> None:
             ROSTER_CATALOG_PATH.stat().st_mtime_ns
         )
     _render_hero(bundle)
+    _render_synthetic_pinnacle(bundle or {}, None)
+    return
     view = st.radio(
         "Área",
         (
