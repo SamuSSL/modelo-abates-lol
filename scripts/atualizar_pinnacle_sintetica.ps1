@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param(
   [switch]$PlanOnly,
   [switch]$SkipDownload,
@@ -30,12 +30,25 @@ function Invoke-Stage([string]$name, [scriptblock]$action) {
 }
 function Get-Sha256([string]$path) { (Get-FileHash -Algorithm SHA256 -LiteralPath $path).Hash.ToLowerInvariant() }
 function Invoke-R([string]$scriptName) {
-  & $rscript (Join-Path $projectRoot "scripts\$scriptName") 2>&1 | Tee-Object -FilePath $reportPath -Append
-  if ($LASTEXITCODE -ne 0) { throw "Falha em $scriptName (código $LASTEXITCODE)." }
+  $previousErrorActionPreference = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    $rOutput = & $rscript (Join-Path $projectRoot "scripts\$scriptName") 2>&1
+    $rExitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
+  $rOutput | ForEach-Object { Add-Content -LiteralPath $reportPath -Encoding utf8 -Value "$_" }
+  if ($rExitCode -ne 0) { throw "Falha em $scriptName (código $rExitCode)." }
 }
 function Download-OracleCsv {
   if (-not (Test-Path -LiteralPath $oraclePath)) { throw 'CSV Oracle 2026 atual não encontrado.' }
   $oldHash = Get-Sha256 $oraclePath
+  $manifestPath = Join-Path $projectRoot 'data\raw\manifest.yml'
+  if ((Test-Path -LiteralPath $manifestPath) -and -not (Select-String -LiteralPath $manifestPath -SimpleMatch $oldHash -Quiet)) {
+    Add-Report "CSV Oracle já foi baixado em execução anterior e ainda aguarda registro. SHA-256 atual: $oldHash"
+    return
+  }
   $temporaryPath = "$oraclePath.download-$stamp"
   try {
     Invoke-WebRequest -Uri $OracleSourceUrl -OutFile $temporaryPath -MaximumRedirection 5
@@ -88,3 +101,4 @@ try {
   Write-Error "Atualização interrompida. Consulte $reportPath"
   exit 1
 }
+
