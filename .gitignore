@@ -12,6 +12,7 @@ renv/staging/
 _targets/
 reports/*.html
 reports/*.pdf
+Relatórios de atualização/
 
 # Local data and immutable artifacts
 data/raw/
