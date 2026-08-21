@@ -323,6 +323,10 @@ def test_synthetic_hero_shows_the_latest_training_date():
         "Treinado em 20/08/2026" in markdown.value
         for markdown in app.markdown
     )
+    assert not any(
+        "Interface synthetic-pinnacle-direct-v7-2026-08-05" in markdown.value
+        for markdown in app.markdown
+    )
 
 
 @pytest.mark.skip(reason="Post-draft soft quote collection retired from the public interface")

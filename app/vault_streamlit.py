@@ -270,7 +270,8 @@ def _render_hero(bundle: dict | None = None) -> None:
             )
         except ValueError:
             training_label = "Data de treinamento indisponível"
-    model_label = f"Vault Corp · Pinnacle sintética pré-abertura · Interface {UI_RELEASE}"
+    legacy_model_label = f"Vault Corp · Pinnacle sintética pré-abertura · Interface {UI_RELEASE}"
+    model_label = legacy_model_label.split(" · Interface", maxsplit=1)[0]
     model_label = f"{model_label} · {training_label}"
     st.markdown(
         f"""
