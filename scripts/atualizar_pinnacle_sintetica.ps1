@@ -8,7 +8,7 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path -Parent $PSScriptRoot
-$reportDir = Join-Path $projectRoot 'Relatórios de atualização'
+$reportDir = Join-Path $projectRoot ('Relat' + [char]0x00F3 + 'rios de atualiza' + [char]0x00E7 + [char]0x00E3 + 'o')
 $stamp = Get-Date -Format 'yyyy-MM-dd_HH-mm-ss'
 $reportPath = Join-Path $reportDir "atualizacao_$stamp.md"
 $rscript = 'C:\Program Files\R\R-4.6.1\bin\Rscript.exe'
