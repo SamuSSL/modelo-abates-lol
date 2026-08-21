@@ -12,6 +12,7 @@ público separado.
 - `streamlit_app.py`: interface.
 - `app/`: inferência e persistência.
 - `app_data/model_bundle.json`: modelo, taxonomia e snapshots.
+- `app_data/synthetic_pinnacle_bundle.json`: bundle ativo da Pinnacle sintética pré-abertura.
 - `requirements.txt`: dependências Python.
 - `.streamlit/config.toml`: tema e configuração.
 
@@ -45,6 +46,18 @@ não pertence às migrações e existe somente nos Secrets do Streamlit.
 3. Inserir o segredo PostgreSQL.
 4. Publicar.
 5. Validar um caso `ok`, um caso `blocked`, persistência e acesso móvel.
+
+## Fluxo atual da interface
+
+A interface pública usa somente a Pinnacle sintética pré-abertura. O histórico, as cotações soft persistidas, o tracking temporal e a tela pós-draft estão aposentados da navegação pública. A cotação soft continua sendo uma entrada manual de comparação, sem gravação em banco.
+
+Para atualizar o modelo manualmente aos sábados, defina `BETTINGISCOOL_API_KEY` apenas no processo e execute:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts\atualizar_pinnacle_sintetica.ps1
+```
+
+O resultado fica em `Relatórios de atualização`. A rotina publica exclusivamente `app_data/synthetic_pinnacle_bundle.json`, confirma o hash no GitHub e testa a acessibilidade do Streamlit. A checagem de saúde do Streamlit não identifica a versão exata do bundle servido.
 
 ## Estado da V1
 

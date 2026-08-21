@@ -45,6 +45,7 @@ def _fill_moneyline(app):
     return app.run()
 
 
+@pytest.mark.skip(reason="Directed-model team selector retired from the public interface")
 def test_streamlit_loads_and_exposes_every_team_in_default_league():
     bundle = json.loads(
         Path("app_data/model_bundle.json").read_text(encoding="utf-8")
@@ -79,6 +80,7 @@ def test_streamlit_loads_and_exposes_every_team_in_default_league():
     )
 
 
+@pytest.mark.skip(reason="Directed-model team selector retired from the public interface")
 def test_low_sample_team_remains_selectable_with_warning():
     bundle = json.loads(
         Path("app_data/model_bundle.json").read_text(encoding="utf-8")
@@ -106,6 +108,7 @@ def test_low_sample_team_remains_selectable_with_warning():
     )
 
 
+@pytest.mark.skip(reason="Post-draft workflow retired from the public interface")
 def test_default_draft_produces_a_prediction_without_ui_error():
     app = AppTest.from_file(
         "streamlit_app.py",
@@ -166,6 +169,7 @@ def test_default_draft_produces_a_prediction_without_ui_error():
     }.issubset({button.label for button in app.button})
 
 
+@pytest.mark.skip(reason="Directed fallback retired from the public interface")
 def test_streamlit_uses_directed_fallback_without_pinnacle_total():
     app = AppTest.from_file(
         "streamlit_app.py",
@@ -200,6 +204,7 @@ def test_streamlit_uses_directed_fallback_without_pinnacle_total():
     )
 
 
+@pytest.mark.skip(reason="Directed fallback retired from the public interface")
 def test_streamlit_uses_automatic_fallback_for_empty_pinnacle_odds():
     app = AppTest.from_file(
         "streamlit_app.py",
@@ -225,6 +230,7 @@ def test_streamlit_uses_automatic_fallback_for_empty_pinnacle_odds():
     )
 
 
+@pytest.mark.skip(reason="Post-draft soft quote collection retired from the public interface")
 def test_streamlit_requires_bookmaker_for_manual_soft_collection():
     app = AppTest.from_file(
         "streamlit_app.py",
@@ -239,6 +245,7 @@ def test_streamlit_requires_bookmaker_for_manual_soft_collection():
     )
 
 
+@pytest.mark.skip(reason="Post-draft bet decisions retired from the public interface")
 @pytest.mark.parametrize(
     ("button_label", "saved_message"),
     [
@@ -270,6 +277,7 @@ def test_all_three_decision_buttons_are_confirmed(
     )
 
 
+@pytest.mark.skip(reason="Temporal tracking retired from the public interface")
 def test_tracking_page_loads_without_ui_error():
     app = AppTest.from_file(
         "streamlit_app.py",
@@ -291,7 +299,7 @@ def test_synthetic_pinnacle_page_uses_no_moneyline_input():
         default_timeout=20,
     ).run()
 
-    app.radio[0].set_value("Pinnacle sintética").run(timeout=30)
+    assert not app.radio
 
     assert len(app.exception) == 0
     assert any(
@@ -304,6 +312,7 @@ def test_synthetic_pinnacle_page_uses_no_moneyline_input():
     )
 
 
+@pytest.mark.skip(reason="Post-draft soft quote collection retired from the public interface")
 def test_current_model_exposes_three_optional_soft_quotes():
     app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
     for label in ("Adicionar cotação soft 2", "Adicionar cotação soft 3"):
@@ -315,7 +324,7 @@ def test_current_model_exposes_three_optional_soft_quotes():
 
 def test_synthetic_model_exposes_three_optional_soft_quotes():
     app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
-    app.radio[0].set_value("Pinnacle sintética").run(timeout=30)
+    assert not app.radio
     for label in (
         "Adicionar cotação sintética 2",
         "Adicionar cotação sintética 3",
@@ -330,7 +339,7 @@ def test_synthetic_model_exposes_three_optional_soft_quotes():
 
 def test_synthetic_model_calculates_three_soft_quotes_without_ui_error():
     app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
-    app.radio[0].set_value("Pinnacle sintética").run(timeout=30)
+    assert not app.radio
     for label in (
         "Adicionar cotação sintética 2",
         "Adicionar cotação sintética 3",
@@ -355,6 +364,7 @@ def test_synthetic_model_calculates_three_soft_quotes_without_ui_error():
     ) >= 3
 
 
+@pytest.mark.skip(reason="Post-draft soft quote collection retired from the public interface")
 def test_current_model_calculates_three_soft_quotes_without_ui_error():
     app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
     for label in ("Adicionar cotação soft 2", "Adicionar cotação soft 3"):
@@ -372,6 +382,7 @@ def test_current_model_calculates_three_soft_quotes_without_ui_error():
     )
 
 
+@pytest.mark.skip(reason="Bet history retired from the public interface")
 def test_bet_history_page_loads_without_ui_error():
     app = AppTest.from_file(
         "streamlit_app.py",
@@ -391,6 +402,7 @@ def test_bet_history_page_loads_without_ui_error():
     )
 
 
+@pytest.mark.skip(reason="Directed-model team selector retired from the public interface")
 def test_changing_league_refreshes_team_options_immediately():
     bundle = json.loads(
         Path("app_data/model_bundle.json").read_text(encoding="utf-8")
@@ -413,3 +425,38 @@ def test_changing_league_refreshes_team_options_immediately():
     assert app.selectbox[0].value == target_league
     assert set(app.selectbox[1].options) == expected
     assert len(expected) >= 2
+
+
+def test_streamlit_opens_directly_in_synthetic_pinnacle_without_navigation():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+
+    assert len(app.exception) == 0
+    assert any(
+        title.value == "Pinnacle sintética pré-abertura"
+        for title in app.title
+    )
+    assert not app.radio
+
+
+def test_synthetic_page_has_no_retired_postdraft_labels():
+    app = AppTest.from_file(
+        "streamlit_app.py",
+        default_timeout=20,
+    ).run()
+
+    labels = {
+        item.label
+        for item in [
+            *app.button,
+            *app.checkbox,
+            *app.number_input,
+            *app.selectbox,
+            *app.text_input,
+        ]
+    }
+    assert "Total Pinnacle disponível no snapshot pós-draft/live open" not in labels
+    assert "Moneyline equipe A" not in labels
+    assert "Confirmar Over" not in labels
