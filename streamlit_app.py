@@ -35,6 +35,26 @@ def _run_unified_pinnacle_app() -> None:
         initial_sidebar_state="collapsed",
     )
     _apply_theme()
+    st.markdown(
+        """
+        <style>
+          [data-testid="stTabs"] {
+            margin-top: 1.1rem;
+          }
+          [data-testid="stTabs"] [data-baseweb="tab-list"] {
+            min-height: 3.25rem;
+            align-items: flex-end;
+            overflow: visible;
+          }
+          [data-testid="stTabs"] [data-baseweb="tab"] {
+            min-height: 3.25rem;
+            padding: .8rem .9rem .7rem;
+            line-height: 1.25;
+          }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
     bundle = None
     if BUNDLE_PATH.exists():
         bundle = _load_active_bundle(BUNDLE_PATH.stat().st_mtime_ns)

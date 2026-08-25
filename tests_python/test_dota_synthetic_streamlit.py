@@ -1,6 +1,9 @@
 from __future__ import annotations
 
+from datetime import datetime, timezone
+
 from app.dota_synthetic import load_dota_state, predict_dota_quote
+from app.dota_synthetic import _resolve_automatic_features
 
 
 def test_dota_streamlit_adapter_uses_promoted_pre_draft_bundle() -> None:
@@ -25,3 +28,23 @@ def test_dota_streamlit_adapter_rejects_leakage_features() -> None:
         assert "proibidos" in str(error)
     else:
         raise AssertionError("A side não pode entrar no adapter Dota pré-draft.")
+
+
+def test_dota_catalog_resolves_all_eight_features_without_manual_inputs() -> None:
+    state = load_dota_state()
+    league = next(row for row in state["catalog"]["leagues"] if len(row["teams"]) >= 2)
+    team_one = league["teams"][0]["team_id"]
+    team_two = league["teams"][1]["team_id"]
+    features, metadata, error = _resolve_automatic_features(
+        state["catalog"],
+        str(league["source_league_id"]),
+        str(team_one),
+        str(team_two),
+        1,
+        datetime(2026, 8, 25, tzinfo=timezone.utc),
+    )
+    assert error is None
+    assert features is not None
+    assert len(features) == 8
+    assert metadata["team_one_snapshot_match_id"]
+    assert metadata["team_two_snapshot_match_id"]
