@@ -23,7 +23,10 @@ def test_dota_hud_uses_selectors_and_hides_manual_feature_inputs() -> None:
     labels = [item.label for item in dota.selectbox]
     labels.extend(item.label for item in dota.number_input)
     labels.extend(item.label for item in dota.text_input)
+    labels.extend(item.label for item in dota.checkbox)
     assert "Liga sintética Dota 2" in labels
     assert "Equipe 1" in labels
     assert "Equipe 2" in labels
+    assert "Adicionar cotação sintética 2" in labels
+    assert "Adicionar cotação sintética 3" in labels
     assert not any("kills" in label.casefold() or "meia-vida" in label.casefold() for label in labels)

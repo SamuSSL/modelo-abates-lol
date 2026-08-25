@@ -157,6 +157,30 @@ def predict_dota_quote(
     return prediction
 
 
+def build_dota_quotes(
+    primary_quote: dict[str, Any],
+    additional_quotes: list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    quotes = [{
+        "bookmaker": str(primary_quote["bookmaker"]),
+        "line": float(primary_quote["line"]),
+        "odds_over": float(primary_quote["odds_over"]),
+        "odds_under": float(primary_quote["odds_under"]),
+        "slot": 1,
+    }]
+    for quote in additional_quotes:
+        if not quote.get("enabled", True):
+            continue
+        quotes.append({
+            "bookmaker": str(quote["bookmaker"]),
+            "line": float(quote["line"]),
+            "odds_over": float(quote["odds_over"]),
+            "odds_under": float(quote["odds_under"]),
+            "slot": int(quote["slot"]),
+        })
+    return quotes
+
+
 def _append_manual_comparison(payload: dict[str, Any]) -> None:
     record = {
         "game": "Dota 2",
@@ -164,6 +188,7 @@ def _append_manual_comparison(payload: dict[str, Any]) -> None:
         "recorded_at_utc": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "inputs": payload["inputs"],
         "prediction": payload["prediction"],
+        "predictions": payload.get("predictions", [payload["prediction"]]),
         "automatic_betting_approved": False,
         "status": "manual_comparison_pending_settlement",
     }
@@ -221,6 +246,48 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
     soft_line = quote_columns[1].number_input("Linha soft sintética", min_value=0.5, value=48.5, step=0.5, key="dota_soft_line")
     soft_over = quote_columns[2].number_input("Odd Over soft sintética", min_value=1.01, value=1.90, step=0.01, key="dota_soft_over")
     soft_under = quote_columns[3].number_input("Odd Under soft sintética", min_value=1.01, value=1.90, step=0.01, key="dota_soft_under")
+    additional_quotes: list[dict[str, Any]] = []
+    for quote_number in (2, 3):
+        enabled = st.checkbox(
+            f"Adicionar cotação sintética {quote_number}",
+            key=f"dota_enable_quote_{quote_number}",
+        )
+        if enabled:
+            extra_columns = st.columns(4)
+            extra_bookmaker = extra_columns[0].text_input(
+                f"Casa soft sintética {quote_number}",
+                placeholder="Ex.: Bet365",
+                key=f"dota_bookmaker_{quote_number}",
+            )
+            extra_line = extra_columns[1].number_input(
+                f"Linha soft sintética {quote_number}",
+                min_value=0.5,
+                value=48.5,
+                step=0.5,
+                key=f"dota_line_{quote_number}",
+            )
+            extra_over = extra_columns[2].number_input(
+                f"Odd Over soft sintética {quote_number}",
+                min_value=1.01,
+                value=1.90,
+                step=0.01,
+                key=f"dota_over_{quote_number}",
+            )
+            extra_under = extra_columns[3].number_input(
+                f"Odd Under soft sintética {quote_number}",
+                min_value=1.01,
+                value=1.90,
+                step=0.01,
+                key=f"dota_under_{quote_number}",
+            )
+            additional_quotes.append({
+                "enabled": True,
+                "bookmaker": extra_bookmaker,
+                "line": extra_line,
+                "odds_over": extra_over,
+                "odds_under": extra_under,
+                "slot": quote_number,
+            })
     timing_columns = st.columns(2)
     planned_date = timing_columns[0].date_input(
         "Data planejada sintética", value=datetime.now(ZoneInfo("America/Sao_Paulo")).date(), key="dota_planned_date"
@@ -255,14 +322,34 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
         if automatic_features is None:
             st.error(feature_error or "A previsão foi bloqueada por falta de histórico point-in-time.")
             return None
+        if not bookmaker.strip():
+            st.error("Informe a casa soft antes de calcular.")
+            return None
+        if any(not quote["bookmaker"].strip() for quote in additional_quotes):
+            st.error("Informe a casa de cada cotação sintética ativada.")
+            return None
+        quotes = build_dota_quotes(
+            {
+                "bookmaker": bookmaker.strip(),
+                "line": soft_line,
+                "odds_over": soft_over,
+                "odds_under": soft_under,
+            },
+            [{**quote, "bookmaker": quote["bookmaker"].strip()} for quote in additional_quotes],
+        )
         try:
-            result = predict_dota_quote(
-                state, automatic_features,
-                {"line": soft_line, "odds_over": soft_over, "odds_under": soft_under},
-            )
+            predictions = [
+                predict_dota_quote(
+                    state,
+                    automatic_features,
+                    {"line": quote["line"], "odds_over": quote["odds_over"], "odds_under": quote["odds_under"]},
+                )
+                for quote in quotes
+            ]
         except (ValueError, KeyError) as error:
             st.error(str(error))
             return None
+        result = predictions[0]
         st.session_state["dota_last_result"] = {
             "inputs": {
                 "game": "Dota 2",
@@ -281,8 +368,10 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
                 "soft_line": float(soft_line),
                 "soft_over": float(soft_over),
                 "soft_under": float(soft_under),
+                "quotes": quotes,
             },
             "prediction": result,
+            "predictions": predictions,
         }
     current = st.session_state.get("dota_last_result")
     if not current:
@@ -296,12 +385,26 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
     metrics[3].metric("Confiança", "Modelo")
     interval = result["line_interval"]
     st.write(f"Intervalo da linha: {interval['lower']:.1f} a {interval['upper']:.1f}")
+    quotes = current["inputs"].get("quotes", [{
+        "bookmaker": current["inputs"].get("bookmaker", ""),
+        "line": current["inputs"]["soft_line"],
+        "odds_over": current["inputs"]["soft_over"],
+        "odds_under": current["inputs"]["soft_under"],
+        "slot": 1,
+    }])
+    predictions = current.get("predictions", [result])
+    st.subheader("Confiômetro e valor por cotação soft")
+    for quote, quote_result in zip(quotes, predictions):
+        st.markdown(f"**Cotação {quote['slot']} · {quote['bookmaker']} · linha {quote['line']:.1f}**")
+        quote_metrics = st.columns(4)
+        quote_metrics[0].metric("Odd justa Over", f"{quote_result['fair_odds_over']:.2f}")
+        quote_metrics[1].metric("EV Over", f"{quote_result['ev_over']:+.1%}" if quote_result.get("ev_over") is not None else "N/A")
+        quote_metrics[2].metric("Odd justa Under", f"{quote_result['fair_odds_under']:.2f}")
+        quote_metrics[3].metric("EV Under", f"{quote_result['ev_under']:+.1%}" if quote_result.get("ev_under") is not None else "N/A")
+        if quote_result.get("ev_status") != "same_line":
+            st.warning("EV não calculado: a linha da soft book não coincide com a linha sintética prevista.")
     if st.button("Registrar comparação manual Dota 2", key="dota_register_comparison"):
         _append_manual_comparison(current)
         st.success("Comparação manual Dota 2 registrada em arquivo append-only.")
-    if result.get("ev_status") == "same_line":
-        st.write(f"EV condicional na mesma linha: Over {result['ev_over']:+.1%}; Under {result['ev_under']:+.1%}")
-    else:
-        st.warning("EV não calculado: a linha da soft book não coincide com a linha sintética prevista.")
     st.info("Dota 2 · Pinnacle Sintética · comparação manual. Nenhuma aposta é executada automaticamente.")
     return current

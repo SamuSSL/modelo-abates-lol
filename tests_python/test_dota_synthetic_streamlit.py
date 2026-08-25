@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from app.dota_synthetic import load_dota_state, predict_dota_quote
-from app.dota_synthetic import _resolve_automatic_features
+from app.dota_synthetic import _resolve_automatic_features, build_dota_quotes
 
 
 def test_dota_streamlit_adapter_uses_promoted_pre_draft_bundle() -> None:
@@ -48,3 +48,37 @@ def test_dota_catalog_resolves_all_eight_features_without_manual_inputs() -> Non
     assert len(features) == 8
     assert metadata["team_one_snapshot_match_id"]
     assert metadata["team_two_snapshot_match_id"]
+
+
+def test_dota_quote_builder_preserves_primary_and_active_additional_quotes() -> None:
+    primary = {
+        "bookmaker": "Bet365",
+        "line": 48.5,
+        "odds_over": 1.90,
+        "odds_under": 1.91,
+    }
+    additional = [
+        {
+            "enabled": True,
+            "bookmaker": "KTO",
+            "line": 47.5,
+            "odds_over": 1.85,
+            "odds_under": 1.95,
+            "slot": 2,
+        },
+        {
+            "enabled": False,
+            "bookmaker": "",
+            "line": 49.5,
+            "odds_over": 1.88,
+            "odds_under": 1.92,
+            "slot": 3,
+        },
+    ]
+
+    quotes = build_dota_quotes(primary, additional)
+
+    assert quotes == [
+        {"bookmaker": "Bet365", "line": 48.5, "odds_over": 1.90, "odds_under": 1.91, "slot": 1},
+        {"bookmaker": "KTO", "line": 47.5, "odds_over": 1.85, "odds_under": 1.95, "slot": 2},
+    ]
