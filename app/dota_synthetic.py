@@ -15,6 +15,8 @@ from app.dota_inference import PROHIBITED_FEATURES, load_bundle, predict
 DOTA_BUNDLE_PATH = Path("app_data/dota2_pinnacle_pre_draft_bundle.json")
 DOTA_CATALOG_PATH = Path("app_data/dota_ui_catalog.json")
 DOTA_DECISIONS_PATH = Path("app_data/dota_manual_comparisons.jsonl")
+AUTO_LEAGUE_ID = "__auto__"
+AUTO_LEAGUE_NAME = "Automática · histórico global"
 FEATURE_NAMES = (
     "team_one_kills_for",
     "team_one_kills_against",
@@ -44,6 +46,49 @@ def _parse_datetime(value: str) -> datetime:
     return parsed
 
 
+def build_dota_team_catalog(catalog: dict[str, Any]) -> list[dict[str, Any]]:
+    teams_by_id: dict[str, dict[str, Any]] = {}
+    for league in catalog.get("leagues", []):
+        league_id = str(league["source_league_id"])
+        competition = {
+            "source_league_id": league_id,
+            "league_name": str(league.get("league_name", league_id)),
+            "tier": str(league.get("tier", "")),
+        }
+        for raw_team in league.get("teams", []):
+            team_id = str(raw_team["team_id"])
+            last_seen = raw_team.get("last_seen")
+            row = teams_by_id.setdefault(
+                team_id,
+                {
+                    "team_id": team_id,
+                    "team_name": str(raw_team.get("team_name", team_id)),
+                    "last_seen": last_seen,
+                    "_competitions": {},
+                },
+            )
+            row["_competitions"][league_id] = competition
+            if last_seen and (
+                not row.get("last_seen")
+                or _parse_datetime(str(last_seen)) > _parse_datetime(str(row["last_seen"]))
+            ):
+                row["team_name"] = str(raw_team.get("team_name", team_id))
+                row["last_seen"] = last_seen
+
+    result = []
+    for row in teams_by_id.values():
+        competitions = sorted(
+            row.pop("_competitions").values(),
+            key=lambda item: (item["league_name"].casefold(), item["source_league_id"]),
+        )
+        result.append({
+            **row,
+            "competitions": competitions,
+            "competition_count": len(competitions),
+        })
+    return sorted(result, key=lambda item: (item["team_name"].casefold(), item["team_id"]))
+
+
 def load_dota_state() -> dict[str, Any]:
     bundle = load_bundle(DOTA_BUNDLE_PATH)
     catalog = json.loads(DOTA_CATALOG_PATH.read_text(encoding="utf-8"))
@@ -64,7 +109,7 @@ def _extract_team_features(row: dict[str, Any], side: str) -> dict[str, float]:
 
 def _resolve_automatic_features(
     catalog: dict[str, Any],
-    league_id: str,
+    league_id: str | None,
     team_one_id: str,
     team_two_id: str,
     map_number: int,
@@ -77,7 +122,10 @@ def _resolve_automatic_features(
     if not snapshots:
         return None, {}, "Não há snapshot histórico anterior ao início planejado."
 
-    scoped = [row for row in snapshots if row["source_league_id"] == league_id]
+    scoped = [
+        row for row in snapshots
+        if league_id not in (None, AUTO_LEAGUE_ID) and row["source_league_id"] == league_id
+    ]
     sources = (scoped, snapshots) if scoped else (snapshots,)
     selected_rows: dict[str, tuple[dict[str, Any], str]] = {}
     for candidates in sources:
@@ -110,6 +158,12 @@ def _resolve_automatic_features(
         "team_two_kills_for_recency_15d": two["kills_for_recency_15d"],
         "team_two_kills_against_recency_15d": two["kills_against_recency_15d"],
     }
+    if league_id in (None, AUTO_LEAGUE_ID):
+        source_scope = "global_team_history"
+    elif scoped:
+        source_scope = "selected_league_then_global_team_history"
+    else:
+        source_scope = "selected_league_unavailable_then_global_team_history"
     metadata = {
         "map_number": int(map_number),
         "feature_cutoff": planned_start.isoformat(),
@@ -117,7 +171,7 @@ def _resolve_automatic_features(
         "team_two_snapshot_match_id": two_row["opendota_match_id"],
         "team_one_feature_as_of": one_row["scheduled_start"],
         "team_two_feature_as_of": two_row["scheduled_start"],
-        "source_scope": "selected_league_then_global_team_history",
+        "source_scope": source_scope,
     }
     return features, metadata, None
 
@@ -210,32 +264,53 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
     if not leagues:
         st.error("Catálogo Dota sem ligas S/A disponíveis.")
         return None
-    league_by_id = {str(row["source_league_id"]): row for row in leagues}
+    league_by_id = {
+        AUTO_LEAGUE_ID: {
+            "source_league_id": AUTO_LEAGUE_ID,
+            "league_name": AUTO_LEAGUE_NAME,
+            "tier": "",
+        },
+        **{str(row["source_league_id"]): row for row in leagues},
+    }
     league_ids = list(league_by_id)
     league_id = st.selectbox(
         "Liga sintética Dota 2",
         league_ids,
-        format_func=lambda value: f"{league_by_id[value]['league_name']} · Tier {league_by_id[value]['tier']}",
+        format_func=lambda value: (
+            AUTO_LEAGUE_NAME
+            if value == AUTO_LEAGUE_ID
+            else f"{league_by_id[value]['league_name']} · Tier {league_by_id[value]['tier']}"
+        ),
         key="dota_league",
     )
     league = league_by_id[league_id]
-    team_rows = league.get("teams", [])
+    team_rows = build_dota_team_catalog(state["catalog"])
     team_by_id = {str(row["team_id"]): row for row in team_rows}
     team_ids = list(team_by_id)
     if len(team_ids) < 2:
-        st.warning("Esta liga não possui duas equipes com histórico point-in-time suficiente.")
+        st.warning("O catálogo Dota não possui duas equipes com histórico point-in-time suficiente.")
         return None
+    team_name_counts: dict[str, int] = {}
+    for row in team_rows:
+        team_name_counts[row["team_name"]] = team_name_counts.get(row["team_name"], 0) + 1
+    team_labels = {
+        team_id: (
+            f"{row['team_name']} · {row['competition_count']} competições S/A"
+            + (f" · ID {team_id}" if team_name_counts[row["team_name"]] > 1 else "")
+        )
+        for team_id, row in team_by_id.items()
+    }
     selection_columns = st.columns(3)
     team_one_id = selection_columns[0].selectbox(
         "Equipe 1", team_ids,
-        format_func=lambda value: team_by_id[value]["team_name"],
+        format_func=team_labels.get,
         key="dota_team_one",
     )
     team_two_ids = [value for value in team_ids if value != team_one_id]
     team_two_id = selection_columns[1].selectbox(
         "Equipe 2", team_two_ids,
         index=0,
-        format_func=lambda value: team_by_id[value]["team_name"],
+        format_func=team_labels.get,
         key="dota_team_two",
     )
     map_number = selection_columns[2].number_input(
@@ -356,7 +431,7 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
                 "bookmaker": bookmaker,
                 "league_id": league_id,
                 "league_name": league["league_name"],
-                "tier": league["tier"],
+                "tier": league.get("tier") or None,
                 "team_one": team_by_id[str(team_one_id)]["team_name"],
                 "team_two": team_by_id[str(team_two_id)]["team_name"],
                 "team_one_id": str(team_one_id),
