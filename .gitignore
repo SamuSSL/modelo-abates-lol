@@ -36,3 +36,4 @@ key.txt
 .local/
 stan/*.exe
 .worktrees/
+app_data/dota_manual_comparisons.jsonl

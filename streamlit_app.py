@@ -8,15 +8,50 @@ from zoneinfo import ZoneInfo
 import streamlit as st
 from streamlit.errors import StreamlitSecretNotFoundError
 
+from app.dota_synthetic import load_dota_state, render_dota_tab
 from app.lolkills_inference import POSITIONS, load_bundle, predict
 from app.persistence import save_bet_decision, save_prediction
 from app.tracking import load_tracking_data, render_tracking_page
 from app.ui_options import team_label, team_options
-from app.vault_streamlit import UI_RELEASE, run_vault_app
+from app.vault_streamlit import (
+    BUNDLE_PATH,
+    UI_RELEASE,
+    _apply_theme,
+    _load_active_bundle,
+    _render_hero,
+    _render_synthetic_pinnacle,
+    run_vault_app,
+)
 
 
 DEPLOY_RELEASE = "synthetic-pinnacle-direct-v7-2026-08-05"
-run_vault_app()
+
+
+def _run_unified_pinnacle_app() -> None:
+    st.set_page_config(
+        page_title="Pinnacle Sintética · LoL + Dota 2",
+        page_icon=None,
+        layout="wide",
+        initial_sidebar_state="collapsed",
+    )
+    _apply_theme()
+    bundle = None
+    if BUNDLE_PATH.exists():
+        bundle = _load_active_bundle(BUNDLE_PATH.stat().st_mtime_ns)
+    tabs = st.tabs(("LoL · Pinnacle Sintética", "Dota 2 · Pinnacle Sintética"))
+    with tabs[0]:
+        st.header("LoL · Pinnacle Sintética")
+        _render_hero(bundle)
+        _render_synthetic_pinnacle(bundle or {}, None)
+    with tabs[1]:
+        try:
+            render_dota_tab(load_dota_state())
+        except Exception as error:
+            st.error("A aba Dota 2 está bloqueada porque o bundle pré-draft não pôde ser carregado.")
+            st.caption(f"Detalhe técnico: {error}")
+
+
+_run_unified_pinnacle_app()
 st.stop()
 
 
