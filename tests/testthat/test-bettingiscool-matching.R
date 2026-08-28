@@ -92,3 +92,11 @@ test_that("matching keeps only the latest fixture version for each event", {
   expect_equal(nrow(links), 1L)
   expect_equal(links$link_status, "verified")
 })
+
+test_that("BettingIsCool aliases configuration is valid UTF-8 YAML", {
+  aliases <- yaml::read_yaml(testthat::test_path(
+    "..", "..", "config", "bettingiscool-team-aliases.yml"
+  ))
+
+  expect_equal(aliases$aliases[["Barca"]], "Barca eSports")
+})
