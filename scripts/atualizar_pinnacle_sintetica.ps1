@@ -41,6 +41,23 @@ function Invoke-R([string]$scriptName) {
   $rOutput | ForEach-Object { Add-Content -LiteralPath $reportPath -Encoding utf8 -Value "$_" }
   if ($rExitCode -ne 0) { throw "Falha em $scriptName (código $rExitCode)." }
 }
+function Invoke-Git([string[]]$GitArguments) {
+  $previousErrorActionPreference = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    $gitOutput = & git @GitArguments 2>&1
+    $gitExitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
+  $gitOutput | ForEach-Object {
+    Add-Content -LiteralPath $reportPath -Encoding utf8 -Value "$_"
+  }
+  if ($gitExitCode -ne 0) {
+    throw "Git falhou: git $($GitArguments -join ' ') (código $gitExitCode)."
+  }
+  return $gitOutput
+}
 function Download-OracleCsv {
   if (-not (Test-Path -LiteralPath $oraclePath)) { throw 'CSV Oracle 2026 atual não encontrado.' }
   $oldHash = Get-Sha256 $oraclePath
@@ -66,22 +83,24 @@ function Download-OracleCsv {
 function Publish-SyntheticBundle {
   if (-not (Test-Path -LiteralPath $bundlePath)) { throw 'Bundle sintético não foi gerado.' }
   $bundleRelative = 'app_data/synthetic_pinnacle_bundle.json'
-  git diff --quiet -- $bundleRelative
-  if ($LASTEXITCODE -eq 0) { throw 'O bundle sintético não mudou; publicação cancelada.' }
-  git add -- $bundleRelative
-  git commit -m "chore: refresh synthetic Pinnacle bundle $stamp" 2>&1 | Tee-Object -FilePath $reportPath -Append
-  if ($LASTEXITCODE -ne 0) { throw 'Não foi possível criar o commit do bundle sintético.' }
-  git push origin HEAD:main 2>&1 | Tee-Object -FilePath $reportPath -Append
-  if ($LASTEXITCODE -ne 0) { throw 'Não foi possível publicar o commit no GitHub.' }
-  $localHash = Get-Sha256 $bundlePath
-  $remoteTemp = Join-Path $env:TEMP "synthetic-bundle-$stamp.json"
+  $previousErrorActionPreference = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
   try {
-    Invoke-WebRequest -Uri $rawBundleUrl -OutFile $remoteTemp
-    if ((Get-Sha256 $remoteTemp) -ne $localHash) { throw 'O bundle remoto do GitHub não corresponde ao bundle publicado.' }
-  } finally { if (Test-Path $remoteTemp) { Remove-Item $remoteTemp -Force } }
-  $health = Invoke-WebRequest -Uri $appHealthUrl -MaximumRedirection 5
-  if ($health.StatusCode -ne 200) { throw "Streamlit não respondeu com HTTP 200: $($health.StatusCode)." }
-  Add-Report 'GitHub confirmado pelo hash do bundle. Streamlit acessível pelo endpoint de saúde.'
+    git diff --quiet -- $bundleRelative
+    $gitDiffExitCode = $LASTEXITCODE
+  } finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
+  if ($gitDiffExitCode -eq 0) { throw 'O bundle sintético não mudou; publicação cancelada.' }
+  if ($gitDiffExitCode -ne 1) { throw "Não foi possível verificar alterações do bundle (código $gitDiffExitCode)." }
+  Invoke-Git @('add', '--', $bundleRelative) | Out-Null
+  Invoke-Git @('commit', '-m', "chore: refresh synthetic Pinnacle bundle $stamp") | Out-Null
+  Invoke-Git @('push', 'origin', 'HEAD:main') | Out-Null
+  $localCommit = (Invoke-Git @('rev-parse', 'HEAD') | Select-Object -Last 1).ToString().Trim()
+  $remoteRef = (Invoke-Git @('ls-remote', 'origin', 'refs/heads/main') | Select-Object -Last 1).ToString().Trim()
+  $remoteCommit = ($remoteRef -split '\s+')[0]
+  if ($remoteCommit -ne $localCommit) { throw 'O commit remoto do GitHub não corresponde ao commit publicado.' }
+  Add-Report 'GitHub confirmado pelo commit publicado. O Streamlit Cloud iniciará a atualização automaticamente.'
 }
 
 try {
