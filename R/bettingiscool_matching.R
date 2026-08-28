@@ -68,6 +68,26 @@ match_bettingiscool_games <- function(
     aliases
   )
   fixtures$starts <- .bettingiscool_utc(fixtures$starts)
+  fixture_recency <- if ("retrieved_at" %in% names(fixtures)) {
+    as.numeric(.bettingiscool_utc(fixtures$retrieved_at))
+  } else {
+    rep(-Inf, nrow(fixtures))
+  }
+  fixture_version <- if ("version" %in% names(fixtures)) {
+    as.character(fixtures$version)
+  } else {
+    rep("", nrow(fixtures))
+  }
+  fixture_order <- order(
+    fixtures$event_id,
+    fixture_recency,
+    fixture_version,
+    decreasing = c(FALSE, TRUE, TRUE),
+    method = "radix",
+    na.last = TRUE
+  )
+  fixtures <- fixtures[fixture_order, , drop = FALSE]
+  fixtures <- fixtures[!duplicated(fixtures$event_id), , drop = FALSE]
   fixtures <- merge(fixtures, manifest, by = "league_id", all.x = TRUE)
 
   games$blue_key <- .bettingiscool_apply_alias(games$blue_team_name, aliases)
