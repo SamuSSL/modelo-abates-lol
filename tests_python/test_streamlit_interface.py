@@ -1,5 +1,7 @@
 import json
+from datetime import datetime
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 import pytest
 from streamlit.testing.v1 import AppTest
@@ -313,6 +315,18 @@ def test_synthetic_pinnacle_page_uses_no_moneyline_input():
 
 
 def test_synthetic_hero_shows_the_latest_training_date():
+    synthetic_bundle = json.loads(
+        Path("app_data/synthetic_pinnacle_bundle.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    trained_at = datetime.fromisoformat(
+        synthetic_bundle["trained_at"].replace("Z", "+00:00")
+    )
+    expected_training_label = (
+        "Treinado em "
+        f"{trained_at.astimezone(ZoneInfo('America/Sao_Paulo')).strftime('%d/%m/%Y')}"
+    )
     app = AppTest.from_file(
         "streamlit_app.py",
         default_timeout=20,
@@ -320,7 +334,7 @@ def test_synthetic_hero_shows_the_latest_training_date():
 
     assert len(app.exception) == 0
     assert any(
-        "Treinado em 20/08/2026" in markdown.value
+        expected_training_label in markdown.value
         for markdown in app.markdown
     )
     assert not any(
