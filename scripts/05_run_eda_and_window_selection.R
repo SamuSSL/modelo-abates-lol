@@ -200,7 +200,7 @@ associations <- data.frame(
 
 eligible_summary <- evaluation$summary[
   evaluation$summary$eligible_all_folds &
-    evaluation$summary$leagues_covered == 7L,
+    evaluation$summary$leagues_covered == length(canonical_target_leagues()),
   ,
   drop = FALSE
 ]

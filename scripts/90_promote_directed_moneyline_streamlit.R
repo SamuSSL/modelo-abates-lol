@@ -334,19 +334,31 @@ bundle <- list(
   metadata = list(
     model_version = paste0("directed-ml-", model_hash),
     selected_candidate_id = "joint_ml_quadratic_global",
-    model_status = "experimental_prospective_test",
+    model_status = "historical_validation_only",
     data_cutoff = format(
       deployment_cutoff,
       tz = "UTC",
       usetz = TRUE
     ),
+    bundle_refreshed_at = format(
+      Sys.time(),
+      format = "%Y-%m-%dT%H:%M:%SZ",
+      tz = "UTC",
+      usetz = FALSE
+    ),
     training_maps = fit$fundamental$training_maps,
     moneyline_training_maps = fit$training_maps,
     moneyline_snapshot = "T-15 a T-30 do mapa",
-    backtest_maps = 723L,
-    backtest_brier = 0.2446,
-    backtest_line_log_loss = 0.6823,
-    backtest_yield = 0.0911
+    backtest_maps = 153L,
+    backtest_brier = 0.2769,
+    backtest_line_log_loss = 0.7542,
+    backtest_yield = -0.0954,
+    backtest_context = paste(
+      "confirmacao historica de junho-julho de 2026;",
+      "EV minimo de 10% contra odds live Pinnacle;",
+      "nao representa execucao em casa soft"
+    ),
+    prospective_test = FALSE
   ),
   model = list(
     type = "directed_moneyline",

@@ -12,6 +12,12 @@ if (!nzchar(Sys.getenv("BETTINGISCOOL_API_KEY", unset = ""))) {
 }
 arguments <- commandArgs(trailingOnly = TRUE)
 mode <- if (length(arguments) > 0L) tolower(arguments[[1L]]) else "coverage"
+league_filter <- if (length(arguments) > 1L) {
+  suppressWarnings(as.integer(arguments[-1L]))
+} else {
+  integer()
+}
+league_filter <- league_filter[is.finite(league_filter)]
 if (!mode %in% c("coverage", "history")) {
   stop("Modo deve ser coverage ou history.", call. = FALSE)
 }
@@ -113,6 +119,9 @@ fixtures <- DBI::dbGetQuery(
 )
 if (nrow(fixtures) == 0L) {
   stop("Nenhuma fixture de kills foi encontrada no banco.", call. = FALSE)
+}
+if (length(league_filter) > 0L) {
+  fixtures <- fixtures[fixtures$league_id %in% league_filter, , drop = FALSE]
 }
 
 if (mode == "coverage") {

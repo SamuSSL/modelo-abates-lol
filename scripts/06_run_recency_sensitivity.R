@@ -57,7 +57,7 @@ evaluation <- evaluate_window_candidates(
 )
 eligible <- evaluation$summary[
   evaluation$summary$eligible_all_folds &
-    evaluation$summary$leagues_covered == 7L,
+    evaluation$summary$leagues_covered == length(canonical_target_leagues()),
   ,
   drop = FALSE
 ]

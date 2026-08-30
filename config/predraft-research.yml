@@ -10,7 +10,7 @@ contract:
   weekly_refresh_day: saturday
   intraseeries_information: false
   forbidden_inputs: [champions, draft, side, patch, prior_series_maps]
-  target_leagues: 7
+  target_leagues: 9
   half_lines_only: true
 coverage_gates:
   total_market_maps: 500
