@@ -1,0 +1,3992 @@
+{
+  "registry_version": "dota-team-identity-v1",
+  "created_at_utc": "2026-09-18T19:10:30Z",
+  "source": "OpenDota /teams/{team_id}/players plus match details",
+  "freshness_policy_days": {
+    "fresh_max": 45,
+    "aging_max": 90
+  },
+  "roster_is_future_confirmation": false,
+  "teams": [
+    {
+      "opendota_team_id": "10007878",
+      "team_name": "Team Refuser",
+      "last_seen": "2026-06-17T12:15:11Z",
+      "map_count": 20,
+      "last_observed_roster": [
+        "137193239",
+        "139937922",
+        "148215639",
+        "207829314",
+        "76904792"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "137193239",
+          "name": "无限",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "139937922",
+          "name": "Yang",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "148215639",
+          "name": "Monet",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "207829314",
+          "name": "BoBoKa",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "76904792",
+          "name": "poloson",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:01:15Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:01:15Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "da9a08706e508b31dc65c2dc6d5ff75d7519149473abfccd08bb3bea88a456af",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10008067",
+      "team_name": "Game Master",
+      "last_seen": "2026-06-17T05:10:40Z",
+      "map_count": 22,
+      "last_observed_roster": [
+        "113457795",
+        "138543123",
+        "168028715"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "138543123",
+          "name": "Pyw",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "113457795",
+          "name": "MooN",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "168028715",
+          "name": "flyfly",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:01:18Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:01:18Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "ea7fe60073f2cac35ebb202d327600cf3fa9a3cafa013407d8e7f39169646ea4",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10009033",
+      "team_name": "Team 10",
+      "last_seen": "2026-01-08T13:26:32Z",
+      "map_count": 5,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:01:21Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "cad2cca8eec610087d2d6c29b68b800f4c3219938fc6c65ebde25163aef32022",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10015066",
+      "team_name": "Cheeki Breeki",
+      "last_seen": "2026-01-10T11:37:38Z",
+      "map_count": 11,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:18Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "d1ccc1c2b2554a43998e4657f625404e20bee62326d60210f04417f9bfacf2f3",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10020033",
+      "team_name": "Pasika UA",
+      "last_seen": "2026-01-15T16:29:48Z",
+      "map_count": 4,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:19Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "93c526a3a1ba97ec8e804569b5fd47fedfcaa23a92ab106a3d656c8d543517b7",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10020042",
+      "team_name": "Team Sangre",
+      "last_seen": "2026-01-10T20:55:25Z",
+      "map_count": 11,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:20Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "73d0095981ad1da29b5557c55e34f110f7bb8109d3e512fa29c646294b9b2dd4",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10020128",
+      "team_name": "NoLogoJustMmr",
+      "last_seen": "2026-01-28T13:19:36Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:20Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "c7ad3a7ca65269b5892ae4e8ec613e0a36aceed6bdfed54edf49c266e43d0c43",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10020163",
+      "team_name": "looking for org",
+      "last_seen": "2026-01-13T22:06:48Z",
+      "map_count": 13,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:21Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "f4708d01eca95d1732ec383d6a4dc97f487246e9f304d72e6126718c600bd387",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10020555",
+      "team_name": "PlayTime",
+      "last_seen": "2026-06-19T20:52:12Z",
+      "map_count": 100,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:21Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ecda877364d73faa4a6134b9c66ae1a3448b2b1e3e88b776cd5edc8c90bd2fd5",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10020690",
+      "team_name": "Team Public ",
+      "last_seen": "2026-01-28T19:54:10Z",
+      "map_count": 13,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:22Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "a71ea934b58ba3098928dd0c1dba9933e16052ce18cb202755c683c5f3369c1f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10026948",
+      "team_name": "Jackky and friends",
+      "last_seen": "2026-01-17T13:20:11Z",
+      "map_count": 14,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:22Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "cf8afb687054d346ef1ddec2a466cdf9c6187e0895778fe6388cd373a8ddcd14",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10027124",
+      "team_name": "MONKEY BUSINESS",
+      "last_seen": "2026-01-26T19:57:47Z",
+      "map_count": 10,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:23Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ca0e895ad2ff84b35152aadb8ddc627f519be127e15d115463d2803263ea2a3e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10027459",
+      "team_name": "alohasquad",
+      "last_seen": "2026-01-16T14:26:05Z",
+      "map_count": 2,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:23Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ac52d6979d906802bde828c998fae8fb02059716e343456c3e665a7e5a1b286e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10028038",
+      "team_name": "Valinor",
+      "last_seen": "2026-02-13T14:43:06Z",
+      "map_count": 27,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:24Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "d93e2cd9afd68c300e670e56442c451220c66c17856d4c70944d5fb7f863bcbb",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10028056",
+      "team_name": "alohasquad",
+      "last_seen": "2026-02-22T20:14:55Z",
+      "map_count": 21,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:25Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "8241e1928a3216bd042c56e487f40afc44940d7150976762aad69a9e185fcfe2",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10033620",
+      "team_name": "StrongBoys",
+      "last_seen": "2026-02-16T14:11:41Z",
+      "map_count": 49,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:25Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "72911281174cd77307d577120ee9a63f231a05b8fe29f7d85c25f302f8eb0ff1",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10034026",
+      "team_name": "skebob",
+      "last_seen": "2026-01-27T09:47:23Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:26Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "be1c46b78ea6a5a65e6520fe65a96104032809aa5739a5489f04f00cf4cc3b4f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10040864",
+      "team_name": "Team Stels",
+      "last_seen": "2026-05-05T13:38:10Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:26Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "81e53ac93ba5dfd72e0cf8acf2c60727b95dbc94a4bd006897c48f6f293f56c9",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10046755",
+      "team_name": "Team Lite",
+      "last_seen": "2026-03-15T13:29:22Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:27Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "5e832a10c0c4b3ded693d078c12b9c6857f4a9dfa9e38c178feb2e26f65356eb",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10047486",
+      "team_name": " Team Messi",
+      "last_seen": "2026-05-17T13:52:51Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:27Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "a9e1be532862dba05f56968b41c2ba52bcc2607e20924b29115d907407c80c5e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10047487",
+      "team_name": "Team Essence",
+      "last_seen": "2026-03-22T08:05:32Z",
+      "map_count": 29,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:28Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "d1815b45609428bd95fdb3e3c645b11bd21190dcf7e03a0d0bda6b1076e33da0",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10048017",
+      "team_name": "Team Silk",
+      "last_seen": "2026-02-07T16:30:13Z",
+      "map_count": 14,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:28Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "8fb9338984609c58d7b8b61bd8085c66f749c6042dd633e62fa1cbd0848846af",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10054438",
+      "team_name": "Team Vegan",
+      "last_seen": "2026-03-17T17:35:39Z",
+      "map_count": 13,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:29Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "fc3e3f3983e1c568c1b901ecfdc38af492524e66443a7105b483c2c9b90b9250",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10060924",
+      "team_name": "team scorpions",
+      "last_seen": "2026-05-24T12:08:44Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:30Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "cb02819646873099aa797c308bb8fe9d347aae67e20302309e9462eabc18d36a",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10067598",
+      "team_name": "Team Shpilit",
+      "last_seen": "2026-03-22T14:38:39Z",
+      "map_count": 36,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:30Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "b726e1c40f156b16df18718d9fa039c8cf9f186fb425f1e0ac4bd90c5c25beb5",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10081680",
+      "team_name": "GLYPH",
+      "last_seen": "2026-06-22T08:09:04Z",
+      "map_count": 107,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:31Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "a75b10c6bc2f0c078c0bf6d2a0d99b0443e1c5a3396f22765e20678bf2272e7c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10088081",
+      "team_name": "team Alohadance",
+      "last_seen": "2026-03-18T19:04:02Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:31Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "56bf059e9b359ba9ebab7b2c74e5f7747c30c67a0d07baf5a4bca364ecb8f4b9",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10108947",
+      "team_name": "SouthAmericaRejects",
+      "last_seen": "2026-05-01T15:55:19Z",
+      "map_count": 71,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:32Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "d6134e395518f8e42b4af606efdc11b376520a1e471188787da98bf9405be5cd",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10128921",
+      "team_name": "Team Mandarin",
+      "last_seen": "2026-04-29T19:55:00Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:33Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "e65fcc3b46a93277fe2feeec6e765a5c6b3bee2059da6c0e7ba849f4c6c94655",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10135834",
+      "team_name": "TEAM GRIND",
+      "last_seen": "2026-06-23T11:27:19Z",
+      "map_count": 54,
+      "last_observed_roster": [
+        "146711951",
+        "193815691"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "193815691",
+          "name": "Q",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "146711951",
+          "name": "Nikko",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:02:33Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:33Z",
+      "current_membership_count": 2,
+      "roster_endpoint_sha256": "66669d997f6c26259b38b9868368d4a904d22233b433c5b3c00848927fee90bd",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10136357",
+      "team_name": "Nigma Galaxy ",
+      "last_seen": "2026-08-22T07:17:23Z",
+      "map_count": 77,
+      "last_observed_roster": [
+        "101356886",
+        "152168157",
+        "210053851"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "152168157",
+          "name": "OmaR",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "101356886",
+          "name": "GH",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "210053851",
+          "name": "lorenof",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:02:34Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:34Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "5ebf4369f6694e4ba330f43752635fbb5ffb2315038f8d559ee2f948dc03ebc8",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10144195",
+      "team_name": "ex-HEROIC",
+      "last_seen": "2026-05-17T11:00:01Z",
+      "map_count": 14,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:34Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "102c6630309b98756553a7575f9ccc8be5ffd25fd33514d7344337294f07cfc8",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10145416",
+      "team_name": "Team G",
+      "last_seen": "2026-06-01T18:21:43Z",
+      "map_count": 10,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:35Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "8add1fab65f23efc129d60b98fd09b0d7ec6419c3e78098fe90dadbfc74b4c20",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10150267",
+      "team_name": "Hokori",
+      "last_seen": "2026-06-17T17:13:49Z",
+      "map_count": 20,
+      "last_observed_roster": [
+        "138177198",
+        "395770377"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "395770377",
+          "name": "Asao",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "138177198",
+          "name": "Vitaly 誇り",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:02:36Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:36Z",
+      "current_membership_count": 2,
+      "roster_endpoint_sha256": "a6599399a9e755eebf29674d4d83a27525069b0c360bb3eb7a39c2530db9d79e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10150345",
+      "team_name": "Team Recrent",
+      "last_seen": "2026-05-24T22:20:24Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:36Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "e74b77c1ed5676077af3ceb8d11ad675708f683643180e90984cb304cb93c131",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10150538",
+      "team_name": "LGD Gaming",
+      "last_seen": "2026-08-16T10:24:26Z",
+      "map_count": 78,
+      "last_observed_roster": [
+        "105045291",
+        "177203952",
+        "292921272",
+        "81306398"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "292921272",
+          "name": "Wisper",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "177203952",
+          "name": "Yuma",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "105045291",
+          "name": "Thiolicor",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "81306398",
+          "name": "KingJungles",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:02:37Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:37Z",
+      "current_membership_count": 4,
+      "roster_endpoint_sha256": "76e084910608cfbbdcec9e49e9250786f00403b89a9ad98970c7b8c683d8fbec",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10151099",
+      "team_name": "Team iAnnihilate",
+      "last_seen": "2026-07-30T01:31:22Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:38Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "92c486a064120948f11ca110396a8aa0a66829cae57d5c9e672858196028293e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10151106",
+      "team_name": "Team Boris",
+      "last_seen": "2026-08-03T03:30:49Z",
+      "map_count": 19,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:38Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "e4d2306835470fc11ca5c8ab55498f1515235bc7a17d624fe9c9331ba3d475e7",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10164198",
+      "team_name": "Team Bald",
+      "last_seen": "2026-06-26T17:59:18Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:39Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "7935dc4e4bfd620aa3a8f01969b26e48657c05c8aaccdd3773517758da5c8ffb",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182357",
+      "team_name": "1w",
+      "last_seen": "2026-08-05T14:19:06Z",
+      "map_count": 30,
+      "last_observed_roster": [
+        "136829091"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "136829091",
+          "name": "Whitemon",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:02:39Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:39Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "9626d899b9b6c79a0a1e09df82543362c1a9af47b110ed63e3ab729f21bd0f73",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182482",
+      "team_name": "Team Tajikistan",
+      "last_seen": "2026-06-30T15:10:26Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:40Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "927aabb69a7dee5f4dee40e754b631bd134e112119fdec9303289b4d2bd73c51",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182496",
+      "team_name": "Team Finland",
+      "last_seen": "2026-07-01T15:35:12Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:41Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "764b415d4170692be2eec2d064f3d7efe82e6df94c517143e56983cf0bcb19b6",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182498",
+      "team_name": "Team Philippines",
+      "last_seen": "2026-07-01T08:25:45Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:41Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "0f0c1eb3feafd3d62bae1710bc5381d85c73270e2400228932fb27faa07c05f2",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182501",
+      "team_name": "Team Portugal",
+      "last_seen": "2026-06-30T20:27:36Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:42Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "093e6cf7c9a48bc5b5e725f1daba3b34cabc152358108bc800524ccd5584c707",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182519",
+      "team_name": "Team France",
+      "last_seen": "2026-07-01T19:40:40Z",
+      "map_count": 13,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:42Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "f07707c72785b7466177ed28234633e23287a861ab605385a6fe0cc4bd1ff2f6",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182524",
+      "team_name": "Team Nigeria",
+      "last_seen": "2026-07-01T17:48:45Z",
+      "map_count": 11,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:43Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "c71fbabddf17594312855d85f1adc65daa860116d253dbb3655fd1be403bde2f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182601",
+      "team_name": "Team Pakistan",
+      "last_seen": "2026-07-01T12:39:41Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:43Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "dbbb0fdf677ecf2079d13cec204a669bdc83aea658746e6255b368062233301c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182678",
+      "team_name": "Team Azerbaijan",
+      "last_seen": "2026-06-30T16:59:22Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:44Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "da85514c75356a6f938fc8c41ad06796c88d52042b97d98138ac6f4b9648df23",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182706",
+      "team_name": "Team Hungary",
+      "last_seen": "2026-07-01T11:10:34Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:44Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "74a4f153daa44530a8cb6bc65e087e1c61c41b65df99bbdf59b273f552a96fa9",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182713",
+      "team_name": "Team Uzbekistan",
+      "last_seen": "2026-06-30T18:19:52Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:45Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "4051b5207f4e2e110a1d59c508025bbe9a591549aef91ede889cb5fd11c34778",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182715",
+      "team_name": "Team Ireland",
+      "last_seen": "2026-06-30T20:07:49Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:46Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "dd487a1dff6c2014f1ec49baafa49591b66a557c768f5860051a1cb11310cc78",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182732",
+      "team_name": "Team Saudi Arabia",
+      "last_seen": "2026-06-30T19:52:05Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:46Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "874bedb8b0ea818714a7db60fe9b2d87ffe44a54f2d05e56be4f97558b8ab05e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182738",
+      "team_name": "Team Madagascar",
+      "last_seen": "2026-07-01T19:37:27Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:47Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "a86b88aa5ff38ba33ac0b538c6b5de13b95c17cf91b5346cd75d212363e31812",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182748",
+      "team_name": "Team South Africa",
+      "last_seen": "2026-07-01T19:37:27Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:48Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ff6c4303921fa9e771ba48072714ec022495e3f888fbcc550755c9694f187238",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182755",
+      "team_name": "Team Iran",
+      "last_seen": "2026-07-01T11:22:27Z",
+      "map_count": 10,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:48Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "3fc4aae5cf5278923df0b8f5a1b3344796eb40a5523aeb4d16f2f0a10697c052",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182773",
+      "team_name": "Team Romania",
+      "last_seen": "2026-07-01T14:10:53Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:49Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "f3279c0454820ec2307be7d983478c89cc791b78af134ce18a0aff8960213eb9",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10182851",
+      "team_name": "Team Kenya",
+      "last_seen": "2026-06-30T23:04:11Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:49Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "82dce9d1181c6e14485db45c0e377ca7c0a7854eb4d115ad27453f9c0606d8b1",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10186458",
+      "team_name": "TEAM MALAWI",
+      "last_seen": "2026-06-30T18:23:55Z",
+      "map_count": 5,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:50Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "defac3d6ff69c9a83a52880a54afd6df1e4f3a417c80da6a93239f1cbf97c89c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10186464",
+      "team_name": "Team Belgium",
+      "last_seen": "2026-07-01T16:28:19Z",
+      "map_count": 12,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:50Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "fccea82bca54fee0e2c558f7cb2495aaf882c023945a6bd3262fac785f8b144c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10186547",
+      "team_name": "Team Thailand",
+      "last_seen": "2026-07-01T12:46:31Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:51Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "e565999227c7ab12f9d7f91a773eba938913ec0109214aa119e2de6f68413716",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10201538",
+      "team_name": "TEAM JENZ",
+      "last_seen": "2026-08-08T19:13:12Z",
+      "map_count": 26,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:51Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "0baee47bdcbb9147e4fd5356461764e238941f03c33f69abcb6186b42ce2b726",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10207444",
+      "team_name": "Team Virsatus",
+      "last_seen": "2026-08-01T02:46:39Z",
+      "map_count": 13,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:52Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "bf7fe7c03ae32370497984b5983b1494aa08ad5e6aa28c5bc5a1f05e0af256f8",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10207445",
+      "team_name": "Team dnm",
+      "last_seen": "2026-07-30T02:02:50Z",
+      "map_count": 10,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:02:53Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "3d5817fe90e40ae16e177927239096e639ee89fa30f649b2841944f7c056e09c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10207446",
+      "team_name": "TEAM MONKEYS",
+      "last_seen": "2026-07-30T23:28:34Z",
+      "map_count": 12,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:10:28Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "fa599f68b405ac138ece574491bd4d2a21b7596db386343c7fbd6453e3e4a956",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10207447",
+      "team_name": "Team Nyx",
+      "last_seen": "2026-08-03T03:30:49Z",
+      "map_count": 17,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:10:28Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "32626c9d19c7a6e2af709cd78452ea8164c5cdfb3b6e5081d92e36f1d3632b73",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10207448",
+      "team_name": "Team King Potato",
+      "last_seen": "2026-08-02T18:24:59Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:12Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "4f9ea7feb7adbe8706541bba9798228d2903383417273226bdcd29e59edeaedc",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10207449",
+      "team_name": "team gunnar",
+      "last_seen": "2026-07-31T01:27:20Z",
+      "map_count": 12,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:13Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ffca0f3984477feb14467451c02b250f4c89974a7419ef1bb9592b51c4aa1bd1",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "10207984",
+      "team_name": "Team resilience",
+      "last_seen": "2026-08-05T09:11:28Z",
+      "map_count": 15,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:13Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "eb2b7e64d0146744ba0a2a305b481b198055cd150a3a3c8be2560811c922c032",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "1725846",
+      "team_name": "Chimpanzini Bananini",
+      "last_seen": "2025-09-27T02:12:14Z",
+      "map_count": 19,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:14Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "6ce188ddaa5378aa31941981bb4b65762a02de00f260cbebb327b152d246129f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "2163",
+      "team_name": "Team Liquid",
+      "last_seen": "2026-08-22T03:36:31Z",
+      "map_count": 352,
+      "last_observed_roster": [
+        "152962063",
+        "16497807",
+        "201358612",
+        "60943014",
+        "77490514",
+        "97590558"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "152962063",
+          "name": "m1CKe",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "77490514",
+          "name": "Boxi",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "201358612",
+          "name": "Nisha",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "16497807",
+          "name": "tOfu",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "97590558",
+          "name": "Ace ♠",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "60943014",
+          "name": "Jabbz",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:14Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:14Z",
+      "current_membership_count": 6,
+      "roster_endpoint_sha256": "350d9004ace1e99516041b52a61c4465004748b0457a60e1a4fa3744e9418abf",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "2576071",
+      "team_name": "Yellow Submarine",
+      "last_seen": "2026-08-11T16:34:15Z",
+      "map_count": 341,
+      "last_observed_roster": [
+        "140835095",
+        "217472313",
+        "860145568"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "217472313",
+          "name": "Xakoda",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "860145568",
+          "name": "Rain",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "140835095",
+          "name": "Batyuk",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:15Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:15Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "0de83ce4721e24d34bf6e1993eae7de1d9e0b19d54486358a5f0e56fbdd1c61f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "2586976",
+      "team_name": "OG",
+      "last_seen": "2026-08-15T10:40:43Z",
+      "map_count": 276,
+      "last_observed_roster": [
+        "100594231",
+        "355168766",
+        "88271237"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "88271237",
+          "name": "Ceb",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "100594231",
+          "name": "skem",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "355168766",
+          "name": "Natsumi",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:15Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:15Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "9c54ebf92c94312776a8a018dce625604c484e0e6dfbaf6dfb716197d5b18fa3",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "36",
+      "team_name": "Natus Vincere",
+      "last_seen": "2026-08-12T15:40:30Z",
+      "map_count": 244,
+      "last_observed_roster": [
+        "116249155",
+        "130991304",
+        "185590374",
+        "835864135",
+        "919735867",
+        "957204049"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "835864135",
+          "name": "pma",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "957204049",
+          "name": "gotthejuice",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "130991304",
+          "name": "Riddys",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "185590374",
+          "name": "Niku",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "116249155",
+          "name": "nefrit",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "919735867",
+          "name": "daze",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:16Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:16Z",
+      "current_membership_count": 6,
+      "roster_endpoint_sha256": "013ed2d8014c9d5fc434580f84a86ed44287d11288911bac31a965898faa9c36",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "5017210",
+      "team_name": "Team Resilience",
+      "last_seen": "2026-08-16T06:50:04Z",
+      "map_count": 45,
+      "last_observed_roster": [
+        "145957968",
+        "170896543",
+        "249835593",
+        "315272623",
+        "391423488"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "315272623",
+          "name": "Echozz",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "170896543",
+          "name": "YSR-04E",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "145957968",
+          "name": "niu",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "249835593",
+          "name": "zzq",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "391423488",
+          "name": "TK",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:17Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:17Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "67aa44316c8be8aa1c665e4d8395ce9d6d0a7d2eeae4403d5d2853fcf76b2157",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "55",
+      "team_name": "_PowerRangers",
+      "last_seen": "2026-08-10T11:02:11Z",
+      "map_count": 210,
+      "last_observed_roster": [
+        "185059559",
+        "295697470",
+        "363739653"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "363739653",
+          "name": "alberkaaa",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "295697470",
+          "name": "Immersion",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "185059559",
+          "name": "Till The End",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:17Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:17Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "b5535808d43eb27d63483a6167a0aa09e2dea66ed3c69d907a58b86ee0b9191e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "7119077",
+      "team_name": "Hokori",
+      "last_seen": "2026-04-13T22:18:11Z",
+      "map_count": 9,
+      "last_observed_roster": [
+        "169359999",
+        "239230502",
+        "385825293",
+        "922481045"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "169359999",
+          "name": "kendallx",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "385825293",
+          "name": "Austin",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "922481045",
+          "name": "LSM>",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "239230502",
+          "name": "Euphoria~",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:18Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:18Z",
+      "current_membership_count": 4,
+      "roster_endpoint_sha256": "9f6e215b113bf3e2392369d17df035404c6b8bf6952004e2d9847489d31ee71f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "7119388",
+      "team_name": "Team Spirit",
+      "last_seen": "2026-08-23T12:08:38Z",
+      "map_count": 303,
+      "last_observed_roster": [
+        "106305042",
+        "218231587",
+        "302214028",
+        "321580662",
+        "847565596"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "321580662",
+          "name": "Yatoro",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "302214028",
+          "name": "Collapse",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "106305042",
+          "name": "Larl",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "847565596",
+          "name": "rue",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "218231587",
+          "name": "not_me",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:19Z",
+      "roster_snapshot_count": 1,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:19Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "425ce58d632dae9541a17d9277b80a7b88c567800a914fea2f9e3d2a3e3e718c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "7299465",
+      "team_name": "MODUS",
+      "last_seen": "2026-06-26T13:56:12Z",
+      "map_count": 81,
+      "last_observed_roster": [
+        "331711578"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "331711578",
+          "name": "elmo^^",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:19Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:19Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "629eeb0ef942d5144e3dc625470e97bca9b9da3057adfb7576e85d4519ab730b",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "7554697",
+      "team_name": "Nigma Galaxy",
+      "last_seen": "2026-05-08T13:31:11Z",
+      "map_count": 223,
+      "last_observed_roster": [
+        "105248644",
+        "82262664",
+        "87197791"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "105248644",
+          "name": "Miracle-",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "82262664",
+          "name": "kky",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "87197791",
+          "name": "rmN-.",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:20Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:20Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "8c018c3500dacb961e3b46af6e26859c28f3ace1d5c102d008a5dda4ec3809a2",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "7653080",
+      "team_name": "Yangon Galacticos",
+      "last_seen": "2026-03-23T07:09:09Z",
+      "map_count": 173,
+      "last_observed_roster": [
+        "160708663",
+        "318371533"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "318371533",
+          "name": "Skill Lay",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "160708663",
+          "name": "LUN",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:20Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:20Z",
+      "current_membership_count": 2,
+      "roster_endpoint_sha256": "8e42a6b268171c11d94f8d9b0e973eb3c9778cfab80b1a68a35c0d196c78c72c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "7732977",
+      "team_name": "BOOM Esports",
+      "last_seen": "2025-10-12T08:00:07Z",
+      "map_count": 75,
+      "last_observed_roster": [
+        "155332459",
+        "308163407",
+        "408729743"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "308163407",
+          "name": "ILICH-",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "408729743",
+          "name": "Sacred",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "155332459",
+          "name": "Matthew",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:21Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:21Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "a42e61c2a741fd9e7afa4cce766fd938200e1f85bda6a5e52dda8fc67cd1d1f2",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8254145",
+      "team_name": "Execration",
+      "last_seen": "2026-08-01T07:23:51Z",
+      "map_count": 159,
+      "last_observed_roster": [
+        "119898344",
+        "173378701",
+        "337575662",
+        "349495318",
+        "399862798"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "337575662",
+          "name": "Tino",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "399862798",
+          "name": "Shanks",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "173378701",
+          "name": "Bob",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "119898344",
+          "name": "Denzsanity",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "349495318",
+          "name": "Krish`-",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:22Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:22Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "2caff7e607ade0ffd57efe7b77151a4b3cd8fb5383ba7bab483c02ddb19d2a7d",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8261500",
+      "team_name": "Xtreme Gaming",
+      "last_seen": "2026-08-15T10:38:57Z",
+      "map_count": 292,
+      "last_observed_roster": [
+        "137129583",
+        "157475523",
+        "898754153"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "898754153",
+          "name": "Ame",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "137129583",
+          "name": "Xm",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "157475523",
+          "name": "XinQ",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:22Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:22Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "a0baede17aa6cbc1cfb0611b3f14bfad77d4cfdfcdba0fbe02815e04b486a52f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8291895",
+      "team_name": "Tundra Esports",
+      "last_seen": "2026-05-18T11:58:58Z",
+      "map_count": 265,
+      "last_observed_roster": [
+        "132851371",
+        "94054712"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "94054712",
+          "name": "Topson",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "132851371",
+          "name": "RAMZES666",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:23Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:23Z",
+      "current_membership_count": 2,
+      "roster_endpoint_sha256": "e21fef50c6477df6001b77d9338df96e3803b1b745de5cc2d2a82ad0cfdb30bd",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8415816",
+      "team_name": " Team HaliFFat",
+      "last_seen": "2026-05-10T13:40:52Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:23Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ad442f9c10a75b5b7f903bc7f1ea58a65d9f1173a96f64f2f935eddf947fb681",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8494848",
+      "team_name": "Winter Bear",
+      "last_seen": "2026-03-26T21:18:09Z",
+      "map_count": 123,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:24Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "a1aebf3e92539a32f88a4d06241335c189d6a65460db4a6c28a2405f12e28f95",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8599101",
+      "team_name": "Gaimin Gladiators",
+      "last_seen": "2025-08-21T18:58:07Z",
+      "map_count": 24,
+      "last_observed_roster": [
+        "91730177"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "91730177",
+          "name": "Seleri",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:24Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:24Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "75b496e789a366dcfc4b2ef821fe7a46d9785643617e9378f95bc2568312dfd8",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8750109",
+      "team_name": "Team Sprite",
+      "last_seen": "2025-08-26T12:06:17Z",
+      "map_count": 5,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:25Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "4d532a81a581c9865e37f15cddbb725d56cd7a8f0208e96c5ede71eaef63179d",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8835624",
+      "team_name": "Team Sangre",
+      "last_seen": "2026-03-15T22:37:38Z",
+      "map_count": 24,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:26Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "481a3fb2d3b4ccbc04848e38e55a0b2a6dfa749b7fa6d4f339a19ad8c3c1a694",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "8944230",
+      "team_name": "Yangon Galacticos",
+      "last_seen": "2026-04-13T05:15:10Z",
+      "map_count": 46,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:26Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "57fa0a8d34cb2c5c1b90c9209431002447d5958fe189fd48930ce29a602e8049",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9131584",
+      "team_name": "BB Team",
+      "last_seen": "2025-08-02T13:37:40Z",
+      "map_count": 19,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:27Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "163aea68a58f9ee8c6db07e8beb28138007e3dcab2053e3ecee5da52dad935e2",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9209455",
+      "team_name": "Team Paytool",
+      "last_seen": "2025-09-04T16:56:10Z",
+      "map_count": 12,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:27Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "8cbb279ff97a93faec154490a3cfb127589ee30f2f3fbb595e392e4097f8da89",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9247354",
+      "team_name": "Team Falcons",
+      "last_seen": "2026-08-21T08:52:43Z",
+      "map_count": 325,
+      "last_observed_roster": [
+        "183719386",
+        "25907144",
+        "898455820"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "25907144",
+          "name": "Cr1t-",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "183719386",
+          "name": "AMMAR_THE_F",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "898455820",
+          "name": "Malr1ne",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:28Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:28Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "64abfb00f5298ee3a3ac2975e131908e06c1ac06ce26808461d8176f1827fd3a",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9247798",
+      "team_name": "Passion UA",
+      "last_seen": "2025-12-15T13:21:28Z",
+      "map_count": 175,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:29Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "fbbd3bcd17d66be4c88f91cf7b736c1a73224d27ce03c09bff2936136aea8b24",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9255039",
+      "team_name": "enjoy",
+      "last_seen": "2026-08-01T12:43:34Z",
+      "map_count": 314,
+      "last_observed_roster": [
+        "122817493"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "122817493",
+          "name": "Rein",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:29Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:29Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "e7fbd80267095a20595ce2bc547f6d8835010f620749f7eef9ea632067acb9c3",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9303484",
+      "team_name": "HEROIC",
+      "last_seen": "2026-04-24T09:29:24Z",
+      "map_count": 219,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:30Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "b7918874551f5ffa4d88d5451549bb1d9f6cf8804063c9cc756792a7a31a09b6",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9338413",
+      "team_name": "MOUZ",
+      "last_seen": "2026-08-11T14:10:08Z",
+      "map_count": 380,
+      "last_observed_roster": [
+        "116585378",
+        "127617979",
+        "190826739"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "190826739",
+          "name": "BOOM",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "127617979",
+          "name": "Crystallis",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "116585378",
+          "name": "MidOne",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:30Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:30Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "9e578051f64ea8d64808cb6aa7b22385168d7fda88ebf749cc595ed32029ac4c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9351740",
+      "team_name": "Yakult Brothers",
+      "last_seen": "2026-06-18T11:15:07Z",
+      "map_count": 212,
+      "last_observed_roster": [
+        "202217968"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "202217968",
+          "name": "Emo",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:31Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:31Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "c46997fc1d34cd48ec6b99d82a1a57da0da4e3cb0017ecabeb9ca7120d9fc8e4",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9373482",
+      "team_name": "Team Antares",
+      "last_seen": "2026-04-17T20:55:28Z",
+      "map_count": 11,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:32Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "21c2a7fe9e28bfc656ee8b7e38919db00850419193e60c59578f09aa6da92199",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9381678",
+      "team_name": "Apex Genesis",
+      "last_seen": "2025-10-08T14:14:45Z",
+      "map_count": 2,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:32Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "b2264b82cbd8afe0df175e21fd848ba47e6fbb20c1cb2cfed2c0eb4688ee573a",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9467224",
+      "team_name": "Aurora Gaming",
+      "last_seen": "2026-08-16T04:30:06Z",
+      "map_count": 361,
+      "last_observed_roster": [
+        "126842529",
+        "256156323",
+        "301750126",
+        "320219866",
+        "389022189"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "256156323",
+          "name": "Mira",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "320219866",
+          "name": "kaori",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "126842529",
+          "name": "Ws`",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "301750126",
+          "name": "Mikoto",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "389022189",
+          "name": "Palos",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:33Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:33Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "5cbc42c671878092828f1308a9c5803b3ab282430e972f164b142c9f7573aa1e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9498970",
+      "team_name": "AVULUS",
+      "last_seen": "2026-03-21T12:55:44Z",
+      "map_count": 180,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:33Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ba66b038a6bfa12d84933de555a53817fb58348d9d28f1f96e14eda86fb0bda4",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9499402",
+      "team_name": "Team Essence",
+      "last_seen": "2025-10-21T06:49:28Z",
+      "map_count": 17,
+      "last_observed_roster": [
+        "325496779"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "325496779",
+          "name": "Sora",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:34Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:34Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "23571aab6854696984356f78b862ee2d23b8611aedf3e8de9342904923424eb2",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9530295",
+      "team_name": "Team LenS",
+      "last_seen": "2025-11-14T14:46:53Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:34Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "c90b9a0941b6a7ffee0839dda69497b7507bc6e897dc7a354c61fac068221673",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9538630",
+      "team_name": "Team TT",
+      "last_seen": "2025-11-01T13:16:32Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:35Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "15087a46ad1605d54def481f883de9727dc295251b90fa4f089259f650a0bd37",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9546449",
+      "team_name": "Yangon Galacticos",
+      "last_seen": "2026-06-20T03:58:59Z",
+      "map_count": 45,
+      "last_observed_roster": [
+        "1125296112",
+        "1129118044",
+        "360648679"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "360648679",
+          "name": "Young PH",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "1125296112",
+          "name": "Ksh",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "1129118044",
+          "name": "MOMO",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:35Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:35Z",
+      "current_membership_count": 3,
+      "roster_endpoint_sha256": "8fff2fb0d39e1fc862e1f916c9439b1ce3b168fb7519be3cf2dc2a226434574a",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9556121",
+      "team_name": "Team Cat",
+      "last_seen": "2026-06-01T13:44:12Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:36Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "3e58082b0ddf9c5d83c4d72f0602f1f58a8dcd5f568644f826a37659cfe1e8a9",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9572001",
+      "team_name": "TEAM VISION",
+      "last_seen": "2026-08-23T12:08:38Z",
+      "map_count": 258,
+      "last_observed_roster": [
+        "1044002267",
+        "106573901",
+        "164199202",
+        "195108598",
+        "73401082"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "106573901",
+          "name": "No[o]ne-",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "164199202",
+          "name": "9Class",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "73401082",
+          "name": "Dukalis",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "1044002267",
+          "name": "Satanic",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "195108598",
+          "name": "Noticed",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:36Z",
+      "roster_snapshot_count": 1,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:36Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "d5f9ce0ce354944203a5ecf710103ef588a750c227c4bf3eb123782b43ee8647",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9586122",
+      "team_name": "4Pirates",
+      "last_seen": "2026-01-17T11:12:11Z",
+      "map_count": 176,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:37Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "fca9e4f2c0bc1a9df590af60b185d39de1390b7d99245ddd7cd56f7b7ed5b802",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9600141",
+      "team_name": "Zero Tenacity",
+      "last_seen": "2026-08-11T20:33:21Z",
+      "map_count": 422,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:38Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "9a1f432f6d09026118dfd28bd83db6344e91d5b61556dda6d00a14f1cbb3d819",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9621580",
+      "team_name": "Team PeeF",
+      "last_seen": "2026-03-08T13:13:18Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:38Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "4539d3ad6bb34c4b2f6c141ad55661bac68592ba6d9926c56dd1de511bc51871",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9629413",
+      "team_name": "Team Sherlock",
+      "last_seen": "2026-05-03T15:12:55Z",
+      "map_count": 17,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:39Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "d1f4399c0441139d6911c4373e8a0b668c749849fbaf28d994006b90e9ca1768",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9640842",
+      "team_name": "Team Tidebound",
+      "last_seen": "2025-12-15T13:31:03Z",
+      "map_count": 107,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:39Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "4e8354eb7ec6a551ab388208455632947e85f0590a7b8372027879864362b2a4",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9651185",
+      "team_name": "Wildcard",
+      "last_seen": "2025-10-07T18:47:32Z",
+      "map_count": 74,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:40Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "2032a41d42ddbca034d911c0cb97f5a822ae2215efc3ada3e0793aae38d8e470",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9664713",
+      "team_name": "Team Lynx",
+      "last_seen": "2025-10-03T10:19:39Z",
+      "map_count": 47,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:40Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "5e286f5ca3ebfe48b281ff647c7e772c6353d550abd8d589ab2e645cce5cf246",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9691969",
+      "team_name": "Team Nemesis",
+      "last_seen": "2026-07-12T10:40:11Z",
+      "map_count": 194,
+      "last_observed_roster": [
+        "100471531",
+        "104512126",
+        "148526973",
+        "152859296",
+        "218367241",
+        "343084576",
+        "392565237"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "104512126",
+          "name": "Mac",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "100471531",
+          "name": "J",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "148526973",
+          "name": "Jaunuel",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "152859296",
+          "name": "Jhocam",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "343084576",
+          "name": "NARMAN",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "218367241",
+          "name": "Ken",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "392565237",
+          "name": "JACKBOYS",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:03:41Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:41Z",
+      "current_membership_count": 7,
+      "roster_endpoint_sha256": "1f45521560f3476ce38ec4e1495348138a648082106475974d69a3d22676a842",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9705439",
+      "team_name": "Team Miposhka",
+      "last_seen": "2026-05-23T10:31:06Z",
+      "map_count": 15,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:42Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "6e5033929318ac880c2598ebcfbfce1c568b6853ed0f328a2710ecaeb0673b1d",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9705442",
+      "team_name": "Team NS",
+      "last_seen": "2026-05-19T17:01:17Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:42Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "21b48dc417d6a90a150d54097e8b60e3669abb5200800188da96bc8f30480e98",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9705453",
+      "team_name": "Team Nix",
+      "last_seen": "2026-05-23T13:45:32Z",
+      "map_count": 14,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:43Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "3103b0af6c0ab337aaeb5846498e4b836be59989e33932e17d394e98f12c4d9a",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9705464",
+      "team_name": "Team Solo",
+      "last_seen": "2026-05-24T22:20:24Z",
+      "map_count": 26,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:44Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "47e673a933163b30f03aeb563a79d431466b3687ed89b5ec26883c5e1fedaa12",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9705469",
+      "team_name": "Team By_Owl",
+      "last_seen": "2026-05-24T15:46:01Z",
+      "map_count": 14,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:44Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "0a48a5b3fa823a8e3d4ad1502fd0f97f162ceb80583a540673753209d91c6753",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9717281",
+      "team_name": "Bikini Bottom",
+      "last_seen": "2025-10-03T07:27:19Z",
+      "map_count": 4,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:45Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "85416bee0690ced85ea8417a202d6e720c8209f6e29fd324cb0f166ed598f7ac",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9729720",
+      "team_name": "Virtus.pro",
+      "last_seen": "2025-08-22T09:14:23Z",
+      "map_count": 21,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:45Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "de7ef25c6366ea208086c99ad1c15424e3280d412bfba027f8f65b3d8935af62",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9731156",
+      "team_name": "Team TpaBoMaH",
+      "last_seen": "2026-05-20T00:00:27Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:46Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "051750d9030b5e648c281a698c05033505701454bbcd76a7d302bc9caf12f9db",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9731167",
+      "team_name": "Team Stray",
+      "last_seen": "2026-05-23T22:48:12Z",
+      "map_count": 17,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:03:46Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "f1ecd117bd8a9c8cf775a842c7855030cc0da22a0c988c10e1222619c1f8e6ab",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9751816",
+      "team_name": "Team Yakuza",
+      "last_seen": "2025-11-19T14:03:15Z",
+      "map_count": 10,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:10:28Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ed3381bd66b698dcd02034199fbaa1d47079f8514546db5033f88e97563b9d04",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9759380",
+      "team_name": "Team Invictus",
+      "last_seen": "2025-12-06T13:10:53Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:10:28Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "72673e7660793b3103ded201a233c8a50318d59a9b502c28ffeeb8dc44bdbe3c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9766265",
+      "team_name": "Team Lipstick",
+      "last_seen": "2026-05-29T09:55:44Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:10:29Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "bfd3ab738f3fbf4b0ecd11f747a824357134a3ae4cb3aa55a433021190add5a4",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9780800",
+      "team_name": "OG.LATAM",
+      "last_seen": "2025-10-05T02:47:46Z",
+      "map_count": 43,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:09Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "8be9bdf902c7c382d7927638c750f83935506921caa93c7cd2ae8146c9fdec15",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9790546",
+      "team_name": "TEAM NEXT LEVEL",
+      "last_seen": "2025-09-23T19:14:32Z",
+      "map_count": 70,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:10Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "41f73395ab3ea12d6347988436fce62c4cccd54f9e8e6fb544af9f974eac5d81",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9797818",
+      "team_name": "Team Slayers",
+      "last_seen": "2026-01-14T21:07:32Z",
+      "map_count": 18,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:11Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "1e115e9155c0e063cd3afcc7d508badfee4369349bec4b5ebdc9860e534f2473",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9800464",
+      "team_name": "Team IW",
+      "last_seen": "2026-02-18T17:25:54Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:11Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "6bf00c04eff13485ce19116c6d77027f08ebc6cf8fbc039d402999c6acd357d7",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9814016",
+      "team_name": "Level Up",
+      "last_seen": "2025-07-26T10:43:43Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:12Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "d5870a6d8d46b5bddd34b9aa9f541058e6e767817825987616f9f936df5e2d53",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9819380",
+      "team_name": "TEAM TITANS",
+      "last_seen": "2025-07-29T18:09:50Z",
+      "map_count": 10,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:12Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "00864fd899321597ac5fb241b892944e9e8bacf90cc1370c5e0794022b717d60",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9819437",
+      "team_name": "Team Yakuza",
+      "last_seen": "2025-08-31T10:47:07Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:13Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "1f6b020349ab8afbde909701e5c481787f2724a311bcffd0be3636ddaccbb1da",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9820361",
+      "team_name": "Team Yakuza",
+      "last_seen": "2026-01-01T16:28:14Z",
+      "map_count": 179,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:14Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "bd6b8f15c4b07061835e9bf9a5b99585bd7b175ce41ede4dbe371a26da20ceec",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9823272",
+      "team_name": "Team Yandex",
+      "last_seen": "2026-08-23T03:20:01Z",
+      "map_count": 304,
+      "last_observed_roster": [
+        "103735745",
+        "171262902",
+        "312436974",
+        "56351509",
+        "93817671"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "312436974",
+          "name": "CHIRA_JUNIOR",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "93817671",
+          "name": "Maladych",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "171262902",
+          "name": "医者watson`",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "103735745",
+          "name": "Saksa",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "56351509",
+          "name": "DM",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:14Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:14Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "b1ba85c85f9d8383e45529470234a28499322fc374a73e7ed063d9a06a95bd32",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9824308",
+      "team_name": "Team Business Spirit",
+      "last_seen": "2025-10-05T18:05:30Z",
+      "map_count": 29,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:15Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "53e9dac7687d1ac5558ab164278cea70450a9fc4839c63a8a86efe208f1e5105",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9824381",
+      "team_name": "DOGSENT",
+      "last_seen": "2026-05-02T16:06:37Z",
+      "map_count": 47,
+      "last_observed_roster": [
+        "993824087"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "993824087",
+          "name": "OTTO",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:16Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:16Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "cb58b4f5ed951636a6df4b50187f371d1f5714e7078b93f8c285cf7087432b64",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9824497",
+      "team_name": "Team Yakuza",
+      "last_seen": "2025-12-24T17:35:40Z",
+      "map_count": 56,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:16Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "a8898fefd070880d6a904114c297cfb855de48b3440bf016b62eb07e53b3cf3e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9824681",
+      "team_name": "TEAM CASH<U+0415><U+0412><U+0410><U+0420><U+042B>",
+      "last_seen": "2025-09-16T17:37:33Z",
+      "map_count": 15,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:17Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "b3a88291301f908e53215a2cc4c6a9e135a7b1803765eadf773372576a08f189",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9824702",
+      "team_name": "PVISION",
+      "last_seen": "2026-07-19T17:49:01Z",
+      "map_count": 57,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:17Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "c2787aa5d68b4669331c320ecfafa2083193f3d016a6608071f26ba67ff50b11",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9828897",
+      "team_name": "REKONIX",
+      "last_seen": "2026-07-12T10:40:11Z",
+      "map_count": 278,
+      "last_observed_roster": [
+        "181716137"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "181716137",
+          "name": "inYourdreaM",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:18Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:18Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "22e9e8c56218f3d680f7aaef3107db6e84438ae1e424f0467ebe98e1f74ef634",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9844314",
+      "team_name": "Team Nebula",
+      "last_seen": "2025-08-12T16:28:40Z",
+      "map_count": 14,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:19Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "cacd6d6d375833cc5606b334b61928d791560086e2e9342d60eebefd392651e1",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9849915",
+      "team_name": "HunterZ",
+      "last_seen": "2025-10-23T18:49:50Z",
+      "map_count": 69,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:20Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "5e3d28832786b558f3bdf54532a858e39a1bf471141324fc6af05bc17429399a",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9867056",
+      "team_name": "team waska",
+      "last_seen": "2025-09-15T22:52:25Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:20Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "83ebfa7f4a943ada71d281c0badd7e6e3903a6d65a76681f8e4a4b5a2f2aec61",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9872558",
+      "team_name": "VP.Prodigy",
+      "last_seen": "2026-06-23T09:24:16Z",
+      "map_count": 192,
+      "last_observed_roster": [
+        "312542697"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "312542697",
+          "name": "takizawa",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:21Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:21Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "d07120073e3dcb26a413f32d4b760bb1c57368f5d5473e4a7e0a9f2b4eb711ff",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9872667",
+      "team_name": "Pipsqueak+4",
+      "last_seen": "2026-04-07T14:04:27Z",
+      "map_count": 241,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:22Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "71eebe711a06d431dc870021208eea76f69edcde6466e2689af4257457266da4",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9885310",
+      "team_name": "Roar",
+      "last_seen": "2026-06-16T06:40:10Z",
+      "map_count": 196,
+      "last_observed_roster": [
+        "1101855381",
+        "135607261",
+        "137895298",
+        "164530809",
+        "165178538"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "164530809",
+          "name": "clove",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "137895298",
+          "name": "ButterflyEffect",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "165178538",
+          "name": "ss",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "1101855381",
+          "name": "Kismet",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "135607261",
+          "name": "LOyd",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:22Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:22Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "5a0c7801f7b1d046772fc8b17331f30cb1c0225d1ab2ff58f90afb5048822373",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9885654",
+      "team_name": "Team Aureus",
+      "last_seen": "2025-10-19T15:30:03Z",
+      "map_count": 60,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:23Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "5764f30be7d6075da1aa05a5495692e05b3d18d4943727689cc2999e8deefa6b",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9885667",
+      "team_name": "Team Tea",
+      "last_seen": "2025-11-10T14:10:11Z",
+      "map_count": 98,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:23Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "6cf95a02b86cb2f793b8e2101df0159e669e979589631dff7f6ac87c734467a7",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9885888",
+      "team_name": "KUKUYS",
+      "last_seen": "2026-01-11T06:30:04Z",
+      "map_count": 35,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:25Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "248ddc6cbfdd101df85fa16e37e7685e929fd612f0b3cfc081bf6fb0c52d03ef",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9886289",
+      "team_name": "Cloud Rising",
+      "last_seen": "2026-06-17T07:32:27Z",
+      "map_count": 74,
+      "last_observed_roster": [
+        "188953151",
+        "195072449",
+        "212011074",
+        "307291170",
+        "325674279",
+        "373667079"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "307291170",
+          "name": "Q7",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "373667079",
+          "name": "Yumeyume-",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "325674279",
+          "name": "Roy",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "188953151",
+          "name": "Ice Coke.",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "195072449",
+          "name": "sheep",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "212011074",
+          "name": "谢乐zzz张泽中",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:25Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:25Z",
+      "current_membership_count": 6,
+      "roster_endpoint_sha256": "6a592d7cc1e15ab75affcc287c353c0d27887ad2c16753efa8d342ed6dfeadeb",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9886393",
+      "team_name": "NAVI Junior",
+      "last_seen": "2026-04-10T13:56:03Z",
+      "map_count": 122,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:26Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "965eaf4242e3531897c0d1bf74202167e747afe0f0e9bb3ad0901b07e7069197",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9895188",
+      "team_name": "Team TPABOMAH",
+      "last_seen": "2025-10-03T15:31:31Z",
+      "map_count": 12,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:27Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "364fa40d2f8418b90f16cf09d34295037cacf439e519642db1756d6db3199a18",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9895212",
+      "team_name": "Team Morphilina",
+      "last_seen": "2025-10-02T17:28:24Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:27Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "43953d4634431427336ae01ee971f054798cfd76e08b38b2d7e29c0825042a7d",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9895214",
+      "team_name": "TEAM ROSTIK",
+      "last_seen": "2025-10-05T21:07:15Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:28Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "ae851e29e0b7752a4888e93d4000c17dfa0a9327bbaace1f165e7558988bfc0f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9895247",
+      "team_name": "Rune Eaters",
+      "last_seen": "2026-08-12T11:34:56Z",
+      "map_count": 397,
+      "last_observed_roster": [
+        "115651292",
+        "879017980"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "115651292",
+          "name": "Copy",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "879017980",
+          "name": "Darklord,,`",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:29Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:29Z",
+      "current_membership_count": 2,
+      "roster_endpoint_sha256": "d5f24b62cdbf696ffd0f8bd594bb578090a0e3388e354e987b791e0569735494",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9895392",
+      "team_name": "Virtus.pro",
+      "last_seen": "2026-07-14T13:50:59Z",
+      "map_count": 207,
+      "last_observed_roster": [
+        "97658618"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "97658618",
+          "name": "Timado",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:29Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:29Z",
+      "current_membership_count": 1,
+      "roster_endpoint_sha256": "0227259aea6cd2d967504b4194afb7068d3ecbb30316c87546b0520dd77fd745",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9895544",
+      "team_name": "Inner Circle",
+      "last_seen": "2025-11-14T17:51:38Z",
+      "map_count": 70,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:30Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "67f7107c64be045bf5ab86d6900638c88ecbde8538dd9fdf0799d9fb6ca4822e",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9895564",
+      "team_name": "Team KaranDotes",
+      "last_seen": "2025-09-26T17:11:41Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:31Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "83c0d096afa2d354f6f8a4b992c2f3cc33692b8df30671945dac6bdb1906c578",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9897031",
+      "team_name": "team popov+4",
+      "last_seen": "2026-05-24T18:09:14Z",
+      "map_count": 26,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:31Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "c004b92935a55e89c5baddff084df6b4bbcd01735992d173b9b025d2b1731491",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9927796",
+      "team_name": "Tearlaments",
+      "last_seen": "2025-11-30T13:50:29Z",
+      "map_count": 25,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:32Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "9ce318e26a3ccab531ab429961c506c902f5144227a06970c83c1c2972024c80",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9928175",
+      "team_name": "Team Police",
+      "last_seen": "2025-11-01T11:30:58Z",
+      "map_count": 6,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:33Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "f2277646decfd150a036aeaa7c3ef578d61c2110bc9218068b60242090b7ef12",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9928403",
+      "team_name": "Team Cobra",
+      "last_seen": "2025-11-17T17:24:06Z",
+      "map_count": 16,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:33Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "828e42407845cd1833d9e6885ca77fa786cc578c5c3b5cfb0aad77e1514a02a2",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9928636",
+      "team_name": "Team Lynx",
+      "last_seen": "2026-07-31T13:40:00Z",
+      "map_count": 264,
+      "last_observed_roster": [
+        "1048617659",
+        "148612029",
+        "276449590",
+        "40805086"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "148612029",
+          "name": "htiviy_vladik",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "40805086",
+          "name": "mellojul",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "276449590",
+          "name": "QBFY",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "1048617659",
+          "name": "kreker",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:34Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:34Z",
+      "current_membership_count": 4,
+      "roster_endpoint_sha256": "1c60b803c800ccb730a0accecb7186c080ee7de60b6620faf20c8b32363c9e59",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9948367",
+      "team_name": "Team Spirit Academy",
+      "last_seen": "2026-08-03T14:13:14Z",
+      "map_count": 185,
+      "last_observed_roster": [
+        "164047347",
+        "188351504",
+        "450454900",
+        "482364904",
+        "892486081"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "164047347",
+          "name": " 86",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "188351504",
+          "name": "Aidar",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "482364904",
+          "name": "kyford",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "892486081",
+          "name": "kae",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "450454900",
+          "name": "Kiseki`",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:34Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_observed",
+      "roster_source": "opendota_team_players_current",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:34Z",
+      "current_membership_count": 5,
+      "roster_endpoint_sha256": "8fbf2fa522918c92091aef6d8861c46d43e6f3083ee674e7e3245cf7dec89a02",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9948986",
+      "team_name": "Team Nigam Reborn",
+      "last_seen": "2025-11-01T10:25:00Z",
+      "map_count": 5,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:35Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "a0381439ac3012370f5fcbe942883abe81d8377f69715a5d3af86cdd1eb6f18d",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9949123",
+      "team_name": "Team Void",
+      "last_seen": "2025-11-22T17:01:18Z",
+      "map_count": 5,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:36Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "677c3009f1f4dd8bbf8e4030463bdd3fd161febea9eead453ba012944b704567",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9956508",
+      "team_name": "Team Public",
+      "last_seen": "2025-12-06T15:28:58Z",
+      "map_count": 48,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:36Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "0eaad1536c3345910dd800773de64ca270d27ebd1d84324aac716d1db1a0e414",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9956694",
+      "team_name": "Team Wibe(TW)",
+      "last_seen": "2025-11-16T17:02:34Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:37Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "1ce5631ad943c4f1f70677e4f76ff64fac9eefae91c7bf814813842fb245ce2c",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9956910",
+      "team_name": "Team Aloha",
+      "last_seen": "2025-11-15T16:08:01Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:38Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "156055054e5743f38848d7503656b42aa46192b51b8d3295a9eeddaab172ce87",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9956943",
+      "team_name": "Team GrOOm",
+      "last_seen": "2025-11-16T11:20:03Z",
+      "map_count": 11,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:39Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "2b5a5517db11491656e8aab9feeecfb51089b4d42d9804b6a5393ecf3486a9ee",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9957005",
+      "team_name": "Team Solo",
+      "last_seen": "2025-11-15T11:33:51Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:39Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "c84aea4eacf7853c1802aa78a91f539e44568997a9a64f7e9967375223ba2155",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9957175",
+      "team_name": "team mary_day",
+      "last_seen": "2025-11-14T17:24:08Z",
+      "map_count": 7,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:40Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "d5c9cb240b1512855b9155406ea75535b05dc1e413dcc522bd6bb3357f1ba361",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9964460",
+      "team_name": "Team Borisogleb",
+      "last_seen": "2026-02-22T14:48:33Z",
+      "map_count": 8,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:41Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "88bae6e4ef009ccff98f5eeebc0be7b3882e89d28a4bb9ada36c32c9532bae51",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9964962",
+      "team_name": "GamerLegion",
+      "last_seen": "2026-08-16T06:57:11Z",
+      "map_count": 199,
+      "last_observed_roster": [
+        "154974246",
+        "160119017",
+        "191362875",
+        "90423751"
+      ],
+      "last_observed_roster_members": [
+        {
+          "account_id": "191362875",
+          "name": "Speeed",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "160119017",
+          "name": "Fayde",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "90423751",
+          "name": "Bignum",
+          "is_current_team_member": true
+        },
+        {
+          "account_id": "154974246",
+          "name": "RCY",
+          "is_current_team_member": true
+        }
+      ],
+      "last_roster_observed_at": "2026-09-18T19:04:41Z",
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "current_membership_incomplete",
+      "roster_source": "opendota_team_players_current_incomplete",
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:41Z",
+      "current_membership_count": 4,
+      "roster_endpoint_sha256": "0b1ad05c79119d80772557ca87a92ddcdd18ff390902800411d148e10f200f8a",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9973273",
+      "team_name": "Team LenS",
+      "last_seen": "2025-11-24T13:57:59Z",
+      "map_count": 10,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:42Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "b49443d896b120661166a8ab7a1f815a074b968f20c0b3810322ba52afc1ba8f",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9973323",
+      "team_name": "Team Solo",
+      "last_seen": "2025-11-24T21:22:42Z",
+      "map_count": 9,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:42Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "233e54f18dea5ec6fbf4320a6f8054ce5b6b1b98b10fbc092eaf7b4844e1579d",
+      "source": "opendota"
+    },
+    {
+      "opendota_team_id": "9973330",
+      "team_name": "Team By_owl",
+      "last_seen": "2025-11-30T18:58:29Z",
+      "map_count": 23,
+      "last_observed_roster": [],
+      "last_observed_roster_members": [],
+      "last_roster_observed_at": null,
+      "roster_snapshot_count": 0,
+      "previous_roster_overlap": null,
+      "roster_status": "unknown",
+      "roster_source": null,
+      "roster_evidence_retrieved_at": "2026-09-18T19:04:43Z",
+      "current_membership_count": 0,
+      "roster_endpoint_sha256": "3a257c3c5f4dae664de7cc1642cf0d317482d17fa8524368afa3e1494e17c623",
+      "source": "opendota"
+    }
+  ]
+}

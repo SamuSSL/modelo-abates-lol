@@ -10,11 +10,16 @@ from zoneinfo import ZoneInfo
 import streamlit as st
 
 from app.dota_inference import PROHIBITED_FEATURES, load_bundle, predict
+from app.dota_team_identity import (
+    build_operational_team_catalog,
+    resolve_team_identity,
+)
 from app.synthetic_pinnacle import _direct_quote_metrics
 
 
 DOTA_BUNDLE_PATH = Path("app_data/dota2_pinnacle_pre_draft_bundle.json")
 DOTA_CATALOG_PATH = Path("app_data/dota_ui_catalog.json")
+DOTA_IDENTITY_REGISTRY_PATH = Path("app_data/dota_team_identity_registry.json")
 DOTA_DECISIONS_PATH = Path("app_data/dota_manual_comparisons.jsonl")
 AUTO_LEAGUE_ID = "__auto__"
 AUTO_LEAGUE_NAME = "Automática · histórico global"
@@ -120,9 +125,27 @@ def build_dota_team_catalog(catalog: dict[str, Any]) -> list[dict[str, Any]]:
 def load_dota_state() -> dict[str, Any]:
     bundle = load_bundle(DOTA_BUNDLE_PATH)
     catalog = json.loads(DOTA_CATALOG_PATH.read_text(encoding="utf-8"))
+    identity_registry = {}
+    if DOTA_IDENTITY_REGISTRY_PATH.exists():
+        identity_registry = json.loads(
+            DOTA_IDENTITY_REGISTRY_PATH.read_text(encoding="utf-8")
+        )
     if tuple(catalog.get("feature_names", ())) != FEATURE_NAMES:
         raise ValueError("Catálogo Dota incompatível com as oito features promovidas.")
-    return {"bundle": bundle, "catalog": catalog, "bundle_path": DOTA_BUNDLE_PATH, "catalog_path": DOTA_CATALOG_PATH}
+    return {
+        "bundle": bundle,
+        "catalog": catalog,
+        "identity_registry": identity_registry,
+        "bundle_path": DOTA_BUNDLE_PATH,
+        "catalog_path": DOTA_CATALOG_PATH,
+        "identity_registry_path": DOTA_IDENTITY_REGISTRY_PATH,
+    }
+
+
+def build_dota_operational_catalog(state: dict[str, Any]) -> list[dict[str, Any]]:
+    return build_operational_team_catalog(
+        state.get("catalog", {}), state.get("identity_registry", {})
+    )
 
 
 def _extract_team_features(row: dict[str, Any], side: str) -> dict[str, float]:
@@ -208,6 +231,7 @@ def predict_dota_quote(
     state: dict[str, Any],
     features: dict[str, float],
     soft_quote: dict[str, float] | None = None,
+    identity_metadata: dict[str, Any] | None = None,
 ) -> dict[str, Any]:
     invalid = set(features).intersection(PROHIBITED_FEATURES)
     if invalid:
@@ -217,7 +241,15 @@ def predict_dota_quote(
     prediction = predict(bundle, {name: features.get(name) for name in feature_names})
     prediction["model_id"] = bundle.get("model_id")
     prediction["automatic_betting_approved"] = False
-    prediction["confidence"] = "model_only"
+    identity_metadata = identity_metadata or {}
+    identity_review_required = any(
+        bool(row.get("manual_comparison_blocked"))
+        for row in identity_metadata.values()
+        if isinstance(row, dict)
+    )
+    prediction["identity_metadata"] = identity_metadata
+    prediction["identity_review_required"] = identity_review_required
+    prediction["confidence"] = "identity_review" if identity_review_required else "model_only"
     if soft_quote is None:
         return prediction
     line = float(soft_quote["line"])
@@ -272,6 +304,7 @@ def predict_dota_quote(
     signal = (
         bundle.get("status") == "approved_for_manual_soft_comparison"
         and quote["recommended_side"] is not None
+        and not identity_review_required
     )
     prediction["soft_quote"] = {
         "line": line,
@@ -297,10 +330,17 @@ def predict_dota_quote(
         "action": "manual_review" if signal else "abstain",
         "stake": 0.0,
         "automatic_betting_approved": False,
-        "blocked_reasons": [] if signal else [
-            "EV conservador abaixo do mínimo ou modelo em shadow."
-        ],
+        "blocked_reasons": (
+            []
+            if signal
+            else [
+                *(["team_identity_review"] if identity_review_required else []),
+                "EV conservador abaixo do mínimo ou modelo em shadow.",
+            ]
+        ),
     })
+    if identity_review_required:
+        prediction["confidence"] = "identity_review"
     prediction["line_interval"] = {
         "lower": prediction["predicted_final_line_low"],
         "upper": prediction["predicted_final_line_high"],
@@ -381,43 +421,134 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
         key="dota_league",
     )
     league = league_by_id[league_id]
-    team_rows = build_dota_team_catalog(state["catalog"])
-    team_by_id = {str(row["team_id"]): row for row in team_rows}
-    team_ids = list(team_by_id)
-    if len(team_ids) < 2:
-        st.warning("O catálogo Dota não possui duas equipes com histórico point-in-time suficiente.")
-        return None
-    team_name_counts: dict[str, int] = {}
-    for row in team_rows:
-        team_name_counts[row["team_name"]] = team_name_counts.get(row["team_name"], 0) + 1
-    team_labels = {
-        team_id: (
-            f"{row['team_name']} · "
-            + (
-                f"{row['competition_count']} competições S/A"
-                if row["competition_count"] > 0
-                else f"{row['history_map_count']} mapas históricos OpenDota · sem matching BIC aceito"
-            )
-            + (f" · ID {team_id}" if team_name_counts[row["team_name"]] > 1 else "")
-        )
-        for team_id, row in team_by_id.items()
+    timing_columns = st.columns(2)
+    planned_date = timing_columns[0].date_input(
+        "Data planejada sintética",
+        value=datetime.now(ZoneInfo("America/Sao_Paulo")).date(),
+        key="dota_planned_date",
+    )
+    planned_time = timing_columns[1].selectbox(
+        "Horário planejado sintético",
+        _time_options(),
+        index=0,
+        format_func=lambda value: value.strftime("%H:%M"),
+        key="dota_planned_time",
+    )
+    planned_start = datetime.combine(
+        planned_date, planned_time, tzinfo=ZoneInfo("America/Sao_Paulo")
+    ).astimezone(timezone.utc)
+
+    operational_rows = build_dota_operational_catalog(state)
+    operational_by_name = {
+        row["canonical_team_name"]: row for row in operational_rows
     }
+    team_names = list(operational_by_name)
+    if len(team_names) < 2:
+        st.warning("O catálogo Dota não possui duas equipes operacionais disponíveis.")
+        return None
+
+    def operational_label(name: str) -> str:
+        row = operational_by_name[name]
+        latest = row.get("latest_identity") or {}
+        status = latest.get("roster_status", "unknown")
+        current_members = latest.get("current_membership_count")
+        roster_text = (
+            f"elenco observado {current_members}/5"
+            if current_members is not None
+            else "elenco sem evidência"
+        )
+        return (
+            f"{name} · ID automático {latest.get('opendota_team_id', 'N/D')} · "
+            f"{status} · {roster_text}"
+        )
+
     selection_columns = st.columns(3)
-    team_one_id = selection_columns[0].selectbox(
-        "Equipe 1", team_ids,
-        format_func=team_labels.get,
+    team_one_name = selection_columns[0].selectbox(
+        "Equipe 1", team_names,
+        format_func=operational_label,
         key="dota_team_one",
     )
-    team_two_ids = [value for value in team_ids if value != team_one_id]
-    team_two_id = selection_columns[1].selectbox(
-        "Equipe 2", team_two_ids,
+    team_two_names = [value for value in team_names if value != team_one_name]
+    team_two_name = selection_columns[1].selectbox(
+        "Equipe 2", team_two_names,
         index=0,
-        format_func=team_labels.get,
+        format_func=operational_label,
         key="dota_team_two",
     )
     map_number = selection_columns[2].number_input(
         "Mapa da série", min_value=1, max_value=7, value=1, step=1, key="dota_map_number"
     )
+
+    selected_team_rows = {
+        "team_one": operational_by_name[team_one_name],
+        "team_two": operational_by_name[team_two_name],
+    }
+    with st.expander("Identidade histórica avançada", expanded=False):
+        st.caption(
+            "A seleção automática usa a identidade mais recente anterior ao horário planejado. "
+            "Use o override somente quando houver evidência externa do elenco/evento."
+        )
+        override_columns = st.columns(2)
+        overrides: dict[str, str] = {}
+        for label, column in (("team_one", override_columns[0]), ("team_two", override_columns[1])):
+            row = selected_team_rows[label]
+            identities = row.get("historical_identities", [])
+            options = ["__auto__"] + [str(item["opendota_team_id"]) for item in identities]
+            overrides[label] = column.selectbox(
+                f"ID histórico {1 if label == 'team_one' else 2}",
+                options,
+                format_func=lambda value, row=row: (
+                    "Automático · por data/evento"
+                    if value == "__auto__"
+                    else next(
+                        (
+                            f"{item.get('team_name', row['canonical_team_name'])} · ID {value} · "
+                            f"último jogo {item.get('last_seen', 'N/D')}"
+                            for item in row.get("historical_identities", [])
+                            if str(item["opendota_team_id"]) == str(value)
+                        ),
+                        f"ID {value}",
+                    )
+                ),
+                key=f"dota_identity_override_{label}",
+            )
+
+    identity_metadata: dict[str, Any] = {}
+    resolved_ids: dict[str, str | None] = {}
+    for label, row in selected_team_rows.items():
+        override = overrides.get(label, "__auto__")
+        resolved = resolve_team_identity(
+            row.get("historical_identities", []),
+            planned_start.isoformat(),
+            approved_event_team_id=None if override == "__auto__" else override,
+        )
+        if override != "__auto__" and resolved.get("opendota_team_id") == override:
+            resolved["resolution_method"] = "manual_historical_override"
+        resolved["canonical_team_name"] = row["canonical_team_name"]
+        identity_metadata[label] = resolved
+        resolved_ids[label] = resolved.get("opendota_team_id")
+
+    for label, resolved in identity_metadata.items():
+        readable_label = "Equipe 1" if label == "team_one" else "Equipe 2"
+        observed_members = [
+            str(member.get("name") or member.get("account_id"))
+            for member in (resolved.get("selected_identity", {}).get("last_observed_roster_members", []) or [])
+        ]
+        if resolved.get("manual_comparison_blocked"):
+            st.warning(
+                f"{readable_label}: identidade {resolved.get('identity_status', 'desconhecida')} "
+                f"ou elenco não confirmado. A simulação ficará bloqueada para comparação manual."
+            )
+        else:
+            st.caption(
+                f"{readable_label}: ID OpenDota {resolved.get('opendota_team_id')} · "
+                f"evidência {resolved.get('identity_status', 'desconhecida')}."
+            )
+        if observed_members:
+            st.caption(f"Membros atuais observados no OpenDota: {', '.join(observed_members)}.")
+
+    team_one_id = resolved_ids["team_one"]
+    team_two_id = resolved_ids["team_two"]
     quote_columns = st.columns(4)
     bookmaker = quote_columns[0].text_input("Casa soft sintética", placeholder="Ex.: Bet365", key="dota_bookmaker")
     soft_line = quote_columns[1].number_input("Linha soft sintética", min_value=0.5, value=48.5, step=0.5, key="dota_soft_line")
@@ -465,22 +596,13 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
                 "odds_under": extra_under,
                 "slot": quote_number,
             })
-    timing_columns = st.columns(2)
-    planned_date = timing_columns[0].date_input(
-        "Data planejada sintética", value=datetime.now(ZoneInfo("America/Sao_Paulo")).date(), key="dota_planned_date"
-    )
-    planned_time = timing_columns[1].selectbox(
-        "Horário planejado sintético", _time_options(),
-        index=0,
-        format_func=lambda value: value.strftime("%H:%M"),
-        key="dota_planned_time",
-    )
     submitted = st.button("Calcular Pinnacle sintética", type="primary", key="dota_calculate")
 
-    planned_start = datetime.combine(planned_date, planned_time, tzinfo=ZoneInfo("America/Sao_Paulo")).astimezone(timezone.utc)
     automatic_features, feature_metadata, feature_error = _resolve_automatic_features(
         state["catalog"], league_id, str(team_one_id), str(team_two_id), int(map_number), planned_start
     )
+    feature_metadata["team_one_identity"] = identity_metadata["team_one"]
+    feature_metadata["team_two_identity"] = identity_metadata["team_two"]
     if automatic_features is not None:
         st.caption(
             "Features point-in-time preenchidas automaticamente. "
@@ -520,6 +642,7 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
                     state,
                     automatic_features,
                     {"line": quote["line"], "odds_over": quote["odds_over"], "odds_under": quote["odds_under"]},
+                    identity_metadata=identity_metadata,
                 )
                 for quote in quotes
             ]
@@ -534,14 +657,15 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
                 "league_id": league_id,
                 "league_name": league["league_name"],
                 "tier": league.get("tier") or None,
-                "team_one": team_by_id[str(team_one_id)]["team_name"],
-                "team_two": team_by_id[str(team_two_id)]["team_name"],
+                "team_one": team_one_name,
+                "team_two": team_two_name,
                 "team_one_id": str(team_one_id),
                 "team_two_id": str(team_two_id),
                 "map_number": int(map_number),
                 "planned_start": planned_start.isoformat(),
                 "features": automatic_features,
                 "feature_metadata": feature_metadata,
+                "identity_metadata": identity_metadata,
                 "soft_line": float(soft_line),
                 "soft_over": float(soft_over),
                 "soft_under": float(soft_under),
@@ -555,6 +679,11 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
         return None
     result = current["prediction"]
     st.subheader("Resultado · Dota 2 · Pinnacle Sintética")
+    if result.get("identity_review_required"):
+        st.error(
+            "Identidade ou elenco não confiável para este momento. "
+            "A linha foi calculada apenas para pesquisa; a comparação manual está bloqueada."
+        )
     metrics = st.columns(4)
     metrics[0].metric(
         "Linha Pinnacle final esperada",

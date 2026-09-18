@@ -3,6 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 
 from app.dota_synthetic import build_dota_quotes, build_dota_team_catalog
+from app.dota_synthetic import build_dota_operational_catalog
 from app.dota_synthetic import load_dota_state, predict_dota_quote
 from app.dota_synthetic import _resolve_automatic_features
 
@@ -166,6 +167,37 @@ def test_bundled_dota_catalog_exposes_team_nemesis_for_global_simulation() -> No
     assert error is None
     assert features is not None
     assert metadata["team_one_snapshot_match_id"]
+
+
+def test_bundled_identity_registry_groups_hokori_and_exposes_current_evidence() -> None:
+    state = load_dota_state()
+
+    rows = build_dota_operational_catalog(state)
+    hokori = next(row for row in rows if row["canonical_team_name"] == "Hokori")
+
+    assert hokori["identity_count"] == 2
+    assert hokori["latest_identity"]["opendota_team_id"] == "10150267"
+    assert hokori["latest_identity"]["roster_status"] == "current_membership_incomplete"
+
+
+def test_dota_prediction_blocks_manual_comparison_when_identity_is_unreliable() -> None:
+    state = load_dota_state()
+    features = {name: 25.0 for name in state["bundle"]["feature_names"]}
+
+    result = predict_dota_quote(
+        state,
+        features,
+        {"line": 54.5, "odds_over": 1.90, "odds_under": 1.90},
+        identity_metadata={
+            "team_one": {"identity_status": "stale", "manual_comparison_blocked": True},
+            "team_two": {"identity_status": "fresh", "manual_comparison_blocked": False},
+        },
+    )
+
+    assert result["action"] == "abstain"
+    assert result["identity_review_required"] is True
+    assert result["confidence"] == "identity_review"
+    assert "team_identity_review" in result["blocked_reasons"]
 
 
 def test_dota_automatic_context_resolves_global_history() -> None:

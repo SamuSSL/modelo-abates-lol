@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from streamlit.testing.v1 import AppTest
 
-from app.dota_synthetic import build_dota_team_catalog, load_dota_state
+from app.dota_synthetic import build_dota_operational_catalog, load_dota_state
 
 
 def test_streamlit_exposes_lol_and_dota_synthetic_pinnacle_tabs() -> None:
@@ -35,4 +35,5 @@ def test_dota_hud_uses_selectors_and_hides_manual_feature_inputs() -> None:
 
     state = load_dota_state()
     assert dota.selectbox[0].options[0] == "Automática · histórico global"
-    assert len(dota.selectbox[1].options) == len(build_dota_team_catalog(state["catalog"]))
+    team_one_selector = next(item for item in dota.selectbox if item.label == "Equipe 1")
+    assert len(team_one_selector.options) == len(build_dota_operational_catalog(state))
