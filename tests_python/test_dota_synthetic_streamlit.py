@@ -118,6 +118,56 @@ def test_dota_team_catalog_is_global_and_deduplicated_by_team_id() -> None:
     assert shared["competition_count"] == 2
 
 
+def test_dota_team_catalog_includes_open_dota_history_only_teams() -> None:
+    catalog = {
+        "leagues": [],
+        "team_history": [
+            {
+                "team_id": "9691969",
+                "team_name": "Team Nemesis",
+                "last_seen": "2026-07-12T10:40:11Z",
+                "map_count": 194,
+            }
+        ],
+    }
+
+    teams = build_dota_team_catalog(catalog)
+
+    assert teams == [
+        {
+            "team_id": "9691969",
+            "team_name": "Team Nemesis",
+            "last_seen": "2026-07-12T10:40:11Z",
+            "competitions": [],
+            "competition_count": 0,
+            "history_map_count": 194,
+            "history_only": True,
+        }
+    ]
+
+
+def test_bundled_dota_catalog_exposes_team_nemesis_for_global_simulation() -> None:
+    state = load_dota_state()
+    team = next(row for row in build_dota_team_catalog(state["catalog"]) if row["team_id"] == "9691969")
+    opponent = next(row for row in build_dota_team_catalog(state["catalog"]) if row["team_id"] == "10182357")
+
+    features, metadata, error = _resolve_automatic_features(
+        state["catalog"],
+        "__auto__",
+        team["team_id"],
+        opponent["team_id"],
+        1,
+        datetime(2026, 9, 19, 12, tzinfo=timezone.utc),
+    )
+
+    assert team["team_name"] == "Team Nemesis"
+    assert team["history_map_count"] >= 5
+    assert team["history_only"] is True
+    assert error is None
+    assert features is not None
+    assert metadata["team_one_snapshot_match_id"]
+
+
 def test_dota_automatic_context_resolves_global_history() -> None:
     row_template = {
         "opendota_match_id": "m1",

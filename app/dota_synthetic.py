@@ -64,6 +64,7 @@ def build_dota_team_catalog(catalog: dict[str, Any]) -> list[dict[str, Any]]:
                     "team_id": team_id,
                     "team_name": str(raw_team.get("team_name", team_id)),
                     "last_seen": last_seen,
+                    "history_map_count": 0,
                     "_competitions": {},
                 },
             )
@@ -75,6 +76,30 @@ def build_dota_team_catalog(catalog: dict[str, Any]) -> list[dict[str, Any]]:
                 row["team_name"] = str(raw_team.get("team_name", team_id))
                 row["last_seen"] = last_seen
 
+    for raw_team in catalog.get("team_history", []):
+        team_id = str(raw_team["team_id"])
+        last_seen = raw_team.get("last_seen")
+        row = teams_by_id.setdefault(
+            team_id,
+            {
+                "team_id": team_id,
+                "team_name": str(raw_team.get("team_name", team_id)),
+                "last_seen": last_seen,
+                "history_map_count": 0,
+                "_competitions": {},
+            },
+        )
+        row["history_map_count"] = max(
+            int(row.get("history_map_count", 0) or 0),
+            int(raw_team.get("map_count", 0) or 0),
+        )
+        if last_seen and (
+            not row.get("last_seen")
+            or _parse_datetime(str(last_seen)) > _parse_datetime(str(row["last_seen"]))
+        ):
+            row["team_name"] = str(raw_team.get("team_name", team_id))
+            row["last_seen"] = last_seen
+
     result = []
     for row in teams_by_id.values():
         competitions = sorted(
@@ -85,6 +110,8 @@ def build_dota_team_catalog(catalog: dict[str, Any]) -> list[dict[str, Any]]:
             **row,
             "competitions": competitions,
             "competition_count": len(competitions),
+            "history_map_count": int(row.get("history_map_count", 0) or 0),
+            "history_only": len(competitions) == 0,
         })
     return sorted(result, key=lambda item: (item["team_name"].casefold(), item["team_id"]))
 
@@ -295,7 +322,12 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
         team_name_counts[row["team_name"]] = team_name_counts.get(row["team_name"], 0) + 1
     team_labels = {
         team_id: (
-            f"{row['team_name']} · {row['competition_count']} competições S/A"
+            f"{row['team_name']} · "
+            + (
+                f"{row['competition_count']} competições S/A"
+                if row["competition_count"] > 0
+                else f"{row['history_map_count']} mapas históricos OpenDota · sem matching BIC aceito"
+            )
             + (f" · ID {team_id}" if team_name_counts[row["team_name"]] > 1 else "")
         )
         for team_id, row in team_by_id.items()
