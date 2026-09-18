@@ -208,3 +208,65 @@ def test_dota_automatic_context_resolves_global_history() -> None:
     assert metadata["source_scope"] == "global_team_history"
     assert metadata["team_one_snapshot_match_id"] == "m1"
     assert metadata["team_two_snapshot_match_id"] == "m2"
+
+
+def test_dota_quote_calculates_ev_when_soft_line_differs_from_prediction() -> None:
+    state = load_dota_state()
+    features = {name: 25.0 for name in state["bundle"]["feature_names"]}
+
+    result = predict_dota_quote(
+        state,
+        features,
+        {"line": 54.5, "odds_over": 1.90, "odds_under": 1.90},
+    )
+
+    assert result["ev_status"] == "calculated"
+    assert result["ev_over"] is not None
+    assert result["ev_under"] is not None
+
+
+def test_dota_quote_probability_moves_with_soft_line() -> None:
+    state = load_dota_state()
+    features = {name: 25.0 for name in state["bundle"]["feature_names"]}
+
+    lower_line = predict_dota_quote(
+        state,
+        features,
+        {"line": 40.5, "odds_over": 1.90, "odds_under": 1.90},
+    )
+    higher_line = predict_dota_quote(
+        state,
+        features,
+        {"line": 54.5, "odds_over": 1.90, "odds_under": 1.90},
+    )
+
+    assert higher_line["probability_over"] < lower_line["probability_over"]
+
+
+def test_dota_quote_exposes_lol_operational_fields() -> None:
+    state = load_dota_state()
+    features = {name: 25.0 for name in state["bundle"]["feature_names"]}
+
+    result = predict_dota_quote(
+        state,
+        features,
+        {"line": 54.5, "odds_over": 1.90, "odds_under": 1.90},
+    )
+
+    required = {
+        "predicted_final_line",
+        "predicted_final_line_low",
+        "predicted_final_line_high",
+        "predicted_final_odds_over",
+        "predicted_final_odds_under",
+        "conservative_ev_over",
+        "conservative_ev_under",
+        "confidence",
+        "recommended_side",
+        "action",
+        "stake",
+        "automatic_betting_approved",
+    }
+    assert required.issubset(result)
+    assert result["automatic_betting_approved"] is False
+    assert result["stake"] == 0.0

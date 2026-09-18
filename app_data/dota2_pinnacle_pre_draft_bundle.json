@@ -1,7 +1,7 @@
 {
   "bundle_version": 1,
   "model_id": "dota2-pinnacle-pre-draft-market-core_plus_recency_15d-v1",
-  "created_at_utc": "2026-08-25 05:22:50 UTC",
+  "created_at_utc": "2026-09-18 18:04:25 UTC",
   "status": "approved_for_manual_soft_comparison",
   "target_contract": {
     "observation_unit": "map",
@@ -70,6 +70,23 @@
       }
     },
     "line_interval_half_width": 2.9791,
+    "line_model": {
+      "residual_interval": {
+        "lower": -2.9791,
+        "upper": 2.9791
+      }
+    },
+    "price_model": {
+      "residual_logit_interval": {
+        "lower": -0.1773,
+        "upper": 0.1447
+      }
+    },
+    "market_probability_logit_slope_per_kill": 0.0882,
+    "market_probability_slope_method": "within_event_logit_line_median",
+    "market_probability_slope_groups": 1659,
+    "predicted_hold": 1.0702,
+    "minimum_conservative_ev": 0.05,
     "lambda_line": 100,
     "lambda_probability": 0.1,
     "training_rows": 1001,
@@ -189,6 +206,12 @@
     "development_direct_mae": 1.4656,
     "development_baseline_mae": 1.828,
     "holdout_direct_mae": 1.9719,
-    "holdout_baseline_mae": 3.3871
+    "holdout_baseline_mae": 3.3871,
+    "market_probability_slope_method": "within_event_logit_line_median",
+    "market_probability_slope_groups": 1659,
+    "price_logit_interval": {
+      "lower": -0.1773,
+      "upper": 0.1447
+    }
   }
 }

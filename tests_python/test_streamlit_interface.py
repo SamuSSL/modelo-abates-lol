@@ -395,6 +395,37 @@ def test_synthetic_model_calculates_three_soft_quotes_without_ui_error():
     ) >= 3
 
 
+def test_dota_model_calculates_ev_for_three_soft_lines_without_mismatch_warning():
+    app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()
+    for label in (
+        "Adicionar cotação sintética 2",
+        "Adicionar cotação sintética 3",
+    ):
+        [item for item in app.checkbox if item.label == label][-1].set_value(True).run()
+    for label, value in (
+        ("Casa soft sintética", "Soft 1"),
+        ("Casa soft sintética 2", "Soft 2"),
+        ("Casa soft sintética 3", "Soft 3"),
+    ):
+        [item for item in app.text_input if item.label == label][-1].set_value(value)
+    [item for item in app.number_input if item.label == "Linha soft sintética"][-1].set_value(54.5)
+    [item for item in app.number_input if item.label == "Linha soft sintética 2"][-1].set_value(40.5)
+    [item for item in app.number_input if item.label == "Linha soft sintética 3"][-1].set_value(48.5)
+    [
+        button for button in app.button
+        if button.label == "Calcular Pinnacle sintética"
+    ][-1].click().run(timeout=30)
+
+    assert len(app.exception) == 0
+    assert any(metric.label == "EV conservador Over" for metric in app.metric)
+    assert not any(
+        "EV não calculado" in warning.value for warning in app.warning
+    )
+    assert sum(
+        "Confiômetro:" in info.value for info in app.info
+    ) >= 3
+
+
 @pytest.mark.skip(reason="Post-draft soft quote collection retired from the public interface")
 def test_current_model_calculates_three_soft_quotes_without_ui_error():
     app = AppTest.from_file("streamlit_app.py", default_timeout=20).run()

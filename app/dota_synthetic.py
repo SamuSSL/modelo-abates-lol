@@ -10,6 +10,7 @@ from zoneinfo import ZoneInfo
 import streamlit as st
 
 from app.dota_inference import PROHIBITED_FEATURES, load_bundle, predict
+from app.synthetic_pinnacle import _direct_quote_metrics
 
 
 DOTA_BUNDLE_PATH = Path("app_data/dota2_pinnacle_pre_draft_bundle.json")
@@ -226,15 +227,84 @@ def predict_dota_quote(
         raise ValueError("A linha Dota deve terminar em .5.")
     if odds_over <= 1.0 or odds_under <= 1.0:
         raise ValueError("As odds Dota devem ser maiores que 1.00.")
-    prediction["soft_quote"] = {"line": line, "odds_over": odds_over, "odds_under": odds_under}
-    if abs(line - float(prediction["line"])) < 0.26:
-        prediction["ev_over"] = float(prediction["probability_over"]) * odds_over - 1.0
-        prediction["ev_under"] = float(prediction["probability_under"]) * odds_under - 1.0
-        prediction["ev_status"] = "same_line"
-    else:
-        prediction["ev_over"] = None
-        prediction["ev_under"] = None
-        prediction["ev_status"] = "line_mismatch"
+    market_model = bundle.get("market_model") or {}
+    predicted_line_raw = float(prediction["line"])
+    predicted_probability_over = min(
+        max(float(prediction["probability_over"]), 1e-6),
+        1.0 - 1e-6,
+    )
+    predicted_price_logit = math.log(
+        predicted_probability_over / (1.0 - predicted_probability_over)
+    )
+    line_interval_half_width = float(
+        market_model.get("line_interval_half_width", 2.0)
+    )
+    line_interval = market_model.get("line_model", {}).get(
+        "residual_interval",
+        {"lower": -line_interval_half_width, "upper": line_interval_half_width},
+    )
+    price_interval = market_model.get("price_model", {}).get(
+        "residual_logit_interval",
+        {"lower": -0.2, "upper": 0.2},
+    )
+    quote_bundle = {
+        "market_probability_logit_slope_per_kill": float(
+            market_model.get("market_probability_logit_slope_per_kill", 0.08)
+        ),
+        "line_model": {"residual_interval": line_interval},
+        "price_model": {"residual_logit_interval": price_interval},
+        "minimum_conservative_ev": float(
+            market_model.get("minimum_conservative_ev", 0.05)
+        ),
+    }
+    quote = _direct_quote_metrics(
+        predicted_line_raw,
+        predicted_price_logit,
+        line,
+        odds_over,
+        odds_under,
+        quote_bundle,
+    )
+    predicted_final_line = round(predicted_line_raw * 2.0) / 2.0
+    predicted_hold = float(market_model.get("predicted_hold", 1.0))
+    predicted_final_odds_over = 1.0 / (predicted_probability_over * predicted_hold)
+    predicted_final_odds_under = 1.0 / ((1.0 - predicted_probability_over) * predicted_hold)
+    signal = (
+        bundle.get("status") == "approved_for_manual_soft_comparison"
+        and quote["recommended_side"] is not None
+    )
+    prediction["soft_quote"] = {
+        "line": line,
+        "odds_over": odds_over,
+        "odds_under": odds_under,
+    }
+    prediction.update(quote)
+    prediction.update({
+        "ev_status": "calculated",
+        "model_id": bundle.get("model_id"),
+        "model_status": bundle.get("status"),
+        "forecast_target": (bundle.get("target_contract") or {}).get("target"),
+        "predicted_final_line": predicted_final_line,
+        "predicted_final_line_raw": predicted_line_raw,
+        "predicted_final_line_low": predicted_line_raw + float(line_interval["lower"]),
+        "predicted_final_line_high": predicted_line_raw + float(line_interval["upper"]),
+        "predicted_final_probability_over": predicted_probability_over,
+        "predicted_final_probability_under": 1.0 - predicted_probability_over,
+        "predicted_final_odds_over": predicted_final_odds_over,
+        "predicted_final_odds_under": predicted_final_odds_under,
+        "predicted_final_hold": predicted_hold,
+        "recommended_side": quote["recommended_side"] if signal else None,
+        "action": "manual_review" if signal else "abstain",
+        "stake": 0.0,
+        "automatic_betting_approved": False,
+        "blocked_reasons": [] if signal else [
+            "EV conservador abaixo do mínimo ou modelo em shadow."
+        ],
+    })
+    prediction["line_interval"] = {
+        "lower": prediction["predicted_final_line_low"],
+        "upper": prediction["predicted_final_line_high"],
+    }
     return prediction
 
 
@@ -486,12 +556,53 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
     result = current["prediction"]
     st.subheader("Resultado · Dota 2 · Pinnacle Sintética")
     metrics = st.columns(4)
-    metrics[0].metric("Linha final prevista", f"{result['line']:.1f}")
-    metrics[1].metric("Odd justa Over", f"{result['fair_odds_over']:.2f}")
-    metrics[2].metric("Odd justa Under", f"{result['fair_odds_under']:.2f}")
-    metrics[3].metric("Confiança", "Modelo")
-    interval = result["line_interval"]
-    st.write(f"Intervalo da linha: {interval['lower']:.1f} a {interval['upper']:.1f}")
+    metrics[0].metric(
+        "Linha Pinnacle final esperada",
+        f"{result['predicted_final_line']:.1f}",
+    )
+    metrics[1].metric(
+        "Intervalo conservador",
+        f"{result['predicted_final_line_low']:.1f} a "
+        f"{result['predicted_final_line_high']:.1f}",
+    )
+    metrics[2].metric(
+        "EV conservador Over",
+        f"{result['conservative_ev_over']:+.1%}",
+    )
+    metrics[3].metric(
+        "EV conservador Under",
+        f"{result['conservative_ev_under']:+.1%}",
+    )
+    probability_columns = st.columns(4)
+    probability_columns[0].metric(
+        "Probabilidade Over",
+        f"{result['probability_over']:.1%}",
+    )
+    probability_columns[1].metric(
+        "Odd justa Over",
+        f"{result['fair_odds_over']:.2f}",
+    )
+    probability_columns[2].metric(
+        "Probabilidade Under",
+        f"{result['probability_under']:.1%}",
+    )
+    probability_columns[3].metric(
+        "Odd justa Under",
+        f"{result['fair_odds_under']:.2f}",
+    )
+    final_price_columns = st.columns(3)
+    final_price_columns[0].metric(
+        "Odd Pinnacle final Over prevista",
+        f"{result['predicted_final_odds_over']:.2f}",
+    )
+    final_price_columns[1].metric(
+        "Odd Pinnacle final Under prevista",
+        f"{result['predicted_final_odds_under']:.2f}",
+    )
+    final_price_columns[2].metric(
+        "Probabilidade no-vig Over final",
+        f"{result['predicted_final_probability_over']:.1%}",
+    )
     quotes = current["inputs"].get("quotes", [{
         "bookmaker": current["inputs"].get("bookmaker", ""),
         "line": current["inputs"]["soft_line"],
@@ -503,13 +614,42 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
     st.subheader("Confiômetro e valor por cotação soft")
     for quote, quote_result in zip(quotes, predictions):
         st.markdown(f"**Cotação {quote['slot']} · {quote['bookmaker']} · linha {quote['line']:.1f}**")
-        quote_metrics = st.columns(4)
-        quote_metrics[0].metric("Odd justa Over", f"{quote_result['fair_odds_over']:.2f}")
-        quote_metrics[1].metric("EV Over", f"{quote_result['ev_over']:+.1%}" if quote_result.get("ev_over") is not None else "N/A")
-        quote_metrics[2].metric("Odd justa Under", f"{quote_result['fair_odds_under']:.2f}")
-        quote_metrics[3].metric("EV Under", f"{quote_result['ev_under']:+.1%}" if quote_result.get("ev_under") is not None else "N/A")
-        if quote_result.get("ev_status") != "same_line":
-            st.warning("EV não calculado: a linha da soft book não coincide com a linha sintética prevista.")
+        quote_metrics = st.columns(6)
+        quote_metrics[0].metric(
+            "Odd justa Over",
+            f"{quote_result['fair_odds_over']:.2f}",
+        )
+        quote_metrics[1].metric(
+            "EV Over",
+            f"{quote_result['ev_over']:+.1%}",
+        )
+        quote_metrics[2].metric(
+            "EV conservador Over",
+            f"{quote_result['conservative_ev_over']:+.1%}",
+        )
+        quote_metrics[3].metric(
+            "Odd justa Under",
+            f"{quote_result['fair_odds_under']:.2f}",
+        )
+        quote_metrics[4].metric(
+            "EV Under",
+            f"{quote_result['ev_under']:+.1%}",
+        )
+        quote_metrics[5].metric(
+            "EV conservador Under",
+            f"{quote_result['conservative_ev_under']:+.1%}",
+        )
+        st.info(
+            "Confiômetro: "
+            f"{str(quote_result.get('confidence', 'indisponível')).title()}."
+        )
+    if result["action"] == "manual_review":
+        st.warning(
+            f"Revisão manual: possível {result['recommended_side'].title()}. "
+            "Stake automática permanece bloqueada."
+        )
+    else:
+        st.info("EV conservador insuficiente. Não apostar.")
     if st.button("Registrar comparação manual Dota 2", key="dota_register_comparison"):
         _append_manual_comparison(current)
         st.success("Comparação manual Dota 2 registrada em arquivo append-only.")
