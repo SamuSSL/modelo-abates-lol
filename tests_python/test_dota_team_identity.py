@@ -50,14 +50,19 @@ def test_four_changed_players_create_new_roster_version() -> None:
     assert result["roster_status"] == "new_roster_version"
 
 
-def test_stale_identity_is_not_approved_for_manual_comparison() -> None:
+def test_latest_stale_identity_is_available_for_manual_comparison() -> None:
     result = resolve_team_identity(
-        [{"opendota_team_id": "old", "last_seen": "2026-04-13T00:00:00Z"}],
+        [{
+            "opendota_team_id": "old",
+            "last_seen": "2026-04-13T00:00:00Z",
+            "roster_status": "current_membership_incomplete",
+        }],
         "2026-09-18T00:00:00Z",
     )
 
     assert result["identity_status"] == "stale"
-    assert result["manual_comparison_blocked"] is True
+    assert result["opendota_team_id"] == "old"
+    assert result["manual_comparison_blocked"] is False
 
 
 def test_approved_event_identity_wins_when_available_before_cutoff() -> None:
@@ -98,4 +103,4 @@ def test_roster_evidence_after_cutoff_is_not_used() -> None:
 
     assert result["roster_available_before_cutoff"] is False
     assert result["roster_status"] == "unknown"
-    assert result["manual_comparison_blocked"] is True
+    assert result["manual_comparison_blocked"] is False

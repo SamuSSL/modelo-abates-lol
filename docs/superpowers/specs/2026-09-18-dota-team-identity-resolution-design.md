@@ -1,4 +1,4 @@
-# Dota 2 Team Identity and Roster Resolution
+# Dota 2 Team Identity Resolution
 
 ## Context
 
@@ -15,12 +15,12 @@ Permitir que a simulação selecione uma identidade operacional por nome, data e
 1. `opendota_team_id` continua sendo a chave histórica imutável. IDs diferentes nunca são fundidos automaticamente.
 2. `canonical_team_name` é uma camada operacional de apresentação e agrupamento, não substitui o ID histórico.
 3. A resolução usa somente evidência com `observed_at` anterior ao `scheduled_start` da simulação.
-4. A prioridade de resolução é: associação aprovada ao evento, identidade mais recente anterior ao cutoff, maior evidência histórica como desempate.
-5. A idade da identidade é reportada em três estados: `fresh` até 45 dias, `aging` de 46 a 90 dias e `stale` acima de 90 dias.
-6. Sem roster pré-jogo confirmado, o sistema chama a evidência de `last_observed_roster`, nunca de elenco confirmado.
-7. Uma mudança observada de quatro jogadores em cinco classifica a nova observação como `new_roster_version`; o histórico anterior não é apresentado como histórico do elenco atual.
-8. Identidade `ambiguous`, `stale`, `current_membership_incomplete` ou `new_roster_version` pode gerar a linha para pesquisa, mas fica explicitamente bloqueada para aprovação manual de comparação soft até revisão.
-9. A escolha manual de uma identidade histórica continua disponível em modo avançado e é registrada na decisão.
+4. A resolução operacional escolhe a identidade mais recente anterior ao cutoff, com maior evidência histórica como desempate.
+5. A idade da identidade continua sendo reportada em três estados: `fresh` até 45 dias, `aging` de 46 a 90 dias e `stale` acima de 90 dias.
+6. Evidências de roster continuam disponíveis apenas para auditoria histórica. Elas não são usadas para bloquear a simulação ou a comparação manual.
+7. Uma mudança observada de quatro jogadores em cinco continua podendo ser registrada como `new_roster_version`, mas essa classificação não altera a decisão operacional.
+8. Uma identidade `stale` ou com roster incompleto continua podendo gerar a linha, desde que exista um ID OpenDota elegível antes do cutoff.
+9. A interface não oferece override de identidade histórica: o fluxo operacional usa apenas o ID mais recente elegível. A conferência do elenco é manual e externa ao modelo.
 
 ## Contrato de dados
 
@@ -53,25 +53,25 @@ Para um nome operacional e `scheduled_start`:
 3. Caso contrário, ordenar por `last_seen` decrescente.
 4. Calcular idade da evidência em relação ao cutoff.
 5. Se houver candidatos próximos no tempo ou divergência de identidade, marcar `ambiguous`.
-6. Retornar o ID selecionado, a regra usada, a evidência e o bloqueio operacional.
+6. Retornar o ID selecionado, a regra usada e a evidência. Bloquear somente quando não houver ID elegível.
 
 O resolvedor nunca consulta partidas posteriores ao cutoff para escolher o ID ou roster. A seleção de um evento futuro pode usar uma associação editorial/manual registrada, mas não pode transformar a lista de participantes em confirmação de jogadores.
 
 ## Interface
 
-O seletor principal mostrará um único item por `canonical_team_name`, com a situação atual:
+O seletor principal mostrará um único item por `canonical_team_name`, com o ID histórico mais recente:
 
 ```text
-Hokori · identidade mais recente · evidência stale · 10150267
+Hokori · ID automático 10150267 · último histórico 2026-06-17
 ```
 
-Um expander avançado exibirá as identidades históricas e permitirá override explícito. A interface mostrará a idade, o último elenco observado, a sobreposição com a versão anterior, a regra de resolução e o bloqueio. O usuário não precisará decidir entre dois itens visualmente iguais sem contexto.
+A interface não exibirá membros observados, titulares, reservas ou treinadores. A idade do ID poderá ser mostrada como informação, mas não como bloqueio.
 
 ## Integração com o modelo
 
 As oito features operacionais continuam as mesmas. A camada de identidade apenas decide qual histórico point-in-time pode alimentar a previsão e expõe metadados de qualidade. Não serão adicionados heróis, draft, side, itens ou eventos do mapa.
 
-Quando a evidência do elenco estiver `stale`, `ambiguous`, `current_membership_incomplete` ou `new_roster_version`, o sistema não inventará dados nem fundirá IDs. Ele poderá exibir a estimativa para pesquisa, mas bloqueará a classificação como comparação manual aprovada.
+Quando a evidência do elenco estiver `stale`, `ambiguous`, `current_membership_incomplete` ou `new_roster_version`, o sistema não inventará dados nem fundirá IDs. Ele continuará usando o ID mais recente elegível; a decisão de evitar a aposta por mudança de elenco será manual.
 
 ## Testes e critérios de aceitação
 
@@ -81,9 +81,10 @@ Quando a evidência do elenco estiver `stale`, `ambiguous`, `current_membership_
 - Evidência acima de 90 dias recebe `stale`.
 - Uma troca de quatro jogadores em cinco recebe `new_roster_version`.
 - Roster pós-jogo é tratado como `last_observed_roster`, não como confirmação futura.
-- O override manual preserva o ID escolhido e o método da decisão.
+- Um ID de roster incompleto não bloqueia a comparação manual quando a identidade OpenDota foi resolvida.
+- Nenhum ID elegível antes do cutoff bloqueia a comparação manual.
 - O pipeline Python existente continua passando.
-- O Streamlit mostra o status de identidade antes do cálculo e a decisão registra os metadados.
+- O Streamlit mostra o ID selecionado e o último histórico antes do cálculo, sem exibir roster.
 
 ## Fora de escopo
 

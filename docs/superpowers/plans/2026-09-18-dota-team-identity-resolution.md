@@ -1,10 +1,10 @@
-# Dota 2 Team Identity and Roster Resolution Implementation Plan
+# Dota 2 Team Identity Resolution Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
-**Goal:** Resolver automaticamente a identidade operacional mais recente de cada time Dota por data/evento, mantendo IDs OpenDota distintos, evidência de roster observada e bloqueios explícitos para históricos velhos ou ambíguos.
+**Goal:** Resolver automaticamente a identidade OpenDota mais recente e elegível de cada time Dota por data/evento, sem usar roster como bloqueio operacional.
 
-**Architecture:** Um gerador Python no projeto Dota 2 lê partidas OpenDota detalhadas e o catálogo histórico para produzir um registro versionado de identidades e últimos elencos observados. O adaptador Python do Streamlit carrega esse registro, agrupa nomes iguais em uma opção operacional, resolve o ID point-in-time pelo cutoff e expõe status, idade, roster observado e bloqueios. O modelo de linha permanece inalterado; somente a seleção histórica e a classificação operacional são enriquecidas.
+**Architecture:** Um gerador Python no projeto Dota 2 lê partidas OpenDota detalhadas e o catálogo histórico para produzir um registro versionado de identidades. O adaptador Python do Streamlit carrega esse registro, agrupa nomes iguais em uma opção operacional e resolve o ID point-in-time mais recente pelo cutoff. Roster pode permanecer no artefato de auditoria, mas não participa do bloqueio ou da comparação manual. O modelo de linha permanece inalterado.
 
 **Tech Stack:** Python 3.12, JSON, pytest, Streamlit testing, OpenDota raw JSON, R apenas como origem das tabelas canônicas.
 
@@ -12,9 +12,10 @@
 
 - IDs OpenDota distintos nunca serão fundidos automaticamente.
 - Nenhuma evidência posterior ao `scheduled_start` pode influenciar a resolução.
-- Roster de partida concluída será chamado `last_observed_roster`, nunca roster futuro confirmado.
+- Roster de partida concluída, quando preservado, será chamado `last_observed_roster`, nunca roster futuro confirmado; não é critério operacional.
 - Heróis, draft, side, itens, eventos do mapa e settlement continuam fora das features operacionais.
 - `automatic_betting` permanece `false`.
+- O usuário faz a checagem manual do elenco e decide evitar uma equipe que tenha mudado muito.
 - Arquivos temporários e alterações preexistentes não podem ser incluídos nos commits.
 
 ---
@@ -27,7 +28,7 @@
 
 **Interfaces:**
 - Consumes: `app.dota_team_identity.build_operational_team_catalog`, `resolve_team_identity`, `classify_roster_transition`.
-- Produces: casos de teste executáveis para o catálogo agrupado, cutoff, idade, troca de roster e override.
+- Produces: casos de teste executáveis para o catálogo agrupado, cutoff, idade e comportamento sem bloqueio por roster.
 
 - [x] **Step 1: Write the failing test**
 
@@ -60,13 +61,13 @@ def test_four_changed_players_create_new_roster_version():
     assert result["roster_status"] == "new_roster_version"
 
 
-def test_stale_identity_is_not_approved_for_manual_comparison():
+def test_latest_stale_identity_is_available_for_manual_comparison():
     result = resolve_team_identity(
         [{"opendota_team_id": "old", "last_seen": "2026-04-13T00:00:00Z"}],
         "2026-09-18T00:00:00Z",
     )
     assert result["identity_status"] == "stale"
-    assert result["manual_comparison_blocked"] is True
+    assert result["manual_comparison_blocked"] is False
 ```
 
 - [x] **Step 2: Run test to verify it fails**
@@ -110,7 +111,7 @@ missing roster -> unknown
 
 - [x] **Step 2: Implement cutoff-safe candidate resolution**
 
-Parse UTC timestamps, discard candidates after cutoff, prefer an approved event ID only when it is eligible before cutoff, otherwise sort by `last_seen` descending. Compute age in days and statuses `fresh`, `aging`, `stale`. Set `manual_comparison_blocked` for `stale`, `ambiguous`, `new_roster_version` or missing evidence.
+Parse UTC timestamps, discard candidates after cutoff and sort by `last_seen` descending. Compute age in days and statuses `fresh`, `aging`, `stale`. Set `manual_comparison_blocked` only when no candidate is eligible before the cutoff.
 
 - [x] **Step 3: Implement grouping by canonical display name**
 
@@ -166,7 +167,7 @@ Confirm that the output contains no API key, no draft fields and valid UTC times
 
 - [x] **Step 1: Add failing UI/adapter tests**
 
-Test that the two Hokori IDs become one operational team, that the selected ID for a cutoff after June 17 is `10150267`, that the result metadata includes `identity_status`, and that stale identity sets `manual_comparison_blocked`.
+Test that the two Hokori IDs become one operational team, that the selected ID for a cutoff after June 17 is `10150267`, that the result metadata includes `identity_status`, and that roster or stale age do not set `manual_comparison_blocked`.
 
 - [x] **Step 2: Run focused tests and confirm failure**
 
@@ -176,11 +177,11 @@ Expected: failures because the current UI still selects raw source IDs and does 
 
 - [x] **Step 3: Integrate the resolver**
 
-Load the registry, build one operational option per canonical name, resolve the source ID using the planned start cutoff, and preserve an advanced historical-ID override. Move or compute planned date/time before identity resolution so changing the simulation date changes the selected candidate without future leakage.
+Load the registry, build one operational option per canonical name, and resolve only the latest eligible source ID using the planned start cutoff. Move or compute planned date/time before identity resolution so changing the simulation date changes the selected candidate without future leakage.
 
 - [x] **Step 4: Render identity evidence before calculation**
 
-Show selected ID, last observed date, roster status, overlap count, identity age and manual-comparison block. Keep the result calculation available for research but propagate the block into confidence and decision metadata.
+Show selected ID, last historical date and identity age as informational metadata. Do not show roster members or use roster/age to block comparison; keep the result calculation available whenever an ID is resolved.
 
 - [x] **Step 5: Run focused tests**
 
@@ -197,7 +198,7 @@ Expected: all focused tests pass.
 
 - [x] **Step 1: Document the operational limitation**
 
-Record that `last_observed_roster` is historical evidence, not future roster confirmation, and that PGL or any future event without a verified pre-game roster remains low-confidence.
+Record that `last_observed_roster` is historical evidence only. The application does not use it as a gate; the user checks the current roster manually before deciding whether to compare or bet.
 
 - [x] **Step 2: Run the complete Python suite**
 

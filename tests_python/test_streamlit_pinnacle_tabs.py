@@ -32,6 +32,7 @@ def test_dota_hud_uses_selectors_and_hides_manual_feature_inputs() -> None:
     assert "Adicionar cotação sintética 2" in labels
     assert "Adicionar cotação sintética 3" in labels
     assert not any("kills" in label.casefold() or "meia-vida" in label.casefold() for label in labels)
+    assert [item.label for item in dota.expander] == ["Ver features históricas automáticas"]
 
     state = load_dota_state()
     assert dota.selectbox[0].options[0] == "Automática · histórico global"

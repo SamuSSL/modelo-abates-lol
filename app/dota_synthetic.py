@@ -450,16 +450,9 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
     def operational_label(name: str) -> str:
         row = operational_by_name[name]
         latest = row.get("latest_identity") or {}
-        status = latest.get("roster_status", "unknown")
-        current_members = latest.get("current_membership_count")
-        roster_text = (
-            f"elenco observado {current_members}/5"
-            if current_members is not None
-            else "elenco sem evidência"
-        )
         return (
             f"{name} · ID automático {latest.get('opendota_team_id', 'N/D')} · "
-            f"{status} · {roster_text}"
+            f"último histórico {str(latest.get('last_seen', 'N/D'))[:10]}"
         )
 
     selection_columns = st.columns(3)
@@ -483,69 +476,30 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
         "team_one": operational_by_name[team_one_name],
         "team_two": operational_by_name[team_two_name],
     }
-    with st.expander("Identidade histórica avançada", expanded=False):
-        st.caption(
-            "A seleção automática usa a identidade mais recente anterior ao horário planejado. "
-            "Use o override somente quando houver evidência externa do elenco/evento."
-        )
-        override_columns = st.columns(2)
-        overrides: dict[str, str] = {}
-        for label, column in (("team_one", override_columns[0]), ("team_two", override_columns[1])):
-            row = selected_team_rows[label]
-            identities = row.get("historical_identities", [])
-            options = ["__auto__"] + [str(item["opendota_team_id"]) for item in identities]
-            overrides[label] = column.selectbox(
-                f"ID histórico {1 if label == 'team_one' else 2}",
-                options,
-                format_func=lambda value, row=row: (
-                    "Automático · por data/evento"
-                    if value == "__auto__"
-                    else next(
-                        (
-                            f"{item.get('team_name', row['canonical_team_name'])} · ID {value} · "
-                            f"último jogo {item.get('last_seen', 'N/D')}"
-                            for item in row.get("historical_identities", [])
-                            if str(item["opendota_team_id"]) == str(value)
-                        ),
-                        f"ID {value}",
-                    )
-                ),
-                key=f"dota_identity_override_{label}",
-            )
-
     identity_metadata: dict[str, Any] = {}
     resolved_ids: dict[str, str | None] = {}
     for label, row in selected_team_rows.items():
-        override = overrides.get(label, "__auto__")
         resolved = resolve_team_identity(
             row.get("historical_identities", []),
             planned_start.isoformat(),
-            approved_event_team_id=None if override == "__auto__" else override,
         )
-        if override != "__auto__" and resolved.get("opendota_team_id") == override:
-            resolved["resolution_method"] = "manual_historical_override"
         resolved["canonical_team_name"] = row["canonical_team_name"]
         identity_metadata[label] = resolved
         resolved_ids[label] = resolved.get("opendota_team_id")
 
     for label, resolved in identity_metadata.items():
         readable_label = "Equipe 1" if label == "team_one" else "Equipe 2"
-        observed_members = [
-            str(member.get("name") or member.get("account_id"))
-            for member in (resolved.get("selected_identity", {}).get("last_observed_roster_members", []) or [])
-        ]
         if resolved.get("manual_comparison_blocked"):
             st.warning(
-                f"{readable_label}: identidade {resolved.get('identity_status', 'desconhecida')} "
-                f"ou elenco não confirmado. A simulação ficará bloqueada para comparação manual."
+                f"{readable_label}: nenhum ID OpenDota elegível foi encontrado antes do cutoff. "
+                "A comparação manual está bloqueada."
             )
         else:
             st.caption(
                 f"{readable_label}: ID OpenDota {resolved.get('opendota_team_id')} · "
-                f"evidência {resolved.get('identity_status', 'desconhecida')}."
+                f"último histórico {str(resolved.get('last_seen', 'N/D'))[:10]} · "
+                f"idade do ID {resolved.get('identity_status', 'desconhecida')}."
             )
-        if observed_members:
-            st.caption(f"Membros atuais observados no OpenDota: {', '.join(observed_members)}.")
 
     team_one_id = resolved_ids["team_one"]
     team_two_id = resolved_ids["team_two"]
@@ -681,7 +635,7 @@ def render_dota_tab(state: dict[str, Any]) -> dict[str, Any] | None:
     st.subheader("Resultado · Dota 2 · Pinnacle Sintética")
     if result.get("identity_review_required"):
         st.error(
-            "Identidade ou elenco não confiável para este momento. "
+            "Não foi possível resolver a identidade OpenDota antes do cutoff. "
             "A linha foi calculada apenas para pesquisa; a comparação manual está bloqueada."
         )
     metrics = st.columns(4)

@@ -257,13 +257,7 @@ def resolve_team_identity(
         "roster_available_before_cutoff": roster_available_before_cutoff,
         "roster_evidence_retrieved_at": chosen.get("roster_evidence_retrieved_at"),
         "resolution_method": method,
-        "manual_comparison_blocked": identity_status in {"unknown", "stale", "ambiguous"}
-        or roster_status in {
-            "unknown",
-            "current_membership_incomplete",
-            "new_roster_version",
-            "partial_roster_change",
-        },
+        "manual_comparison_blocked": False,
         "eligible_candidates": [row["opendota_team_id"] for row in eligible],
         "selected_identity": chosen,
     }

@@ -1,10 +1,10 @@
-# Resolução de identidade e elenco do Dota 2
+# Resolução de identidade OpenDota do Dota 2
 
 ## Resultado da primeira coleta
 
 O registro foi construído com os times presentes no catálogo operacional e consultou o endpoint OpenDota `/teams/{team_id}/players`. Cada resposta foi preservada no projeto fonte com endpoint, parâmetros, horário UTC de coleta, status HTTP, SHA-256 e versão de schema.
 
-Resumo da coleta:
+Resumo da coleta histórica do registro:
 
 | Situação | Times |
 |---|---:|
@@ -13,6 +13,8 @@ Resumo da coleta:
 | Sem evidência de roster | 137 |
 | Total no registro | 180 |
 
+Os dados de roster continuam preservados no registro bruto para auditoria, mas não fazem parte da decisão operacional da interface.
+
 ## Hokori
 
 | ID OpenDota | Último jogo histórico | Membros atuais observados | Situação |
@@ -20,23 +22,22 @@ Resumo da coleta:
 | `10150267` | 17/06/2026 | 2/5 | `current_membership_incomplete` |
 | `7119077` | 13/04/2026 | 4/5 | `current_membership_incomplete` |
 
-O sistema escolhe automaticamente o ID com evidência histórica mais recente antes do cutoff, mas mantém os dois IDs separados. Como o elenco atual não está completo, a simulação pode ser calculada para pesquisa, porém recebe bloqueio de comparação manual.
+O sistema escolhe automaticamente o ID com evidência histórica mais recente antes do cutoff e mantém os dois IDs separados. A checagem de elenco fica fora do modelo e deve ser feita manualmente antes de qualquer uso.
 
 ## Regra operacional
 
 - Um nome visual, como `Hokori`, aparece uma vez no seletor principal.
-- O ID OpenDota escolhido é mostrado no rótulo e nos metadados da previsão.
+- O ID OpenDota mais recente elegível é mostrado no rótulo e nos metadados da previsão.
 - A escolha automática respeita o horário planejado e nunca usa um `last_seen` posterior ao cutoff.
-- O usuário pode abrir a identidade histórica avançada e selecionar um ID específico.
-- A seleção manual é registrada como `manual_historical_override`.
-- Elenco com menos de cinco membros observados não é tratado como elenco confirmado.
-- Identidade stale, ambígua ou com elenco incompleto bloqueia a comparação manual.
+- O seletor não exibe roster, titulares, reservas ou treinadores.
+- Idade do ID e histórico de roster são informações auxiliares, não critérios de bloqueio.
+- A comparação manual só fica bloqueada quando nenhum ID OpenDota elegível é encontrado antes do cutoff.
 
 ## Limitação que permanece
 
-`/teams/{team_id}/players` é uma fotografia do que o OpenDota reportou no momento da coleta. A resposta não garante que os cinco jogadores participarão do próximo mapa da PGL. Por isso, o sistema distingue `current_membership_observed` de confirmação do elenco do evento.
+`/teams/{team_id}/players` é uma fotografia do que o OpenDota reportou no momento da coleta. A resposta não garante que os cinco jogadores participarão do próximo mapa da PGL. Por isso, esse dado permanece apenas como evidência de auditoria e não bloqueia a simulação.
 
-Quando a fonte não fornecer cinco jogadores atuais ou uma associação específica ao evento, o resultado correto é baixa confiança/revisão, e não a mistura silenciosa de históricos.
+O usuário deve verificar manualmente se o elenco atual corresponde ao histórico antes de comparar a cotação com uma soft book. Se a troca de jogadores for grande, a recomendação operacional é não apostar até existir histórico suficiente do novo grupo.
 
 ## Atualização do registro
 

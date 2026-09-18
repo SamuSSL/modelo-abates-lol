@@ -169,7 +169,7 @@ def test_bundled_dota_catalog_exposes_team_nemesis_for_global_simulation() -> No
     assert metadata["team_one_snapshot_match_id"]
 
 
-def test_bundled_identity_registry_groups_hokori_and_exposes_current_evidence() -> None:
+def test_bundled_identity_registry_groups_hokori_and_keeps_latest_id() -> None:
     state = load_dota_state()
 
     rows = build_dota_operational_catalog(state)
@@ -177,10 +177,9 @@ def test_bundled_identity_registry_groups_hokori_and_exposes_current_evidence() 
 
     assert hokori["identity_count"] == 2
     assert hokori["latest_identity"]["opendota_team_id"] == "10150267"
-    assert hokori["latest_identity"]["roster_status"] == "current_membership_incomplete"
 
 
-def test_dota_prediction_blocks_manual_comparison_when_identity_is_unreliable() -> None:
+def test_dota_prediction_blocks_manual_comparison_when_no_identity_is_resolved() -> None:
     state = load_dota_state()
     features = {name: 25.0 for name in state["bundle"]["feature_names"]}
 
@@ -189,8 +188,16 @@ def test_dota_prediction_blocks_manual_comparison_when_identity_is_unreliable() 
         features,
         {"line": 54.5, "odds_over": 1.90, "odds_under": 1.90},
         identity_metadata={
-            "team_one": {"identity_status": "stale", "manual_comparison_blocked": True},
-            "team_two": {"identity_status": "fresh", "manual_comparison_blocked": False},
+            "team_one": {
+                "opendota_team_id": None,
+                "identity_status": "unknown",
+                "manual_comparison_blocked": True,
+            },
+            "team_two": {
+                "opendota_team_id": "36",
+                "identity_status": "fresh",
+                "manual_comparison_blocked": False,
+            },
         },
     )
 
